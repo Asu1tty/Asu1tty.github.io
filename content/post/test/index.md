@@ -21,6 +21,10 @@ console.log("hello");
 console.log("hello");
 ```
 
+---
+
+gekai
+
 {{< details language="python" options="linenos=table" filename="example.py" >}}
 print("Hello, World!")
 {{< /details >}}
