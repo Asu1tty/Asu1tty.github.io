@@ -332,6 +332,10 @@
         background-color: var(--pre-background-color);
         padding: var(--card-padding);
         position: relative;
+        border-radius: 10px;
+        max-width: 100% !important;
+        margin: 0 !important;
+        box-shadow: var(--shadow-l1) !important;
 
         &:hover {
             .copyCodeButton {

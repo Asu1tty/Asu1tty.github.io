@@ -16,6 +16,13 @@ print("hello")
 
 ```javascript
 console.log("hello");
+console.log("hello");
+console.log("hello");
+console.log("hello");
 ```
+
+{{< details language="python" options="linenos=table" filename="example.py" >}}
+print("Hello, World!")
+{{< /details >}}
 
 ![image-20250420143310036](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250420143310036.png)

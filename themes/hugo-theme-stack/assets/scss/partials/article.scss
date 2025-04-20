@@ -276,3 +276,9 @@
         }
     }
 }
+/* 代码块样式 */
+code {
+    border-radius: var(--tag-border-radius);
+    font-size: 14px; // Add font size setting for code block
+    font-family: var(--code-font-family);
+}
