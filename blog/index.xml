@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Blogs on My New Hugo Site</title>
-    <link>https://example.org/blog/</link>
+    <link>https://asu1tty.github.io/blog/</link>
     <description>Recent content in Blogs on My New Hugo Site</description>
     <image>
       <title>My New Hugo Site</title>
-      <url>https://example.org/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://example.org/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://asu1tty.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://asu1tty.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- 0.145.0</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 20 Apr 2025 09:23:06 +0800</lastBuildDate>
-    <atom:link href="https://example.org/blog/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://asu1tty.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>FistBlog</title>
-      <link>https://example.org/blog/fistblog/</link>
+      <link>https://asu1tty.github.io/blog/fistblog/</link>
       <pubDate>Sun, 20 Apr 2025 09:23:06 +0800</pubDate>
-      <guid>https://example.org/blog/fistblog/</guid>
+      <guid>https://asu1tty.github.io/blog/fistblog/</guid>
       <description>&lt;h1 id=&#34;my-first-blog-test&#34;&gt;My first blog test&lt;/h1&gt;
 &lt;p&gt;hello&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Hello World!&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
