@@ -8,22 +8,14 @@ title: "Test"
 
 ![20250420140100027.png](https://github.com/Asu1tty/blog_img/blob/main/picSource/20250420140100027.png?raw=true)
 
-
-
 ### codetest
 
 ```py
 print("hello")
 ```
 
-
-
 ```javascript
 console.log("hello");
 ```
-
-
-
-
 
 ![image-20250420143310036](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250420143310036.png)
