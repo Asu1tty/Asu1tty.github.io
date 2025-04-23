@@ -3,23 +3,35 @@
   
   
   {
-    "objectID": "1654776772",
-    "permalink": "/post/main/",
-    "title": "Markdown Basic Elements",
+    "objectID": "1745386116",
+    "permalink": "/post/sha-1/",
+    "title": "SHA-1原理及代码实现",
     
-    "content": " Markdown 基本元素 标题 H1 H2 H3 H4 H5 H6 强调 Emphasis, aka italics, with asterisks or underscores.\nStrong emphasis, aka bold, with asterisks or underscores.\nCombined emphasis with asterisks and underscores.\nStrikethrough uses two tildes. Scratch this.\n列表 Definition List (dl) Ordered List (ol) List Item 1 List Item 2 List Item 3 Unordered List (ul) List Item 1 List Item 2 List Item 3 段落 Lorem ipsum dolor sit amet, test link consectetur adipiscing elit. Strong text pellentesque ligula commodo viverra vehicula. Italic text at ullamcorper enim. Morbi a euismod nibh. Underline text non elit nisl. Deleted text tristique, sem id condimentum tempus, metus lectus venenatis mauris, sit amet semper lorem felis a eros. Fusce egestas nibh at sagittis auctor. Sed ultricies ac arcu quis molestie. Donec dapibus nunc in nibh egestas, vitae volutpat sem iaculis. Curabitur sem tellus, elementum nec quam id, fermentum laoreet mi. Ut mollis ullamcorper turpis, vitae facilisis velit ultricies sit amet. Etiam …",
+    "content": "SHA-1（英語：Secure Hash Algorithm 1，中文名：安全散列算法1）是一种密码散列函数，美国国家安全局设计。SHA-1可以生成一个被称为消息摘要的160位（20字节）散列值，散列值通常的呈现形式为40个十六进制数。\n1. 算法实现过程 1.1. 第一步：填充 以字符串admin为例，十六进制如下\n61 64 6D 69 6E 需要让它填充到64个字节长度\n第一位填充 0x80 剩下的填充 0 直到达到 56 个字节\n61 64 6D 69 6E 80 0(填充50次) 共 56 个字节 接下来 8 个字节 消息长度 * 8，也就是5 * 8 = 40 = 0x28\n61 64 6D 69 6E 80 0(填充50次) 0(填充7次) 0x28 共 64 个字节 填充这块唯一和md5有区别的就是,最后的附加消息长度是大端续,也就是正常的顺序 64字节的分组长度,md5,sha1,sha256都是, sha512是128字节分组。\n1.2. 第二步：扩充 sha1有80轮循环,每一轮要用不同的数据,而填充后的最多只有16个4字节数据,所以需要进行扩展\n前16个四字节复制填充后的16个四字节 后64个四字节使用扩充算法进行扩充 当前位置值 =（ 前面第3个四字节 ^ 前面第8个四字节 ^ 前面第14个四字节 ^ 前面第16个四字节 ）\u0026amp;laquo; 1\n\u0026amp;laquo; 代表循环左移 用代码表示\n# 扩展到80个字 for j in range(16, 80): w[j] = left_rotate(w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16], 1) 以字符串admin为例，扩充如下\n0x61646D69 0x6E800000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000028 0xC2C8DAD2 0xDD000000 0x00000050 0x8591B5A5 0xBA000001 0x000000A0 0x0B236B4B 0x74000053 …",
     
-    "date": "2022-06-09 20:12:52",
-    "updated": "2022-06-09 20:12:52"
+    "date": "2025-04-23 13:28:36",
+    "updated": "2025-04-23 13:28:36"
+  }
+  
+  , 
+  {
+    "objectID": "1745380130",
+    "permalink": "/post/md5/",
+    "title": "MD5原理及代码实现",
+    
+    "content": "MD5消息摘要算法（英语：MD5 Message-Digest Algorithm），一种被广泛使用的密码散列函数，可以产生出一个128位（16个字节）的散列值（hash value），用于确保资讯传输完整一致。 将数据（如一段文字）运算变为另一固定长度值，是散列算法的基础原理。\n1. 算法 MD5是输入不定长度资讯，输出固定长度128-bits的算法。经过程序流程，生成四个32位数据，最后联合起来成为一个128-bits（16字节，通常消息传输中更常见表示为32 个十六进制字符）散列。\n2. 算法实现过程 2.1. 第一步：填充 MD5 的输入数据需要满足以下条件：\n数据长度（以位为单位）模 512 等于 448（即模 64 字节等于 56 字节）。 填充后，数据长度必须是 512 位的倍数（即 64 字节的倍数）。 以字符串admin为例，十六进制如下\n61 64 6D 69 6E 首先需要填充到64字节 第一位填充 0x80 剩下的填充 0 直到达到 56 个字节\n61 64 6D 69 6E 80 0(填充50次) 共 56 个字节 接下来 8 个字节 第一位填充消息长度 * 8，也就是5 * 8 = 40 = 0x28，（0x28 \u0026amp;amp; 0xFF）剩下的填充0\n61 64 6D 69 6E 80 0(填充50次) 0x28 0(填充7次) 共 64 个字节 2.1.1. 当输入大小恰好为56字节时 理论上，只需添加 0x80 和长度信息即可，但由于 0x80 占用 1 字节，剩余空间不足以容纳 8 字节的长度信息，因此需要填充到下一个 512 位块。\n在数据末尾添加 0x80（二进制 10000000），占用 1 字节。 当前长度：56 字节 + 1 字节 = 57 字节（456 位）。 因此，填充到下一个 512 位块（128 字节 = 1024 位）\n目标长度（不含长度信息）：128 字节 - 8 字节 = 120 字节。 当前长度：57 字节。 需要填充：120 字节 - 57 字节 = 63 字节。 填充 63 个 0x00 字节。 再在尾部加上消息长度信息，原始数据长度：56 × 8 = 448 位。用 64 位表示：0x000001C0（低位在前），填充为 8 字节：0xC0010000 00000000。 那么当输入大小大于56字节且小 …",
+    
+    "date": "2025-04-23 11:48:50",
+    "updated": "2025-04-23 11:48:50"
   }
   
   , 
   {
     "objectID": "1654776772",
-    "permalink": "/post/chinese/",
-    "title": "中文測試",
+    "permalink": "/post/main/",
+    "title": "Markdown Basic Elements",
     
-    "content": "This is a Chinese test post.\n善我王上魚、產生資西員合兒臉趣論。畫衣生這著爸毛親可時，安程幾？合學作。觀經而作建。都非子作這！法如言子你關！手師也。\n以也座論頭室業放。要車時地變此親不老高小是統習直麼調未，行年香一？\n就竟在，是我童示讓利分和異種百路關母信過明驗有個歷洋中前合著區亮風值新底車有正結，進快保的行戰從：弟除文辦條國備當來際年每小腳識世可的的外的廣下歌洲保輪市果底天影；全氣具些回童但倒影發狀在示，數上學大法很，如要我……月品大供這起服滿老？應學傳者國：山式排只不之然清同關；細車是！停屋常間又，資畫領生，相們制在？公別的人寫教資夠。資再我我！只臉夫藝量不路政吃息緊回力之；兒足灣電空時局我怎初安。意今一子區首者微陸現際安除發連由子由而走學體區園我車當會，經時取頭，嚴了新科同？很夫營動通打，出和導一樂，查旅他。坐是收外子發物北看蘭戰坐車身做可來。道就學務。\n國新故。\n工步他始能詩的，裝進分星海演意學值例道……於財型目古香亮自和這乎？化經溫詩。只賽嚴大一主價世哥受的沒有中年即病行金拉麼河。主小路了種就小為廣不？\nFrom 亂數假文產生器 - Chinese Lorem Ipsum\n",
+    "content": " Markdown 基本元素 标题 H1 H2 H3 H4 H5 H6 强调 Emphasis, aka italics, with asterisks or underscores.\nStrong emphasis, aka bold, with asterisks or underscores.\nCombined emphasis with asterisks and underscores.\nStrikethrough uses two tildes. Scratch this.\n列表 Definition List (dl) Ordered List (ol) List Item 1 List Item 2 List Item 3 Unordered List (ul) List Item 1 List Item 2 List Item 3 段落 Lorem ipsum dolor sit amet, test link consectetur adipiscing elit. Strong text pellentesque ligula commodo viverra vehicula. Italic text at ullamcorper enim. Morbi a euismod nibh. Underline text non elit nisl. Deleted text tristique, sem id condimentum tempus, metus lectus venenatis mauris, sit amet semper lorem felis a eros. Fusce egestas nibh at sagittis auctor. Sed ultricies ac arcu quis molestie. Donec dapibus nunc in nibh egestas, vitae volutpat sem iaculis. Curabitur sem tellus, elementum nec quam id, fermentum laoreet mi. Ut mollis ullamcorper turpis, vitae facilisis velit ultricies sit amet. Etiam …",
     
     "date": "2022-06-09 20:12:52",
     "updated": "2022-06-09 20:12:52"

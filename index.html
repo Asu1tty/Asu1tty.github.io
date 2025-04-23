@@ -109,7 +109,7 @@
 
 
   
- <link rel="stylesheet" href="/css/loader.min.ac746e154f756f8220326eeb52a719f142ab038be5a8ddf30ea5ef15ef2356ea.css" />
+ <link rel="stylesheet" href="/css/loader.min.de78b85a8ed3b39f875bfab20023f359ada6d633fc6a5730d66b52313ad697d7.css" />
 
 
 
@@ -130,8 +130,8 @@
     content="/"
   />
   <meta property="article:author" content="D-Sketon" />
-  <meta property="article:published_time" content="2022-07-26T21:46:25&#43;08:00" />
-  <meta property="article:modified_time" content="2022-07-26T21:46:25&#43;08:00" />
+  <meta property="article:published_time" content="2025-04-23T13:28:36&#43;08:00" />
+  <meta property="article:modified_time" content="2025-04-23T13:28:36&#43;08:00" />
   
   
   <meta name="twitter:card" content="summary" />
@@ -156,7 +156,7 @@
 
 
   
- <link rel="stylesheet" href="/css/main.min.6e7dfd3df7ad9d4b501db1e10db1c5c9c6bfec12d092352f2042dfcb7bee7b5c.css" />
+ <link rel="stylesheet" href="/css/main.min.fdf430b78ef019a0ab61de9399fdd010af5a139616a95d9b43ae5372856b6702.css" />
 
 
 
@@ -401,7 +401,7 @@
   <div class="sidebar-state-article">
     <div>Posts</div>
     
-    <div class="sidebar-state-number">2</div>
+    <div class="sidebar-state-number">3</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
@@ -411,7 +411,7 @@
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">2</div>
+    <div class="sidebar-state-number">5</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -542,10 +542,49 @@
             <li class="tag-item">
                 <a
                   class="tag-link"
+                  href="/tags/hash%E7%AE%97%E6%B3%95/"
+                  aria-label="Tag: Hash算法"
+                >
+                  Hash算法
+                </a>
+              </li>
+              
+            
+          
+            
+            <li class="tag-item">
+                <a
+                  class="tag-link"
                   href="/tags/markdown/"
                   aria-label="Tag: Markdown"
                 >
                   Markdown
+                </a>
+              </li>
+              
+            
+          
+            
+            <li class="tag-item">
+                <a
+                  class="tag-link"
+                  href="/tags/md5/"
+                  aria-label="Tag: MD5"
+                >
+                  MD5
+                </a>
+              </li>
+              
+            
+          
+            
+            <li class="tag-item">
+                <a
+                  class="tag-link"
+                  href="/tags/sha-1/"
+                  aria-label="Tag: SHA-1"
+                >
+                  SHA-1
                 </a>
               </li>
               
@@ -586,9 +625,42 @@
           
           <a
             style="font-size:10px"
+            href="/tags/hash%E7%AE%97%E6%B3%95/"
+            aria-label="Tag: Hash算法"
+            >Hash算法</a
+          >
+          
+        
+      
+        
+          
+          <a
+            style="font-size:10px"
             href="/tags/markdown/"
             aria-label="Tag: Markdown"
             >Markdown</a
+          >
+          
+        
+      
+        
+          
+          <a
+            style="font-size:10px"
+            href="/tags/md5/"
+            aria-label="Tag: MD5"
+            >MD5</a
+          >
+          
+        
+      
+        
+          
+          <a
+            style="font-size:10px"
+            href="/tags/sha-1/"
+            aria-label="Tag: SHA-1"
+            >SHA-1</a
           >
           
         
@@ -621,11 +693,15 @@
         <ul>
           
             <li>
-              <a href="/post/main/">Markdown Basic Elements</a>
+              <a href="/post/sha-1/">SHA-1原理及代码实现</a>
             </li>
           
             <li>
-              <a href="/post/chinese/">中文測試</a>
+              <a href="/post/md5/">MD5原理及代码实现</a>
+            </li>
+          
+            <li>
+              <a href="/post/main/">Markdown Basic Elements</a>
             </li>
           
         </ul>
@@ -644,6 +720,142 @@
   
   
   
+  
+    
+
+
+
+
+<div class="post-wrapper">
+  <div
+    class="
+      post-wrap-left
+    "
+    data-aos="fade-up"
+  >
+    
+      <a
+        class="post-link"
+        href="/post/sha-1/"
+        aria-label="SHA-1原理及代码实现"
+      >
+      </a>
+    
+    
+    <div
+      class="
+        post-cover-left
+      "
+    >
+      
+        
+        
+          <img
+            data-src="https://d-sketon.top/img/_backwebp/bg1.webp"
+            data-sizes="auto"
+            alt="SHA-1原理及代码实现"
+            class="lazyload"
+          />
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span
+          ><span class="icon-calendar"></span
+          >2025-04-23</span
+        >
+        <span
+          ><span class="icon-pencil"></span
+          >1111 words</span
+        >
+        <span
+          ><span class="icon-clock"></span
+          >6 mins</span
+        >
+      </div>
+      <h2 class="post-title">SHA-1原理及代码实现</h2>
+      <article class="post-article">
+        
+          SHA-1（英語：Secure Hash Algorithm 1，中文名：安全散列算法1）是一种密码散列函数，美国国家安全局设计。SHA-1可以生成一个被称为消息摘要的160位（20字节）散列值，散列值通常的呈现形式为40个十六进制数。
+1. 算法实现过程 1.1. 第一步：填充 以字符串admin为例，十六进制如下
+61 64 6D 69 6E 需要让它填充到64个字节长度
+第一位填充 0x80 剩下的填充 0 直到达到 56 个字节
+61 64 6D 69 6E 80 0(填充50次) 共 56 个字节 接下来 8 个字节 消息长度 * 8，也就是5 * 8 = 40 = 0x28
+61 …
+        
+      </article>
+    </div>
+  </div>
+</div>
+
+  
+    
+
+
+
+
+<div class="post-wrapper">
+  <div
+    class="
+      post-wrap-right
+    "
+    data-aos="fade-up"
+  >
+    
+      <a
+        class="post-link"
+        href="/post/md5/"
+        aria-label="MD5原理及代码实现"
+      >
+      </a>
+    
+    
+    <div
+      class="
+        post-cover-right
+      "
+    >
+      
+        
+        
+          <img
+            data-src="https://d-sketon.top/img/_backwebp/bg1.webp"
+            data-sizes="auto"
+            alt="MD5原理及代码实现"
+            class="lazyload"
+          />
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span
+          ><span class="icon-calendar"></span
+          >2025-04-23</span
+        >
+        <span
+          ><span class="icon-pencil"></span
+          >3230 words</span
+        >
+        <span
+          ><span class="icon-clock"></span
+          >16 mins</span
+        >
+      </div>
+      <h2 class="post-title">MD5原理及代码实现</h2>
+      <article class="post-article">
+        
+          MD5消息摘要算法（英语：MD5 Message-Digest Algorithm），一种被广泛使用的密码散列函数，可以产生出一个128位（16个字节）的散列值（hash value），用于确保资讯传输完整一致。 将数据（如一段文字）运算变为另一固定长度值，是散列算法的基础原理。
+1. 算法 MD5是输入不定长度资讯，输出固定长度128-bits的算法。经过程序流程，生成四个32位数据，最后联合起来成为一个128-bits（16字节，通常消息传输中更常见表示为32 个十六进制字符）散列。
+2. 算法实现过程 2.1. 第一步：填充 MD5 的输入数据需要满足以下条件：
+数据长度（以位为单位） …
+        
+      </article>
+    </div>
+  </div>
+</div>
+
   
     
 
@@ -691,7 +903,7 @@
         >
         <span
           ><span class="icon-pencil"></span
-          >1290 words</span
+          >1375 words</span
         >
         <span
           ><span class="icon-clock"></span
@@ -702,73 +914,6 @@
       <article class="post-article">
         
           测试 Markdown 基本元素
-        
-      </article>
-    </div>
-  </div>
-</div>
-
-  
-    
-
-
-
-
-<div class="post-wrapper">
-  <div
-    class="
-      post-wrap-right
-    "
-    data-aos="fade-up"
-  >
-    
-      <a
-        class="post-link"
-        href="/post/chinese/"
-        aria-label="中文測試"
-      >
-      </a>
-    
-    
-    <div
-      class="
-        post-cover-right
-      "
-    >
-      
-        
-        
-          <img
-            data-src="https://d-sketon.top/img/_backwebp/bg1.webp"
-            data-sizes="auto"
-            alt="中文測試"
-            class="lazyload"
-          />
-        
-      
-    </div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span
-          ><span class="icon-calendar"></span
-          >2022-06-09</span
-        >
-        <span
-          ><span class="icon-pencil"></span
-          >17 words</span
-        >
-        <span
-          ><span class="icon-clock"></span
-          >1 min</span
-        >
-      </div>
-      <h2 class="post-title">中文測試</h2>
-      <article class="post-article">
-        
-          This is a Chinese test post.
-善我王上魚、產生資西員合兒臉趣論。畫衣生這著爸毛親可時，安程幾？合學作。觀經而作建。都非子作這！法如言子你關！手師也。
-以也座論頭室業放。要車時地變此親不老高小是統習直麼調未，行年香一？
-就竟在，是我童示讓利分和異種百路關母信過明驗有個歷洋中前合著區亮風值新底車有正結，進快保的行戰從：弟除文辦條國備當來際年每小腳識世可的的外的廣下歌洲保輪市果底天影；全氣具些回童但倒影發狀在示，數上學大法很，如要我……月品大供這起服滿老？應學傳者國：山式排只不之然清同關；細車是！停屋常間又，資畫領生，相們制在？公別的人寫教資夠。資再我我！只臉夫藝量不路政 …
         
       </article>
     </div>
@@ -815,6 +960,9 @@
   
   
 
+  
+  
+
 
 
 <footer id="footer">
@@ -849,7 +997,7 @@
       <div>
         <span class="icon-brush"
           >&nbsp;
-            1.3k
+            5.7k
           </span
         >
         &nbsp;|&nbsp;
@@ -857,7 +1005,7 @@
           
           
 
-          00:08
+          00:29
         </span>
       </div>
     
@@ -909,7 +1057,7 @@
   <div class="sidebar-state-article">
     <div>Posts</div>
     
-    <div class="sidebar-state-number">2</div>
+    <div class="sidebar-state-number">3</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
@@ -919,7 +1067,7 @@
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">2</div>
+    <div class="sidebar-state-number">5</div>
   </div>
 </div>
 <div class="sidebar-social">

@@ -108,7 +108,7 @@
 
 
   
- <link rel="stylesheet" href="/css/loader.min.ac746e154f756f8220326eeb52a719f142ab038be5a8ddf30ea5ef15ef2356ea.css" />
+ <link rel="stylesheet" href="/css/loader.min.de78b85a8ed3b39f875bfab20023f359ada6d633fc6a5730d66b52313ad697d7.css" />
 
 
 
@@ -156,7 +156,7 @@
 
 
   
- <link rel="stylesheet" href="/css/main.min.6e7dfd3df7ad9d4b501db1e10db1c5c9c6bfec12d092352f2042dfcb7bee7b5c.css" />
+ <link rel="stylesheet" href="/css/main.min.fdf430b78ef019a0ab61de9399fdd010af5a139616a95d9b43ae5372856b6702.css" />
 
 
 
@@ -435,7 +435,7 @@
   <div class="sidebar-state-article">
     <div>Posts</div>
     
-    <div class="sidebar-state-number">2</div>
+    <div class="sidebar-state-number">3</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
@@ -445,7 +445,7 @@
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">2</div>
+    <div class="sidebar-state-number">5</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -1034,8 +1034,37 @@ $$
     0 & 1 & 0 \\
     0 & 0 & 1
     \end{bmatrix}
-    $$</li>
+   $$</li>
 </ol>
+<p>$\omega(g(n))=\{f(n):\text{存在正常量}c\text{和}n_0\text{，使得对所有}n \geq n_0\text{，有}0\leq cg(n) < f(n)\}$</p>
+$$
+f^{(i)}(n) =
+\begin{cases}
+n \qquad & i = 1 \\
+f(f^{(i-1)}(n)) \qquad &  i>1
+\end{cases}
+$$$$
+A = \begin{bmatrix}
+A_{11} & A_{12} \\
+A_{21} & A_{22}
+\end{bmatrix}
+,
+B = \begin{bmatrix}
+B_{11} & B_{12} \\
+B_{21} & B_{22}
+\end{bmatrix}
+,
+C = \begin{bmatrix}
+C_{11} & C_{12} \\
+C_{21} & C_{22}
+\end{bmatrix}
+$$$$\sum^{\lfloor lgn \rfloor}_{h=0} \lceil \frac{n}{2^{h+1}} \rceil O(h) = O(n \sum^{\lfloor lgn \rfloor}_{h=0} \frac{h}{2^h}) =  O(n \sum^{\infty}_{h=0} \frac{h}{2^h}) =O(n)$$$$
+\begin{align}
+&\underset{\boldsymbol{w}}{\min}\sum_{i=1}^N{\left( \boldsymbol{p}_i\boldsymbol{w} \right) ^2 },\,\, s.t. \,\left\| \boldsymbol{w} \right\| _2=1 \notag
+\\
+\Rightarrow &\underset{\boldsymbol{w}}{\min}\,\,\boldsymbol{w}^T\boldsymbol{P}^T\boldsymbol{Pw},\,\, s.t.\, \boldsymbol{w}^T\boldsymbol{w}=1
+\end{align}
+$$<p> &ndash;&gt;</p>
 <h2 id="流程图">
 <a class="header-anchor" href="#%e6%b5%81%e7%a8%8b%e5%9b%be"></a>
 流程图
@@ -1063,48 +1092,6 @@ $$
 <a class="header-anchor" href="#%e5%8d%a1%e7%89%87"></a>
 卡片
 </h2>
-
-
-
-
-
-
-
-
-
-
-<div class="post-link-card-wrap">
-  <div class="post-link-card">
-    <a href="/post/chinese/" title="中文測試"></a>
-    
-      <div class="post-link-card-cover-wrap">
-        <img
-          src="/images/banner.webp"
-          class="no-lightbox"
-          title="中文測試"
-          alt="中文測試"
-        />
-      </div>
-    
-    <div class="post-link-card-item-wrap">
-      <div class="post-link-card-title">
-        
-          中文測試
-        
-      </div>
-      <div class="post-link-card-excerpt">
-        
-          This is a Chinese test post.
-善我王上魚、產生資西員合兒臉趣論。畫衣生這著爸毛親可時，安程幾？合學作。觀經而作建。都非子作這！法如言子你關！手師也。
-以也座論頭室業放。要車時地變此親不老高小是統習直麼調未，行年香一？
-就竟在，是我童示讓利分和異種百路關母信過明驗有個歷洋中前合著區亮風值新底車有正結，進快保的行戰從：弟除文辦條國備當來際年每小腳識世可的的外的廣下歌洲保輪市 …
-        
-      </div>
-    </div>
-  </div>
-</div>
-
-
 
 
 
@@ -1183,28 +1170,28 @@ $$
     data-aos="fade-up"
   >
     
-      <div class="article-nav-link-wrap article-nav-link-left">
+
+    
+      <div class="article-nav-link-wrap article-nav-link-right">
         
           
           
             <img
               data-src="https://d-sketon.top/img/_backwebp/bg1.webp"
               data-sizes="auto"
-              alt="中文測試"
+              alt="MD5原理及代码实现"
               class="lazyload"
             />
           
         
-        <a href="/post/chinese/"></a>
-        <div class="article-nav-caption">Newer</div>
+        <a href="/post/md5/"></a>
+        <div class="article-nav-caption">Older</div>
         <h3 class="article-nav-title">
           
-            中文測試
+            MD5原理及代码实现
           
         </h3>
       </div>
-    
-
     
   </nav>
 
@@ -1234,6 +1221,9 @@ $$
         
 
 
+
+  
+  
 
   
   
@@ -1275,7 +1265,7 @@ $$
       <div>
         <span class="icon-brush"
           >&nbsp;
-            1.3k
+            5.7k
           </span
         >
         &nbsp;|&nbsp;
@@ -1283,7 +1273,7 @@ $$
           
           
 
-          00:08
+          00:29
         </span>
       </div>
     
@@ -1372,7 +1362,7 @@ $$
   <div class="sidebar-state-article">
     <div>Posts</div>
     
-    <div class="sidebar-state-number">2</div>
+    <div class="sidebar-state-number">3</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
@@ -1382,7 +1372,7 @@ $$
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">2</div>
+    <div class="sidebar-state-number">5</div>
   </div>
 </div>
 <div class="sidebar-social">

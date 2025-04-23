@@ -437,9 +437,9 @@ counter = 1_000
     0 & 1 & 0 \\
     0 & 0 & 1
     \end{bmatrix}
-    $$
-<!-- 
-$f(n) = \Theta(g(n)) \land g(n) = \Theta(h(n)) \rightarrow f(n) = \Theta(h(n))$
+   $$
+   <!-- 
+   $f(n) = \Theta(g(n)) \land g(n) = \Theta(h(n)) \rightarrow f(n) = \Theta(h(n))$
 
 $\omega(g(n))=\{f(n):\text{存在正常量}c\text{和}n_0\text{，使得对所有}n \geq n_0\text{，有}0\leq cg(n) < f(n)\}$
 
@@ -505,7 +505,5 @@ $$ -->
 ```
 
 ## 卡片
-
-{{<postLinkCard path="/post/chinese" cover="auto" >}}
 
 {{<externalLinkCard title="Github" link="https://github.com/D-Sketon/hugo-theme-reimu" cover="https://github.githubassets.com/assets/apple-touch-icon-144x144-b882e354c005.png">}}
