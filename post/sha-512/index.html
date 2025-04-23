@@ -20,11 +20,9 @@
 
 
   
-    
-  
 
 <title>
-  MD5 | D-Sketon
+  SHA-512简介及代码实现 | D-Sketon
 </title>
 <meta
   name="description"
@@ -116,12 +114,12 @@
 
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="MD5 | D-Sketon" />
+  <meta property="og:title" content="SHA-512简介及代码实现 | D-Sketon" />
   <meta
     property="og:description"
     content="少女祈祷中..."
   />
-  <meta property="og:url" content="https://asu1tty.github.io/tags/md5/" />
+  <meta property="og:url" content="https://asu1tty.github.io/post/sha-512/" />
   <meta
     property="og:site_name"
     content="My New Hugo Site"
@@ -131,8 +129,10 @@
     content="/"
   />
   <meta property="article:author" content="D-Sketon" />
-  <meta property="article:published_time" content="2025-04-23T11:48:50&#43;08:00" />
-  <meta property="article:modified_time" content="2025-04-23T11:48:50&#43;08:00" />
+  <meta property="article:published_time" content="2025-04-23T21:10:36&#43;08:00" />
+  <meta property="article:modified_time" content="2025-04-23T21:10:36&#43;08:00" />
+  
+    <meta property="article:tag" content="SHA-1Hash算法" />
   
   
   <meta name="twitter:card" content="summary" />
@@ -144,7 +144,6 @@
   
 
 
-<link rel="alternate" type="application/rss+xml" href="https://asu1tty.github.io/tags/md5/index.xml" title="My New Hugo Site">
 
 
 <link rel="shortcut icon" href="/favicon.ico">
@@ -328,7 +327,6 @@
     <a id="main-nav-toggle" class="nav-icon"></a>
   </nav>
   <nav id="sub-nav">
-    <a id="nav-rss-link" class="nav-icon" href="/tags/md5/index.xml" title="RSS Feed" target="_blank"></a>
     
     
   </nav>
@@ -336,11 +334,13 @@
 <header id="header">
   
     
-      <picture>
-        
-      </picture>
       
-        <img  fetchpriority="high" src="/images/banner.webp" alt="MD5">
+        <picture>
+          
+        </picture>
+        
+          <img  fetchpriority="high" src="/images/banner.webp" alt="SHA-512简介及代码实现">
+        
       
     
   
@@ -355,7 +355,7 @@
   
         
           <a href="/" id="logo">
-            <h1 data-aos="slide-up">Tag</h1>
+            <h1 data-aos="slide-up">SHA-512简介及代码实现</h1>
           </a>
         
       
@@ -363,11 +363,7 @@
       
         
         
-          
-        
         <h2 id="subtitle-wrap" data-aos="slide-down">
-          
-            <a href="/" id="subtitle">MD5</a>
           
         </h2>
       
@@ -381,13 +377,32 @@
   
   
   
-  <div class="sidebar-wrapper ">
+  <div class="sidebar-wrapper wrap-sticky">
     <div
       class="sidebar-wrap"
       data-aos="fade-up"
     >
       
         
+          <div class="sidebar-toc-sidebar">
+            <div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-算法">1. 算法</a></li>
+    <li><a href="#2-算法实现过程">2. 算法实现过程</a>
+      <ul>
+        <li><a href="#21-填充">2.1. 填充</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+          </div>
+          <div class="sidebar-common-sidebar hidden">
+            
 <div class="sidebar-author">
   <img
     data-src="/avatar/avatar.webp"
@@ -486,422 +501,198 @@
   
 </div>
 
+          </div>
+        
       
 
+      
+        
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+        
       
     </div>
   </div>
 
   <div class="sidebar-widget">
     
-      
-        
-  <div class="widget-wrapper">
-    <div
-      class="widget-wrap"
-      data-aos="fade-up"
-    >
-      <div style="display: flex; justify-content: space-between;">
-        <h3 class="widget-title">Categories</h3>
-        
-      </div>
-      <div class="widget">
-        <ul class="category-list">
-          
-          
-            
-              <li class="category-list-item">
-                <a class="category-list-link" href="/categories/crypto/"
-                  >Crypto</a
-                >
-              </li>
-              
-            
-          
-            
-              <li class="category-list-item">
-                <a class="category-list-link" href="/categories/test/"
-                  >Test</a
-                >
-              </li>
-              
-            
-          
-        </ul>
-      </div>
-    </div>
-  </div>
-
-
-      
-        
-  <div class="widget-wrapper">
-    <div
-      class="widget-wrap"
-      data-aos="fade-up"
-    >
-      <div style="display: flex; justify-content: space-between;">
-        <h3 class="widget-title">Tags</h3>
-        
-      </div>
-      <div class="widget">
-        <ul class="tag-list" itemprop="keywords">
-          
-          
-            
-            <li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/hash%E7%AE%97%E6%B3%95/"
-                  aria-label="Tag: Hash算法"
-                >
-                  Hash算法
-                </a>
-              </li>
-              
-            
-          
-            
-            <li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/markdown/"
-                  aria-label="Tag: Markdown"
-                >
-                  Markdown
-                </a>
-              </li>
-              
-            
-          
-            
-            <li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/md5/"
-                  aria-label="Tag: MD5"
-                >
-                  MD5
-                </a>
-              </li>
-              
-            
-          
-            
-            <li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/sha-1/"
-                  aria-label="Tag: SHA-1"
-                >
-                  SHA-1
-                </a>
-              </li>
-              
-            
-          
-            
-            <li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/sha-256/"
-                  aria-label="Tag: SHA-256"
-                >
-                  SHA-256
-                </a>
-              </li>
-              
-            
-          
-            
-            <li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/test/"
-                  aria-label="Tag: Test"
-                >
-                  Test
-                </a>
-              </li>
-              
-            
-          
-        </ul>
-      </div>
-    </div>
-  </div>
-
-
-      
-        
-<div class="widget-wrapper">
-  <div
-    class="widget-wrap"
-    data-aos="fade-up"
-  >
-    <h3 class="widget-title">Tag Cloud</h3>
-    
-    <div class="widget tagcloud">
-      
-      
-        
-          
-          <a
-            style="font-size:10px"
-            href="/tags/hash%E7%AE%97%E6%B3%95/"
-            aria-label="Tag: Hash算法"
-            >Hash算法</a
-          >
-          
-        
-      
-        
-          
-          <a
-            style="font-size:10px"
-            href="/tags/markdown/"
-            aria-label="Tag: Markdown"
-            >Markdown</a
-          >
-          
-        
-      
-        
-          
-          <a
-            style="font-size:10px"
-            href="/tags/md5/"
-            aria-label="Tag: MD5"
-            >MD5</a
-          >
-          
-        
-      
-        
-          
-          <a
-            style="font-size:10px"
-            href="/tags/sha-1/"
-            aria-label="Tag: SHA-1"
-            >SHA-1</a
-          >
-          
-        
-      
-        
-          
-          <a
-            style="font-size:10px"
-            href="/tags/sha-256/"
-            aria-label="Tag: SHA-256"
-            >SHA-256</a
-          >
-          
-        
-      
-        
-          
-          <a
-            style="font-size:10px"
-            href="/tags/test/"
-            aria-label="Tag: Test"
-            >Test</a
-          >
-          
-        
-      
-    </div>
-  </div>
-</div>
-
-      
-        
-  
-  <div class="widget-wrapper">
-    <div
-      class="widget-wrap"
-      data-aos="fade-up"
-    >
-      <h3 class="widget-title">Recent Posts</h3>
-      <div class="widget">
-        <ul>
-          
-            <li>
-              <a href="/post/sha-512/">SHA-512简介及代码实现</a>
-            </li>
-          
-            <li>
-              <a href="/post/sha-256/">SHA-256原理及代码实现</a>
-            </li>
-          
-            <li>
-              <a href="/post/sha-1/">SHA-1原理及代码实现</a>
-            </li>
-          
-            <li>
-              <a href="/post/md5/">MD5原理及代码实现</a>
-            </li>
-          
-            <li>
-              <a href="/post/main/">Markdown Basic Elements</a>
-            </li>
-          
-        </ul>
-      </div>
-    </div>
-  </div>
-
-
-      
-    
   </div>
   
 </aside>
 
           <section id="main">
+  <article
+  class="h-entry article"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
   <div
-    class="archives-outer-wrap"
+    class="article-inner"
+    data-aos="fade-up"
+  >
+    <div class="article-meta">
+      <div class="article-date">
+  <span
+    class="article-date-link"
+    data-aos="zoom-in"
+  >
+    <time datetime="2025-04-23 21:10:36 &#43;0800 &#43;0800" itemprop="datePublished"
+      >2025-04-23</time
+    >
+    <time style="display: none;" id="post-update-time"
+      >2025-04-23</time
+    >
+  </span>
+</div>
+
+      <div class="article-category">
+  
+    <a
+      class="article-category-link"
+      href="/categories/crypto"
+      data-aos="zoom-in"
+      >CRYPTO</a
+    >
+  
+</div>
+
+    </div>
+    <div class="hr-line"></div>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h2 id="1-算法">
+<a class="header-anchor" href="#1-%e7%ae%97%e6%b3%95"></a>
+1. 算法
+</h2><p><code>SHA-512</code>在app逆向中遇到得很少，所以只作简单介绍
+SHA-1可以生成一个被称为消息摘要的512<a href="https://zh.wikipedia.org/wiki/%E4%BD%8D" title="位">位</a>（64<a href="https://zh.wikipedia.org/wiki/%E5%AD%97%E8%8A%82" title="字节">字节</a>）散列值，散列值通常的呈现形式为128个<a href="https://zh.wikipedia.org/wiki/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6" title="十六进制">十六进制</a>数。与MD5，SHA1，SHA256不同的是，分组长度为1024位。表示消息长度为128位</p>
+<h2 id="2-算法实现过程">
+<a class="header-anchor" href="#2-%e7%ae%97%e6%b3%95%e5%ae%9e%e7%8e%b0%e8%bf%87%e7%a8%8b"></a>
+2. 算法实现过程
+</h2><h3 id="21-填充">
+<a class="header-anchor" href="#21-%e5%a1%ab%e5%85%85"></a>
+2.1. 填充
+</h3><p>以字符串<code>admin</code>为例，十六进制如下</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E
+</span></span></code></pre></div><p>首先需要填充到128字节，即先添加一个“1”，再后跟多个“0”，然后再追加一个128位的消息长度信息
+第一位填充 0x80 剩下的填充 0 直到达到 112 个字节
+填充K个“0”，所不同的是消息分组的长度是1024位，所以K的取值必须是满足下述表达式的最小非负整数值。
+<code>( L + 1 + K ) mod 1024 = 896</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E 80 0(填充106次) 共 112 个字节
+</span></span></code></pre></div><p>对比md5,sha1,sha256填充都是64字节分组,sha512是128字节分组,原因就在于无论是iv还是k都是8字节的,所以数据块也是8字节的</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">sha512
+</span></span><span class="line"><span class="cl">H = [
+</span></span><span class="line"><span class="cl">    0x6a09e667f3bcc908, 0xbb67ae8584caa73b,
+</span></span><span class="line"><span class="cl">    0x3c6ef372fe94f82b, 0xa54ff53a5f1d36f1,
+</span></span><span class="line"><span class="cl">    0x510e527fade682d1, 0x9b05688c2b3e6c1f,
+</span></span><span class="line"><span class="cl">    0x1f83d9abfb41bd6b, 0x5be0cd19137e2179
+</span></span><span class="line"><span class="cl">]
+</span></span><span class="line"><span class="cl">sha256
+</span></span><span class="line"><span class="cl">H = [
+</span></span><span class="line"><span class="cl">    0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
+</span></span><span class="line"><span class="cl">    0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
+</span></span><span class="line"><span class="cl">]
+</span></span></code></pre></div><p>sha512的高4字节是sha256的4字节,同理k表也是这样</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/564295-20180204105617967-2043991062.png" alt="img"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+      <ul class="article-tag-list" itemprop="keywords">
+  
+    <li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/sha-1"
+        rel="tag"
+        >SHA-1</a
+      >
+    </li>
+  
+    <li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/hash%e7%ae%97%e6%b3%95"
+        rel="tag"
+        >HASH算法</a
+      >
+    </li>
+  
+</ul>
+
+    </footer>
+  </div>
+  
+    
+  <nav
+    id="article-nav"
     data-aos="fade-up"
   >
     
-      <div class="tag-wrap">
-  
-    <div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/hash%E7%AE%97%E6%B3%95/"
-        >Hash算法</a
-      >
-    </div>
-  
-    <div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/markdown/"
-        >Markdown</a
-      >
-    </div>
-  
-    <div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/md5/"
-        >MD5</a
-      >
-    </div>
-  
-    <div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/sha-1/"
-        >SHA-1</a
-      >
-    </div>
-  
-    <div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/sha-256/"
-        >SHA-256</a
-      >
-    </div>
-  
-    <div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/test/"
-        >Test</a
-      >
-    </div>
-  
-</div>
-<div class="category-wrap">
-  
-    <div
-      class="archives-category-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-category-list-link" href="/categories/crypto/"
-        >Crypto</a
-      >
-    </div>
-  
-    <div
-      class="archives-category-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-category-list-link" href="/categories/test/"
-        >Test</a
-      >
-    </div>
-  
-</div>
-    
-    
-
-
-
-  <section class="archives-wrap" data-aos="fade-up">
-    <div class="archive-year-wrap">
-      <a href="" class="archive-year">2025</a>
-    </div>
-    <ul>
-      
-        <li class="archive-article">
-          <div class="archive-article-date-wrap">
-            <span>
-              <time
-                class="dt-published"
-                datetime="2025-04-23 11:48:50 &#43;0800 &#43;0800"
-                itemprop="datePublished"
-                >2025-04</time
-              >
-            </span>
-          </div>
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
           
-            <a class="archive-article-title" href="/post/md5/"
-              >MD5原理及代码实现</a
-            >
           
-        </li>
-      
-    </ul>
-  </section>
-
-
-  </div>
-  
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-<nav id="page-nav" data-aos="fade-up">
-  
-  
+            <img
+              data-src="https://d-sketon.top/img/_backwebp/bg1.webp"
+              data-sizes="auto"
+              alt="SHA-256原理及代码实现"
+              class="lazyload"
+            />
+          
+        
+        <a href="/post/sha-256/"></a>
+        <div class="article-nav-caption">Newer</div>
+        <h3 class="article-nav-title">
+          
+            SHA-256原理及代码实现
+          
+        </h3>
+      </div>
     
-      
-        <span class="page-number current">1</span>
-      
+
     
+  </nav>
+
+
   
+</article>
+
+
+
+
+
+
   
-</nav>
+
+  
+
+  
+
+  
+
+  
+
+
 
 </section>
         </div>
@@ -1004,6 +795,25 @@
   <div class="sidebar-wrap">
     
       
+        <div class="sidebar-toc-sidebar">
+          <div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-算法">1. 算法</a></li>
+    <li><a href="#2-算法实现过程">2. 算法实现过程</a>
+      <ul>
+        <li><a href="#21-填充">2.1. 填充</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+        </div>
+        <div class="sidebar-common-sidebar hidden">
+          
 <div class="sidebar-author">
   <img
     data-src="/avatar/avatar.webp"
@@ -1102,8 +912,17 @@
   
 </div>
 
+        </div>
+      
     
   </div>
+  
+    
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
   
 </nav>
 
@@ -1267,9 +1086,9 @@
       <script data-pjax>
         window.REIMU_POST = {
           author: "D-Sketon",
-          title: "MD5",
-          url: "https:\/\/asu1tty.github.io\/tags\/md5\/",
-          description: "",
+          title: "SHA-512简介及代码实现",
+          url: "https:\/\/asu1tty.github.io\/post\/sha-512\/",
+          description: " 1. 算法 SHA-512在app逆向中遇到得很少，所以只作简单介绍 SHA-1可以生成一个被称为消息摘要的512位（64字节）散列值，散列值通常的呈现形式为128个十六进制数。与MD5，SHA1，SHA256不同的是，分组长度为1024位。表示消息长度为128位\n2. 算法实现过程 2.1. 填充 以字符串admin为例，十六进制如下\n61 64 6D 69 6E 首先需要填充到128字节，即先添加一个“1”，再后跟多个“0”，然后再追加一个128位的消息长度信息 第一位填充 0x80 剩下的填充 0 直到达到 112 个字节 填充K个“0”，所不同的是消息分组的长度是1024位，所以K的 …",
           cover: "https:\/\/asu1tty.github.io\/images\/banner.webp",
         };
       </script>
