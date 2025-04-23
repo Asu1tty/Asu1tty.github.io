@@ -6,7 +6,7 @@ tags:
   - MD5
   - Hash算法
 categories:
-  - Algorithm
+  - Crypto
 ---
 
 **MD5消息摘要算法**（英语：MD5 Message-Digest Algorithm），一种被广泛使用的[密码散列函数](https://zh.wikipedia.org/wiki/%E5%AF%86%E7%A2%BC%E9%9B%9C%E6%B9%8A%E5%87%BD%E6%95%B8 "密码散列函数")，可以产生出一个128位（16个[字节](https://zh.wikipedia.org/wiki/%E5%AD%97%E8%8A%82 "字节")）的[散列](https://zh.wikipedia.org/wiki/%E6%95%A3%E5%88%97 "散列")值（hash value），用于确保资讯传输完整一致。

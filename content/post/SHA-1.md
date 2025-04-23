@@ -5,6 +5,8 @@ title: 'SHA-1原理及代码实现'
 tags:
   - SHA-1
   - Hash算法
+categories:
+  - Crypto
 ---
 
 **SHA-1**（英語：Secure Hash Algorithm 1，中文名：安全散列算法1）是一种[密码散列函数](https://zh.wikipedia.org/wiki/%E5%AF%86%E7%A0%81%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0 "密码散列函数")，[美国国家安全局](https://zh.wikipedia.org/wiki/%E7%BE%8E%E5%9B%BD%E5%9B%BD%E5%AE%B6%E5%AE%89%E5%85%A8%E5%B1%80 "美国国家安全局")设计。SHA-1可以生成一个被称为消息摘要的160[位](https://zh.wikipedia.org/wiki/%E4%BD%8D "位")（20[字节](https://zh.wikipedia.org/wiki/%E5%AD%97%E8%8A%82 "字节")）散列值，散列值通常的呈现形式为40个[十六进制](https://zh.wikipedia.org/wiki/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6 "十六进制")数。
