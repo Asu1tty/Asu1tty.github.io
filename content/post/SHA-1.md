@@ -8,22 +8,21 @@ tags:
 ---
 
 **SHA-1**（英語：Secure Hash Algorithm 1，中文名：安全散列算法1）是一种[密码散列函数](https://zh.wikipedia.org/wiki/%E5%AF%86%E7%A0%81%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0 "密码散列函数")，[美国国家安全局](https://zh.wikipedia.org/wiki/%E7%BE%8E%E5%9B%BD%E5%9B%BD%E5%AE%B6%E5%AE%89%E5%85%A8%E5%B1%80 "美国国家安全局")设计。SHA-1可以生成一个被称为消息摘要的160[位](https://zh.wikipedia.org/wiki/%E4%BD%8D "位")（20[字节](https://zh.wikipedia.org/wiki/%E5%AD%97%E8%8A%82 "字节")）散列值，散列值通常的呈现形式为40个[十六进制](https://zh.wikipedia.org/wiki/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6 "十六进制")数。
-
 ## 1. 算法实现过程
 ### 1.1. 第一步：填充
 以字符串`admin`为例，十六进制如下
-```hex
+```plaintext
 61 64 6D 69 6E
 ```
 需要让它填充到64个字节长度
 
 第一位填充 0x80 剩下的填充 0 直到达到 56 个字节
-```hex
+```plaintext
 61 64 6D 69 6E 80 0(填充50次) 共 56 个字节
 ```
 接下来 8 个字节
 消息长度 * 8，也就是5 * 8 = 40 = 0x28
-```hex
+```plaintext
 61 64 6D 69 6E 80 0(填充50次) 0(填充7次) 0x28 共 64 个字节
 ```
 填充这块唯一和md5有区别的就是,最后的附加消息长度是大端续,也就是正常的顺序
@@ -43,7 +42,7 @@ for j in range(16, 80):
     w[j] = left_rotate(w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16], 1)
 ```
 以字符串admin为例，扩充如下
-```hex
+```plaintext
 0x61646D69 0x6E800000 0x00000000 0x00000000
 0x00000000 0x00000000 0x00000000 0x00000000
 0x00000000 0x00000000 0x00000000 0x00000000
@@ -66,7 +65,7 @@ for j in range(16, 80):
 0xF0C81B7D 0xC117A631 0x86DCEAB4 0xFECC24E3
 ```
 ### 1.3. 第三步：初始化常量
-```hex
+```plaintext
 h0 = 0x67452301
 h1 = 0xEFCDAB89
 h2 = 0x98BADCFE
@@ -108,7 +107,7 @@ k3 = 0xCA62C1D6 //60 <= i <= 79
 ```
 ### 1.5. 更新结果
 运算完成后，abcde获得了更新，然后相加赋值给ABCDE
-```hex
+```plaintext
 A = (A + a) & 0xFFFFFFFFL
 B = (B + b) & 0xFFFFFFFFL
 C = (C + c) & 0xFFFFFFFFL

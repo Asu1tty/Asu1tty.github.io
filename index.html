@@ -130,8 +130,8 @@
     content="/"
   />
   <meta property="article:author" content="D-Sketon" />
-  <meta property="article:published_time" content="2025-04-23T13:28:36&#43;08:00" />
-  <meta property="article:modified_time" content="2025-04-23T13:28:36&#43;08:00" />
+  <meta property="article:published_time" content="2025-04-23T17:14:50&#43;08:00" />
+  <meta property="article:modified_time" content="2025-04-23T17:14:50&#43;08:00" />
   
   
   <meta name="twitter:card" content="summary" />
@@ -401,17 +401,17 @@
   <div class="sidebar-state-article">
     <div>Posts</div>
     
-    <div class="sidebar-state-number">3</div>
+    <div class="sidebar-state-number">4</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
     <div class="sidebar-state-number">
-      1
+      2
     </div>
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">5</div>
+    <div class="sidebar-state-number">6</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -510,6 +510,15 @@
           
             
               <li class="category-list-item">
+                <a class="category-list-link" href="/categories/algorithm/"
+                  >Algorithm</a
+                >
+              </li>
+              
+            
+          
+            
+              <li class="category-list-item">
                 <a class="category-list-link" href="/categories/test/"
                   >Test</a
                 >
@@ -594,6 +603,19 @@
             <li class="tag-item">
                 <a
                   class="tag-link"
+                  href="/tags/sha-256/"
+                  aria-label="Tag: SHA-256"
+                >
+                  SHA-256
+                </a>
+              </li>
+              
+            
+          
+            
+            <li class="tag-item">
+                <a
+                  class="tag-link"
                   href="/tags/test/"
                   aria-label="Tag: Test"
                 >
@@ -669,6 +691,17 @@
           
           <a
             style="font-size:10px"
+            href="/tags/sha-256/"
+            aria-label="Tag: SHA-256"
+            >SHA-256</a
+          >
+          
+        
+      
+        
+          
+          <a
+            style="font-size:10px"
             href="/tags/test/"
             aria-label="Tag: Test"
             >Test</a
@@ -691,6 +724,10 @@
       <h3 class="widget-title">Recent Posts</h3>
       <div class="widget">
         <ul>
+          
+            <li>
+              <a href="/post/sha-256/">SHA-256原理及代码实现</a>
+            </li>
           
             <li>
               <a href="/post/sha-1/">SHA-1原理及代码实现</a>
@@ -736,6 +773,72 @@
     
       <a
         class="post-link"
+        href="/post/sha-256/"
+        aria-label="SHA-256原理及代码实现"
+      >
+      </a>
+    
+    
+    <div
+      class="
+        post-cover-left
+      "
+    >
+      
+        
+        
+          <img
+            data-src="https://d-sketon.top/img/_backwebp/bg1.webp"
+            data-sizes="auto"
+            alt="SHA-256原理及代码实现"
+            class="lazyload"
+          />
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span
+          ><span class="icon-calendar"></span
+          >2025-04-23</span
+        >
+        <span
+          ><span class="icon-pencil"></span
+          >1627 words</span
+        >
+        <span
+          ><span class="icon-clock"></span
+          >8 mins</span
+        >
+      </div>
+      <h2 class="post-title">SHA-256原理及代码实现</h2>
+      <article class="post-article">
+        
+          SHA256是SHA-2下细分出的一种算法 SHA-2，名称来自于安全散列算法2（英语：Secure Hash Algorithm 2）的缩写，一种密码散列函数算法标准，由美国国家安全局研发，属于SHA算法之一，是SHA-1的后继者。 SHA-2下又可再分为六个不同的算法标准 包括了：SHA-224、SHA-256、SHA-384、SHA-512、SHA-512/224、SHA-512/256。 SHA-1可以生成一个被称为消息摘要的256位（32字节）散列值，散列值通常的呈现形式为64个十六进制数。
+1. 算法实现过程 1.1. 第一步：填充 以字符串admin为例，十六进制如下
+61 64 …
+        
+      </article>
+    </div>
+  </div>
+</div>
+
+  
+    
+
+
+
+
+<div class="post-wrapper">
+  <div
+    class="
+      post-wrap-right
+    "
+    data-aos="fade-up"
+  >
+    
+      <a
+        class="post-link"
         href="/post/sha-1/"
         aria-label="SHA-1原理及代码实现"
       >
@@ -744,7 +847,7 @@
     
     <div
       class="
-        post-cover-left
+        post-cover-right
       "
     >
       
@@ -798,7 +901,7 @@
 <div class="post-wrapper">
   <div
     class="
-      post-wrap-right
+      post-wrap-left
     "
     data-aos="fade-up"
   >
@@ -813,7 +916,7 @@
     
     <div
       class="
-        post-cover-right
+        post-cover-left
       "
     >
       
@@ -847,7 +950,7 @@
       <article class="post-article">
         
           MD5消息摘要算法（英语：MD5 Message-Digest Algorithm），一种被广泛使用的密码散列函数，可以产生出一个128位（16个字节）的散列值（hash value），用于确保资讯传输完整一致。 将数据（如一段文字）运算变为另一固定长度值，是散列算法的基础原理。
-1. 算法 MD5是输入不定长度资讯，输出固定长度128-bits的算法。经过程序流程，生成四个32位数据，最后联合起来成为一个128-bits（16字节，通常消息传输中更常见表示为32 个十六进制字符）散列。
+1. 算法 MD5是输入不定长度，输出固定长度128-bits的算法。经过程序流程，生成四个32位数据，最后联合起来成为一个128-bits（16字节，通常消息传输中更常见表示为32 个十六进制字符）散列。
 2. 算法实现过程 2.1. 第一步：填充 MD5 的输入数据需要满足以下条件：
 数据长度（以位为单位） …
         
@@ -865,7 +968,7 @@
 <div class="post-wrapper">
   <div
     class="
-      post-wrap-left
+      post-wrap-right
     "
     data-aos="fade-up"
   >
@@ -880,7 +983,7 @@
     
     <div
       class="
-        post-cover-left
+        post-cover-right
       "
     >
       
@@ -963,6 +1066,9 @@
   
   
 
+  
+  
+
 
 
 <footer id="footer">
@@ -997,7 +1103,7 @@
       <div>
         <span class="icon-brush"
           >&nbsp;
-            5.7k
+            7.3k
           </span
         >
         &nbsp;|&nbsp;
@@ -1005,7 +1111,7 @@
           
           
 
-          00:29
+          00:37
         </span>
       </div>
     
@@ -1057,17 +1163,17 @@
   <div class="sidebar-state-article">
     <div>Posts</div>
     
-    <div class="sidebar-state-number">3</div>
+    <div class="sidebar-state-number">4</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
     <div class="sidebar-state-number">
-      1
+      2
     </div>
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">5</div>
+    <div class="sidebar-state-number">6</div>
   </div>
 </div>
 <div class="sidebar-social">

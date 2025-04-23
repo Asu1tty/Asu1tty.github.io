@@ -6,8 +6,15 @@
     <description>Recent content in Categories on My New Hugo Site</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 09 Jun 2022 20:12:52 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 23 Apr 2025 17:14:50 +0800</lastBuildDate>
     <atom:link href="https://asu1tty.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Algorithm</title>
+      <link>https://asu1tty.github.io/categories/algorithm/</link>
+      <pubDate>Wed, 23 Apr 2025 17:14:50 +0800</pubDate>
+      <guid>https://asu1tty.github.io/categories/algorithm/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Test</title>
       <link>https://asu1tty.github.io/categories/test/</link>

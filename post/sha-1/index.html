@@ -421,17 +421,17 @@
   <div class="sidebar-state-article">
     <div>Posts</div>
     
-    <div class="sidebar-state-number">3</div>
+    <div class="sidebar-state-number">4</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
     <div class="sidebar-state-number">
-      1
+      2
     </div>
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">5</div>
+    <div class="sidebar-state-number">6</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -570,13 +570,13 @@
 <a class="header-anchor" href="#11-%e7%ac%ac%e4%b8%80%e6%ad%a5%e5%a1%ab%e5%85%85"></a>
 1.1. 第一步：填充
 </h3><p>以字符串<code>admin</code>为例，十六进制如下</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">61 64 6D 69 6E
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E
 </span></span></code></pre></div><p>需要让它填充到64个字节长度</p>
 <p>第一位填充 0x80 剩下的填充 0 直到达到 56 个字节</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">61 64 6D 69 6E 80 0(填充50次) 共 56 个字节
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E 80 0(填充50次) 共 56 个字节
 </span></span></code></pre></div><p>接下来 8 个字节
 消息长度 * 8，也就是5 * 8 = 40 = 0x28</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">61 64 6D 69 6E 80 0(填充50次) 0(填充7次) 0x28 共 64 个字节
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E 80 0(填充50次) 0(填充7次) 0x28 共 64 个字节
 </span></span></code></pre></div><p>填充这块唯一和md5有区别的就是,最后的附加消息长度是大端续,也就是正常的顺序
 64字节的分组长度,md5,sha1,sha256都是, sha512是128字节分组。</p>
 <h3 id="12-第二步扩充">
@@ -592,7 +592,7 @@
 </span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">80</span><span class="p">):</span>
 </span></span><span class="line"><span class="cl">    <span class="n">w</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">left_rotate</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">3</span><span class="p">]</span> <span class="o">^</span> <span class="n">w</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">8</span><span class="p">]</span> <span class="o">^</span> <span class="n">w</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">14</span><span class="p">]</span> <span class="o">^</span> <span class="n">w</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">16</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
 </span></span></code></pre></div><p>以字符串admin为例，扩充如下</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">0x61646D69 0x6E800000 0x00000000 0x00000000
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">0x61646D69 0x6E800000 0x00000000 0x00000000
 </span></span><span class="line"><span class="cl">0x00000000 0x00000000 0x00000000 0x00000000
 </span></span><span class="line"><span class="cl">0x00000000 0x00000000 0x00000000 0x00000000
 </span></span><span class="line"><span class="cl">0x00000000 0x00000000 0x00000000 0x00000028
@@ -615,7 +615,7 @@
 </span></span></code></pre></div><h3 id="13-第三步初始化常量">
 <a class="header-anchor" href="#13-%e7%ac%ac%e4%b8%89%e6%ad%a5%e5%88%9d%e5%a7%8b%e5%8c%96%e5%b8%b8%e9%87%8f"></a>
 1.3. 第三步：初始化常量
-</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">h0 = 0x67452301
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">h0 = 0x67452301
 </span></span><span class="line"><span class="cl">h1 = 0xEFCDAB89
 </span></span><span class="line"><span class="cl">h2 = 0x98BADCFE
 </span></span><span class="line"><span class="cl">h3 = 0x10325476
@@ -654,7 +654,7 @@ a=A，b=B，c=C，d=D，e=E</p>
 <a class="header-anchor" href="#15-%e6%9b%b4%e6%96%b0%e7%bb%93%e6%9e%9c"></a>
 1.5. 更新结果
 </h3><p>运算完成后，abcde获得了更新，然后相加赋值给ABCDE</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">A = (A + a) &amp; 0xFFFFFFFFL
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">A = (A + a) &amp; 0xFFFFFFFFL
 </span></span><span class="line"><span class="cl">B = (B + b) &amp; 0xFFFFFFFFL
 </span></span><span class="line"><span class="cl">C = (C + c) &amp; 0xFFFFFFFFL
 </span></span><span class="line"><span class="cl">D = (D + d) &amp; 0xFFFFFFFFL
@@ -907,6 +907,27 @@ a=A，b=B，c=C，d=D，e=E</p>
     
 
     
+      <div class="article-nav-link-wrap article-nav-link-right">
+        
+          
+          
+            <img
+              data-src="https://d-sketon.top/img/_backwebp/bg1.webp"
+              data-sizes="auto"
+              alt="SHA-256原理及代码实现"
+              class="lazyload"
+            />
+          
+        
+        <a href="/post/sha-256/"></a>
+        <div class="article-nav-caption">Older</div>
+        <h3 class="article-nav-title">
+          
+            SHA-256原理及代码实现
+          
+        </h3>
+      </div>
+    
   </nav>
 
 
@@ -935,6 +956,9 @@ a=A，b=B，c=C，d=D，e=E</p>
         
 
 
+
+  
+  
 
   
   
@@ -979,7 +1003,7 @@ a=A，b=B，c=C，d=D，e=E</p>
       <div>
         <span class="icon-brush"
           >&nbsp;
-            5.7k
+            7.3k
           </span
         >
         &nbsp;|&nbsp;
@@ -987,7 +1011,7 @@ a=A，b=B，c=C，d=D，e=E</p>
           
           
 
-          00:29
+          00:37
         </span>
       </div>
     
@@ -1062,17 +1086,17 @@ a=A，b=B，c=C，d=D，e=E</p>
   <div class="sidebar-state-article">
     <div>Posts</div>
     
-    <div class="sidebar-state-number">3</div>
+    <div class="sidebar-state-number">4</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
     <div class="sidebar-state-number">
-      1
+      2
     </div>
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">5</div>
+    <div class="sidebar-state-number">6</div>
   </div>
 </div>
 <div class="sidebar-social">

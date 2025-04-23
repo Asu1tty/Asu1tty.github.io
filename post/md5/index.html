@@ -422,17 +422,17 @@
   <div class="sidebar-state-article">
     <div>Posts</div>
     
-    <div class="sidebar-state-number">3</div>
+    <div class="sidebar-state-number">4</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
     <div class="sidebar-state-number">
-      1
+      2
     </div>
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">5</div>
+    <div class="sidebar-state-number">6</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -555,6 +555,13 @@
 
       <div class="article-category">
   
+    <a
+      class="article-category-link"
+      href="/categories/algorithm"
+      data-aos="zoom-in"
+      >ALGORITHM</a
+    >
+  
 </div>
 
     </div>
@@ -568,7 +575,7 @@
 <h2 id="1-算法">
 <a class="header-anchor" href="#1-%e7%ae%97%e6%b3%95"></a>
 1. 算法
-</h2><p>MD5是输入不定长度资讯，输出固定长度128-bits的算法。经过程序流程，生成四个32位数据，最后联合起来成为一个128-bits（16字节，通常消息传输中更常见表示为32 个十六进制字符）<a href="https://zh.wikipedia.org/wiki/%E6%95%A3%E5%88%97" title="散列">散列</a>。</p>
+</h2><p>MD5是输入不定长度，输出固定长度128-bits的算法。经过程序流程，生成四个32位数据，最后联合起来成为一个128-bits（16字节，通常消息传输中更常见表示为32 个十六进制字符）<a href="https://zh.wikipedia.org/wiki/%E6%95%A3%E5%88%97" title="散列">散列</a>。</p>
 <h2 id="2-算法实现过程">
 <a class="header-anchor" href="#2-%e7%ae%97%e6%b3%95%e5%ae%9e%e7%8e%b0%e8%bf%87%e7%a8%8b"></a>
 2. 算法实现过程
@@ -581,13 +588,13 @@
 <li>填充后，数据长度必须是 512 位的倍数（即 64 字节的倍数）。</li>
 </ul>
 <p>以字符串<code>admin</code>为例，十六进制如下</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">61 64 6D 69 6E
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E
 </span></span></code></pre></div><p>首先需要填充到64字节
 第一位填充 0x80 剩下的填充 0 直到达到 56 个字节</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">61 64 6D 69 6E 80 0(填充50次) 共 56 个字节
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E 80 0(填充50次) 共 56 个字节
 </span></span></code></pre></div><p>接下来 8 个字节
 第一位填充消息长度 * 8，也就是5 * 8 = 40 = 0x28，（0x28 &amp; 0xFF）剩下的填充0</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">61 64 6D 69 6E 80 0(填充50次) 0x28 0(填充7次) 共 64 个字节
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E 80 0(填充50次) 0x28 0(填充7次) 共 64 个字节
 </span></span></code></pre></div><h4 id="211-当输入大小恰好为56字节时">
 <a class="header-anchor" href="#211-%e5%bd%93%e8%be%93%e5%85%a5%e5%a4%a7%e5%b0%8f%e6%81%b0%e5%a5%bd%e4%b8%ba56%e5%ad%97%e8%8a%82%e6%97%b6"></a>
 2.1.1. 当输入大小恰好为56字节时
@@ -608,7 +615,7 @@
 2.2. 第二步：分组
 </h3><p>还是以填充后的字符串<code>admin</code>为例
 需要把64字节分为16个小组，即一组4字节</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">M0: 61 64 6D 69
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">M0: 61 64 6D 69
 </span></span><span class="line"><span class="cl">M1: 6E 80 0 0
 </span></span><span class="line"><span class="cl">M2: 0 0 0 0
 </span></span><span class="line"><span class="cl">............
@@ -617,7 +624,7 @@
 </span></span></code></pre></div><h3 id="23-第三步初始化常量">
 <a class="header-anchor" href="#23-%e7%ac%ac%e4%b8%89%e6%ad%a5%e5%88%9d%e5%a7%8b%e5%8c%96%e5%b8%b8%e9%87%8f"></a>
 2.3. 第三步：初始化常量
-</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">A=0x67452301
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">A=0x67452301
 </span></span><span class="line"><span class="cl">B=0xefcdab89
 </span></span><span class="line"><span class="cl">C=0x98badcfe
 </span></span><span class="line"><span class="cl">D=0x10325476
@@ -721,13 +728,13 @@
 </span></span><span class="line"><span class="cl">    <span class="n">b0</span> <span class="o">=</span> <span class="p">(</span><span class="n">b0</span> <span class="o">+</span> <span class="n">B</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFFFFFF</span>
 </span></span><span class="line"><span class="cl">    <span class="n">c0</span> <span class="o">=</span> <span class="p">(</span><span class="n">c0</span> <span class="o">+</span> <span class="n">C</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFFFFFF</span>
 </span></span><span class="line"><span class="cl">    <span class="n">d0</span> <span class="o">=</span> <span class="p">(</span><span class="n">d0</span> <span class="o">+</span> <span class="n">D</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFFFFFF</span>
-</span></span></code></pre></div><p>下图为运算过程</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/MD5.png/330px-MD5.png" alt="img"></p>
+</span></span></code></pre></div><p>下图为运算过程
+<img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/330px-MD5.png" alt="img"></p>
 <h3 id="25-更新结果">
 <a class="header-anchor" href="#25-%e6%9b%b4%e6%96%b0%e7%bb%93%e6%9e%9c"></a>
 2.5. 更新结果
 </h3><p>经过64轮计算后得到A B C D与最开始的 a0 b0 c0 d0 也就是iv相加,得到 a b c d,最后再以小端续输出结果,这就是一个分组的md5了。
-当输入是两个分组时，第二个分组的初始IV为第一个分组得到的结果，也就是a b c d。</p>
+当输入是两个分组时，第二个分组的初始IV为第一个分组得到的结果，也就是a b c d。更通俗的讲，第二组使用第一组的MD5结果作为向量</p>
 <h2 id="3-代码实现">
 <a class="header-anchor" href="#3-%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0"></a>
 3. 代码实现
@@ -1271,6 +1278,9 @@
   
   
 
+  
+  
+
 
 
 <footer id="footer">
@@ -1305,7 +1315,7 @@
       <div>
         <span class="icon-brush"
           >&nbsp;
-            5.7k
+            7.3k
           </span
         >
         &nbsp;|&nbsp;
@@ -1313,7 +1323,7 @@
           
           
 
-          00:29
+          00:37
         </span>
       </div>
     
@@ -1389,17 +1399,17 @@
   <div class="sidebar-state-article">
     <div>Posts</div>
     
-    <div class="sidebar-state-number">3</div>
+    <div class="sidebar-state-number">4</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
     <div class="sidebar-state-number">
-      1
+      2
     </div>
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">5</div>
+    <div class="sidebar-state-number">6</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -1649,7 +1659,7 @@
           author: "D-Sketon",
           title: "MD5原理及代码实现",
           url: "https:\/\/asu1tty.github.io\/post\/md5\/",
-          description: "MD5消息摘要算法（英语：MD5 Message-Digest Algorithm），一种被广泛使用的密码散列函数，可以产生出一个128位（16个字节）的散列值（hash value），用于确保资讯传输完整一致。 将数据（如一段文字）运算变为另一固定长度值，是散列算法的基础原理。\n1. 算法 MD5是输入不定长度资讯，输出固定长度128-bits的算法。经过程序流程，生成四个32位数据，最后联合起来成为一个128-bits（16字节，通常消息传输中更常见表示为32 个十六进制字符）散列。\n2. 算法实现过程 2.1. 第一步：填充 MD5 的输入数据需要满足以下条件：\n数据长度（以位为单位） …",
+          description: "MD5消息摘要算法（英语：MD5 Message-Digest Algorithm），一种被广泛使用的密码散列函数，可以产生出一个128位（16个字节）的散列值（hash value），用于确保资讯传输完整一致。 将数据（如一段文字）运算变为另一固定长度值，是散列算法的基础原理。\n1. 算法 MD5是输入不定长度，输出固定长度128-bits的算法。经过程序流程，生成四个32位数据，最后联合起来成为一个128-bits（16字节，通常消息传输中更常见表示为32 个十六进制字符）散列。\n2. 算法实现过程 2.1. 第一步：填充 MD5 的输入数据需要满足以下条件：\n数据长度（以位为单位） …",
           cover: "https:\/\/asu1tty.github.io\/images\/banner.webp",
         };
       </script>

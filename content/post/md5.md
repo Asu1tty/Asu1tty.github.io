@@ -5,13 +5,15 @@ title: 'MD5原理及代码实现'
 tags:
   - MD5
   - Hash算法
+categories:
+  - Algorithm
 ---
 
 **MD5消息摘要算法**（英语：MD5 Message-Digest Algorithm），一种被广泛使用的[密码散列函数](https://zh.wikipedia.org/wiki/%E5%AF%86%E7%A2%BC%E9%9B%9C%E6%B9%8A%E5%87%BD%E6%95%B8 "密码散列函数")，可以产生出一个128位（16个[字节](https://zh.wikipedia.org/wiki/%E5%AD%97%E8%8A%82 "字节")）的[散列](https://zh.wikipedia.org/wiki/%E6%95%A3%E5%88%97 "散列")值（hash value），用于确保资讯传输完整一致。
 将[数据](https://zh.wikipedia.org/wiki/%E6%95%B0%E6%8D%AE "数据")（如一段文字）运算变为另一固定长度值，是散列算法的基础原理。
 
 ## 1. 算法
-MD5是输入不定长度资讯，输出固定长度128-bits的算法。经过程序流程，生成四个32位数据，最后联合起来成为一个128-bits（16字节，通常消息传输中更常见表示为32 个十六进制字符）[散列](https://zh.wikipedia.org/wiki/%E6%95%A3%E5%88%97 "散列")。
+MD5是输入不定长度，输出固定长度128-bits的算法。经过程序流程，生成四个32位数据，最后联合起来成为一个128-bits（16字节，通常消息传输中更常见表示为32 个十六进制字符）[散列](https://zh.wikipedia.org/wiki/%E6%95%A3%E5%88%97 "散列")。
 ## 2. 算法实现过程
 ### 2.1. 第一步：填充
 
@@ -21,17 +23,17 @@ MD5 的输入数据需要满足以下条件：
 -  填充后，数据长度必须是 512 位的倍数（即 64 字节的倍数）。
 
 以字符串`admin`为例，十六进制如下
-```hex
+```plaintext
 61 64 6D 69 6E
 ```
 首先需要填充到64字节
 第一位填充 0x80 剩下的填充 0 直到达到 56 个字节
-```hex
+```plaintext
 61 64 6D 69 6E 80 0(填充50次) 共 56 个字节
 ```
 接下来 8 个字节
 第一位填充消息长度 * 8，也就是5 * 8 = 40 = 0x28，（0x28 & 0xFF）剩下的填充0
-```hex
+```plaintext
 61 64 6D 69 6E 80 0(填充50次) 0x28 0(填充7次) 共 64 个字节
 ```
 
@@ -41,7 +43,6 @@ MD5 的输入数据需要满足以下条件：
 在数据末尾添加 0x80（二进制 10000000），占用 1 字节。
 当前长度：56 字节 + 1 字节 = 57 字节（456 位）。
 因此，填充到下一个 512 位块（128 字节 = 1024 位）
-
 - 目标长度（不含长度信息）：128 字节 - 8 字节 = 120 字节。
 - 当前长度：57 字节。
 - 需要填充：120 字节 - 57 字节 = 63 字节。
@@ -53,7 +54,7 @@ MD5 的输入数据需要满足以下条件：
 ### 2.2. 第二步：分组
 还是以填充后的字符串`admin`为例
 需要把64字节分为16个小组，即一组4字节
-```hex
+```plaintext
 M0: 61 64 6D 69
 M1: 6E 80 0 0
 M2: 0 0 0 0
@@ -62,7 +63,7 @@ M14: 40 0 0 0
 M15: 0 0 0 0
 ```
 ### 2.3. 第三步：初始化常量
-```hex
+```plaintext
 A=0x67452301
 B=0xefcdab89
 C=0x98badcfe
@@ -174,15 +175,13 @@ for chunk in chunks:
 ```
 
 下图为运算过程
-
-![img](https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/MD5.png/330px-MD5.png)
+![img](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/330px-MD5.png)
 
 ### 2.5. 更新结果
 经过64轮计算后得到A B C D与最开始的 a0 b0 c0 d0 也就是iv相加,得到 a b c d,最后再以小端续输出结果,这就是一个分组的md5了。
-当输入是两个分组时，第二个分组的初始IV为第一个分组得到的结果，也就是a b c d。
+当输入是两个分组时，第二个分组的初始IV为第一个分组得到的结果，也就是a b c d。更通俗的讲，第二组使用第一组的MD5结果作为向量
 
 ## 3. 代码实现
-
 python版本
 ```python
 import struct
@@ -322,10 +321,7 @@ def md5(message):
 print(md5('admin'.encode()))
 ```
 
-
-
 java版本
-
 ```java
 package com.md5;
 

@@ -1,0 +1,1588 @@
+<!doctype html>
+<html
+  lang="en" 
+  
+    data-theme-mode="auto"
+  
+>
+  <head>
+    
+    <meta charset="utf-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, shrink-to-fit=no"
+/>
+
+
+
+
+
+
+
+  
+
+<title>
+  SHA-256原理及代码实现 | D-Sketon
+</title>
+<meta
+  name="description"
+  content="少女祈祷中..."
+/>
+
+
+
+
+
+
+
+
+
+
+<script>
+  window.siteConfig = JSON.parse("{\"anchor_icon\":null,\"clipboard\":{\"copyright\":{\"content\":\"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！\",\"count\":50,\"enable\":false},\"fail\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"success\":\"复制成功(*^▽^*)\"},\"code_block\":{\"expand\":true},\"icon_font\":\"4552607_0khxww3tj3q9\",\"outdate\":{\"daysago\":180,\"enable\":false,\"message\":\"本文最后更新于 {time}，请注意文中内容可能已经发生变化。\"}}");
+</script>
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+  
+  
+    
+  
+
+  
+  
+  
+    
+  
+
+  
+    
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="preload"
+  as="style"
+  href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7cNoto%20Serif%20SC:400,400italic,700,700italic%7c&amp;display=swap"
+/>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7cNoto%20Serif%20SC:400,400italic,700,700italic%7c&amp;display=swap"
+  media="print"
+  onload="this.media='all'"
+/>
+
+
+
+
+
+
+
+  <link
+    rel="preload"
+    href="//at.alicdn.com/t/c/font_4552607_0khxww3tj3q9.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+
+
+  
+
+
+
+
+
+
+
+  
+ <link rel="stylesheet" href="/css/loader.min.de78b85a8ed3b39f875bfab20023f359ada6d633fc6a5730d66b52313ad697d7.css" />
+
+
+
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="SHA-256原理及代码实现 | D-Sketon" />
+  <meta
+    property="og:description"
+    content="少女祈祷中..."
+  />
+  <meta property="og:url" content="https://asu1tty.github.io/post/sha-256/" />
+  <meta
+    property="og:site_name"
+    content="My New Hugo Site"
+  />
+  <meta
+    property="og:image"
+    content="/"
+  />
+  <meta property="article:author" content="D-Sketon" />
+  <meta property="article:published_time" content="2025-04-23T17:14:50&#43;08:00" />
+  <meta property="article:modified_time" content="2025-04-23T17:14:50&#43;08:00" />
+  
+    <meta property="article:tag" content="SHA-256Hash算法" />
+  
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:image" content="/" />
+  
+  
+  
+  
+  
+
+
+
+
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+
+
+
+
+
+
+  
+ <link rel="stylesheet" href="/css/main.min.fdf430b78ef019a0ab61de9399fdd010af5a139616a95d9b43ae5372856b6702.css" />
+
+
+
+
+
+  <link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+
+
+
+
+
+
+  <link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/katex@0.16.9/dist/katex.min.css"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+
+
+
+
+
+
+
+
+  
+
+  
+  
+    
+  
+  
+  
+  
+  
+  
+  
+  <script
+    src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"
+    
+    
+    
+    
+    integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"
+  ></script>
+
+
+
+
+
+  
+
+
+  <link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.0/dist/aos.css" />
+
+
+
+
+
+    
+  </head>
+  <body>
+    
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+        
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+          M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+        
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        
+<div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <div class='main-nav-icon icon rotate'>
+          
+            
+              &#xe62b;
+            
+          
+        </div>
+        <a class="main-nav-link" href="/">Home</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class='main-nav-icon icon rotate'>
+          
+            
+              &#xe62b;
+            
+          
+        </div>
+        <a class="main-nav-link" href="/archives">Archives</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class='main-nav-icon icon rotate'>
+          
+            
+              &#xe62b;
+            
+          
+        </div>
+        <a class="main-nav-link" href="/about">About</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class='main-nav-icon icon rotate'>
+          
+            
+              &#xe62b;
+            
+          
+        </div>
+        <a class="main-nav-link" href="/friend">Friend</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      
+        <picture>
+          
+        </picture>
+        
+          <img  fetchpriority="high" src="/images/banner.webp" alt="SHA-256原理及代码实现">
+        
+      
+    
+  
+
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          
+        
+  
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">SHA-256原理及代码实现</h1>
+          </a>
+        
+      
+  
+      
+        
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+        <div id="content"
+          
+          class="sidebar-right"  >
+          <aside id="sidebar">
+  
+  
+  
+  <div class="sidebar-wrapper wrap-sticky">
+    <div
+      class="sidebar-wrap"
+      data-aos="fade-up"
+    >
+      
+        
+          <div class="sidebar-toc-sidebar">
+            <div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-算法实现过程">1. 算法实现过程</a>
+      <ul>
+        <li><a href="#11-第一步填充">1.1. 第一步：填充</a></li>
+        <li><a href="#12-第二步扩充">1.2. 第二步：扩充</a></li>
+        <li><a href="#13-第三步初始化常量">1.3. 第三步：初始化常量</a></li>
+        <li><a href="#14-第四步计算">1.4. 第四步：计算</a></li>
+        <li><a href="#15-更新结果">1.5. 更新结果</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-代码实现">2. 代码实现</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+          </div>
+          <div class="sidebar-common-sidebar hidden">
+            
+<div class="sidebar-author">
+  <img
+    data-src="/avatar/avatar.webp"
+    data-sizes="auto"
+    alt="D-Sketon"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">D-Sketon</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    
+    <div class="sidebar-state-number">4</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">
+      2
+    </div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">6</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="Home"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="Archives"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="About"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/friend"
+        aria-label="Friend"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+
+          </div>
+        
+      
+
+      
+        
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+        
+      
+    </div>
+  </div>
+
+  <div class="sidebar-widget">
+    
+  </div>
+  
+</aside>
+
+          <section id="main">
+  <article
+  class="h-entry article"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div
+    class="article-inner"
+    data-aos="fade-up"
+  >
+    <div class="article-meta">
+      <div class="article-date">
+  <span
+    class="article-date-link"
+    data-aos="zoom-in"
+  >
+    <time datetime="2025-04-23 17:14:50 &#43;0800 &#43;0800" itemprop="datePublished"
+      >2025-04-23</time
+    >
+    <time style="display: none;" id="post-update-time"
+      >2025-04-23</time
+    >
+  </span>
+</div>
+
+      <div class="article-category">
+  
+    <a
+      class="article-category-link"
+      href="/categories/algorithm"
+      data-aos="zoom-in"
+      >ALGORITHM</a
+    >
+  
+</div>
+
+    </div>
+    <div class="hr-line"></div>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <p><strong>SHA256</strong>是SHA-2下细分出的一种算法
+SHA-2，名称来自于安全散列算法2（英语：Secure Hash Algorithm 2）的缩写，一种密码散列函数算法标准，由美国国家安全局研发，属于SHA算法之一，是SHA-1的后继者。
+SHA-2下又可再分为六个不同的算法标准
+包括了：SHA-224、SHA-256、SHA-384、SHA-512、SHA-512/224、SHA-512/256。
+SHA-1可以生成一个被称为消息摘要的256<a href="https://zh.wikipedia.org/wiki/%E4%BD%8D" title="位">位</a>（32<a href="https://zh.wikipedia.org/wiki/%E5%AD%97%E8%8A%82" title="字节">字节</a>）散列值，散列值通常的呈现形式为64个<a href="https://zh.wikipedia.org/wiki/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6" title="十六进制">十六进制</a>数。</p>
+<h2 id="1-算法实现过程">
+<a class="header-anchor" href="#1-%e7%ae%97%e6%b3%95%e5%ae%9e%e7%8e%b0%e8%bf%87%e7%a8%8b"></a>
+1. 算法实现过程
+</h2><h3 id="11-第一步填充">
+<a class="header-anchor" href="#11-%e7%ac%ac%e4%b8%80%e6%ad%a5%e5%a1%ab%e5%85%85"></a>
+1.1. 第一步：填充
+</h3><p>以字符串<code>admin</code>为例，十六进制如下</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E
+</span></span></code></pre></div><p>首先需要填充到64字节
+第一位填充 0x80 剩下的填充 0 直到达到 56 个字节</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E 80 0(填充50次) 共 56 个字节
+</span></span></code></pre></div><p>接下来 8 个字节
+第一位填充消息长度 * 8，也就是5 * 8 = 40 = 0x28</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E 80 0(填充50次) 0(填充7次) 0x28 共 64 个字节
+</span></span></code></pre></div><p>sha-256和sha-1的填充一样,对比md5,sha-1,sha-256,填充几乎都一样,唯一不同之处就是md5的附加消息长度是小端序,其余两个是大端序。</p>
+<h3 id="12-第二步扩充">
+<a class="header-anchor" href="#12-%e7%ac%ac%e4%ba%8c%e6%ad%a5%e6%89%a9%e5%85%85"></a>
+1.2. 第二步：扩充
+</h3><ul>
+<li>需要将16个四字节扩充至64个四字节</li>
+<li>前16个四字节复制填充后的16个四字节</li>
+<li>后48个四字节使用扩充算法进行扩充</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sha256</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">64</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s0</span> <span class="o">=</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">15</span><span class="p">],</span> <span class="mi">7</span><span class="p">)</span> <span class="o">^</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">15</span><span class="p">],</span> <span class="mi">18</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">15</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s1</span> <span class="o">=</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="mi">17</span><span class="p">)</span> <span class="o">^</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="mi">19</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">16</span><span class="p">]</span> <span class="o">+</span> <span class="n">s0</span> <span class="o">+</span> <span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">7</span><span class="p">]</span> <span class="o">+</span> <span class="n">s1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
+</span></span><span class="line"><span class="cl"><span class="n">sha1</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">80</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">w</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">left_rotate</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">3</span><span class="p">]</span> <span class="o">^</span> <span class="n">w</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">8</span><span class="p">]</span> <span class="o">^</span> <span class="n">w</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">14</span><span class="p">]</span> <span class="o">^</span> <span class="n">w</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">16</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+</span></span></code></pre></div><p>和sha-1的区别在于sha-1扩展64轮,sha-256扩展48轮,还有就是扩展的方式不一样。</p>
+<h3 id="13-第三步初始化常量">
+<a class="header-anchor" href="#13-%e7%ac%ac%e4%b8%89%e6%ad%a5%e5%88%9d%e5%a7%8b%e5%8c%96%e5%b8%b8%e9%87%8f"></a>
+1.3. 第三步：初始化常量
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">A = 0x6a09e667
+</span></span><span class="line"><span class="cl">B = 0xbb67ae85
+</span></span><span class="line"><span class="cl">C = 0x3c6ef372
+</span></span><span class="line"><span class="cl">D = 0xa54ff53a
+</span></span><span class="line"><span class="cl">E = 0x510e527f
+</span></span><span class="line"><span class="cl">F = 0x9b05688c
+</span></span><span class="line"><span class="cl">G = 0x1f83d9ab
+</span></span><span class="line"><span class="cl">H = 0x5be0cd19
+</span></span></code></pre></div><h3 id="14-第四步计算">
+<a class="header-anchor" href="#14-%e7%ac%ac%e5%9b%9b%e6%ad%a5%e8%ae%a1%e7%ae%97"></a>
+1.4. 第四步：计算
+</h3><p>首先重新定义八个变量
+a=A，b=B，c=C，d=D，e=E，f=F，g=G，h=H
+共循环64次</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">hash_pieces</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">64</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">S1</span> <span class="o">=</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span> <span class="o">^</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span> <span class="o">^</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span> <span class="c1"># e</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ch</span> <span class="o">=</span> <span class="p">(</span><span class="n">e</span> <span class="o">&amp;</span> <span class="n">f</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="o">~</span><span class="n">e</span> <span class="o">&amp;</span> <span class="n">g</span><span class="p">)</span> <span class="c1"># e f g</span>
+</span></span><span class="line"><span class="cl">    <span class="n">temp1</span> <span class="o">=</span> <span class="p">(</span><span class="n">h</span> <span class="o">+</span> <span class="n">S1</span> <span class="o">+</span> <span class="n">ch</span> <span class="o">+</span> <span class="n">K</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span> <span class="c1"># h</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">S0</span> <span class="o">=</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">^</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span> <span class="o">^</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">22</span><span class="p">)</span> <span class="c1"># a</span>
+</span></span><span class="line"><span class="cl">    <span class="n">maj</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">a</span> <span class="o">&amp;</span> <span class="n">c</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">b</span> <span class="o">&amp;</span> <span class="n">c</span><span class="p">)</span> <span class="c1"># a b c</span>
+</span></span><span class="line"><span class="cl">    <span class="n">temp2</span> <span class="o">=</span> <span class="p">(</span><span class="n">S0</span> <span class="o">+</span> <span class="n">maj</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">h</span> <span class="o">=</span> <span class="n">g</span>
+</span></span><span class="line"><span class="cl">    <span class="n">g</span> <span class="o">=</span> <span class="n">f</span>
+</span></span><span class="line"><span class="cl">    <span class="n">f</span> <span class="o">=</span> <span class="n">e</span>
+</span></span><span class="line"><span class="cl">    <span class="n">e</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span> <span class="o">+</span> <span class="n">temp1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
+</span></span><span class="line"><span class="cl">    <span class="n">d</span> <span class="o">=</span> <span class="n">c</span>
+</span></span><span class="line"><span class="cl">    <span class="n">c</span> <span class="o">=</span> <span class="n">b</span>
+</span></span><span class="line"><span class="cl">    <span class="n">b</span> <span class="o">=</span> <span class="n">a</span>
+</span></span><span class="line"><span class="cl">    <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">temp1</span> <span class="o">+</span> <span class="n">temp2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
+</span></span><span class="line"><span class="cl"><span class="n">hash_pieces</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">hash_pieces</span><span class="p">,</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">])]</span>
+</span></span></code></pre></div><p>这里面大致可以分为3块</p>
+<p>第一块是生成temp1,第二块temp2,第三块赋值操作</p>
+<p>第一块的关键字眼就是S1 = right_rotate(e, 6) ^ right_rotate(e, 11) ^ right_rotate(e, 25),循环左移的位数 6 11 25.然后就是数据块和k值都出现在第一块的位置,第二块的关键位置是S0 = right_rotate(a, 2) ^ right_rotate(a, 13) ^ right_rotate(a, 22),循环左移的位数2 13 22</p>
+<p>最后第三块的赋值很有讲究,需要先把自己的值赋给一个后,才能重新对自己赋值</p>
+<p>其中K表为</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">428a2f98 71374491 b5c0fbcf e9b5dba5
+</span></span><span class="line"><span class="cl">3956c25b 59f111f1 923f82a4 ab1c5ed5
+</span></span><span class="line"><span class="cl">d807aa98 12835b01 243185be 550c7dc3
+</span></span><span class="line"><span class="cl">72be5d74 80deb1fe 9bdc06a7 c19bf174
+</span></span><span class="line"><span class="cl">e49b69c1 efbe4786 0fc19dc6 240ca1cc
+</span></span><span class="line"><span class="cl">2de92c6f 4a7484aa 5cb0a9dc 76f988da
+</span></span><span class="line"><span class="cl">983e5152 a831c66d b00327c8 bf597fc7
+</span></span><span class="line"><span class="cl">c6e00bf3 d5a79147 06ca6351 14292967
+</span></span><span class="line"><span class="cl">27b70a85 2e1b2138 4d2c6dfc 53380d13
+</span></span><span class="line"><span class="cl">650a7354 766a0abb 81c2c92e 92722c85
+</span></span><span class="line"><span class="cl">a2bfe8a1 a81a664b c24b8b70 c76c51a3
+</span></span><span class="line"><span class="cl">d192e819 d6990624 f40e3585 106aa070
+</span></span><span class="line"><span class="cl">19a4c116 1e376c08 2748774c 34b0bcb5
+</span></span><span class="line"><span class="cl">391c0cb3 4ed8aa4a 5b9cca4f 682e6ff3
+</span></span><span class="line"><span class="cl">748f82ee 78a5636f 84c87814 8cc70208
+</span></span><span class="line"><span class="cl">90befffa a4506ceb bef9a3f7 c67178f2
+</span></span></code></pre></div><p>每次加密循环图如下</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250423172047091.png" alt="image-20250423172047091"></p>
+<h3 id="15-更新结果">
+<a class="header-anchor" href="#15-%e6%9b%b4%e6%96%b0%e7%bb%93%e6%9e%9c"></a>
+1.5. 更新结果
+</h3><p>运算完成后，abcdefgh获得了更新，然后相加赋值给ABCDEFGH</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">A = (A + a) &amp; 0xFFFFFFFFL
+</span></span><span class="line"><span class="cl">B = (B + b) &amp; 0xFFFFFFFFL
+</span></span><span class="line"><span class="cl">C = (C + c) &amp; 0xFFFFFFFFL
+</span></span><span class="line"><span class="cl">D = (D + d) &amp; 0xFFFFFFFFL
+</span></span><span class="line"><span class="cl">E = (E + e) &amp; 0xFFFFFFFFL
+</span></span><span class="line"><span class="cl">F = (F + f) &amp; 0xFFFFFFFFL
+</span></span><span class="line"><span class="cl">G = (G + g) &amp; 0xFFFFFFFFL
+</span></span><span class="line"><span class="cl">H = (H + h) &amp; 0xFFFFFFFFL
+</span></span></code></pre></div><h2 id="2-代码实现">
+<a class="header-anchor" href="#2-%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0"></a>
+2. 代码实现
+</h2><p>Python</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">struct</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 常量</span>
+</span></span><span class="line"><span class="cl"><span class="n">K</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x428a2f98</span><span class="p">,</span> <span class="mh">0x71374491</span><span class="p">,</span> <span class="mh">0xb5c0fbcf</span><span class="p">,</span> <span class="mh">0xe9b5dba5</span><span class="p">,</span> <span class="mh">0x3956c25b</span><span class="p">,</span> <span class="mh">0x59f111f1</span><span class="p">,</span> <span class="mh">0x923f82a4</span><span class="p">,</span> <span class="mh">0xab1c5ed5</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0xd807aa98</span><span class="p">,</span> <span class="mh">0x12835b01</span><span class="p">,</span> <span class="mh">0x243185be</span><span class="p">,</span> <span class="mh">0x550c7dc3</span><span class="p">,</span> <span class="mh">0x72be5d74</span><span class="p">,</span> <span class="mh">0x80deb1fe</span><span class="p">,</span> <span class="mh">0x9bdc06a7</span><span class="p">,</span> <span class="mh">0xc19bf174</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0xe49b69c1</span><span class="p">,</span> <span class="mh">0xefbe4786</span><span class="p">,</span> <span class="mh">0x0fc19dc6</span><span class="p">,</span> <span class="mh">0x240ca1cc</span><span class="p">,</span> <span class="mh">0x2de92c6f</span><span class="p">,</span> <span class="mh">0x4a7484aa</span><span class="p">,</span> <span class="mh">0x5cb0a9dc</span><span class="p">,</span> <span class="mh">0x76f988da</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x983e5152</span><span class="p">,</span> <span class="mh">0xa831c66d</span><span class="p">,</span> <span class="mh">0xb00327c8</span><span class="p">,</span> <span class="mh">0xbf597fc7</span><span class="p">,</span> <span class="mh">0xc6e00bf3</span><span class="p">,</span> <span class="mh">0xd5a79147</span><span class="p">,</span> <span class="mh">0x06ca6351</span><span class="p">,</span> <span class="mh">0x14292967</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x27b70a85</span><span class="p">,</span> <span class="mh">0x2e1b2138</span><span class="p">,</span> <span class="mh">0x4d2c6dfc</span><span class="p">,</span> <span class="mh">0x53380d13</span><span class="p">,</span> <span class="mh">0x650a7354</span><span class="p">,</span> <span class="mh">0x766a0abb</span><span class="p">,</span> <span class="mh">0x81c2c92e</span><span class="p">,</span> <span class="mh">0x92722c85</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0xa2bfe8a1</span><span class="p">,</span> <span class="mh">0xa81a664b</span><span class="p">,</span> <span class="mh">0xc24b8b70</span><span class="p">,</span> <span class="mh">0xc76c51a3</span><span class="p">,</span> <span class="mh">0xd192e819</span><span class="p">,</span> <span class="mh">0xd6990624</span><span class="p">,</span> <span class="mh">0xf40e3585</span><span class="p">,</span> <span class="mh">0x106aa070</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x19a4c116</span><span class="p">,</span> <span class="mh">0x1e376c08</span><span class="p">,</span> <span class="mh">0x2748774c</span><span class="p">,</span> <span class="mh">0x34b0bcb5</span><span class="p">,</span> <span class="mh">0x391c0cb3</span><span class="p">,</span> <span class="mh">0x4ed8aa4a</span><span class="p">,</span> <span class="mh">0x5b9cca4f</span><span class="p">,</span> <span class="mh">0x682e6ff3</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x748f82ee</span><span class="p">,</span> <span class="mh">0x78a5636f</span><span class="p">,</span> <span class="mh">0x84c87814</span><span class="p">,</span> <span class="mh">0x8cc70208</span><span class="p">,</span> <span class="mh">0x90befffa</span><span class="p">,</span> <span class="mh">0xa4506ceb</span><span class="p">,</span> <span class="mh">0xbef9a3f7</span><span class="p">,</span> <span class="mh">0xc67178f2</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 初始哈希值</span>
+</span></span><span class="line"><span class="cl"><span class="n">H</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x6a09e667</span><span class="p">,</span> <span class="mh">0xbb67ae85</span><span class="p">,</span> <span class="mh">0x3c6ef372</span><span class="p">,</span> <span class="mh">0xa54ff53a</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x510e527f</span><span class="p">,</span> <span class="mh">0x9b05688c</span><span class="p">,</span> <span class="mh">0x1f83d9ab</span><span class="p">,</span> <span class="mh">0x5be0cd19</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">right_rotate</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">bits</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">((</span><span class="n">value</span> <span class="o">&gt;&gt;</span> <span class="n">bits</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="mi">32</span> <span class="o">-</span> <span class="n">bits</span><span class="p">)))</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">sha256</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 步骤 1: 填充消息</span>
+</span></span><span class="line"><span class="cl">    <span class="n">original_byte_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">original_bit_len</span> <span class="o">=</span> <span class="n">original_byte_len</span> <span class="o">*</span> <span class="mi">8</span>
+</span></span><span class="line"><span class="cl">    <span class="n">data</span> <span class="o">+=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x80</span><span class="s1">&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">data</span> <span class="o">+=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span> <span class="o">*</span> <span class="p">((</span><span class="mi">56</span> <span class="o">-</span> <span class="p">(</span><span class="n">original_byte_len</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">64</span><span class="p">)</span> <span class="o">%</span> <span class="mi">64</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">data</span> <span class="o">+=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s1">&#39;&gt;Q&#39;</span><span class="p">,</span> <span class="n">original_bit_len</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># 步骤 2: 解析消息为512-bit块</span>
+</span></span><span class="line"><span class="cl">    <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="mi">64</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">64</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># 步骤 3: 初始化工作变量</span>
+</span></span><span class="line"><span class="cl">    <span class="n">hash_pieces</span> <span class="o">=</span> <span class="n">H</span><span class="p">[:]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># 步骤 4: 处理每一个块</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">W</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s1">&#39;&gt;16L&#39;</span><span class="p">,</span> <span class="n">block</span><span class="p">))</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">48</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">64</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">s0</span> <span class="o">=</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">15</span><span class="p">],</span> <span class="mi">7</span><span class="p">)</span> <span class="o">^</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">15</span><span class="p">],</span> <span class="mi">18</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">15</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">s1</span> <span class="o">=</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="mi">17</span><span class="p">)</span> <span class="o">^</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="mi">19</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">16</span><span class="p">]</span> <span class="o">+</span> <span class="n">s0</span> <span class="o">+</span> <span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">7</span><span class="p">]</span> <span class="o">+</span> <span class="n">s1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">hash_pieces</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">64</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">S1</span> <span class="o">=</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span> <span class="o">^</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span> <span class="o">^</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span> <span class="c1"># e</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ch</span> <span class="o">=</span> <span class="p">(</span><span class="n">e</span> <span class="o">&amp;</span> <span class="n">f</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="o">~</span><span class="n">e</span> <span class="o">&amp;</span> <span class="n">g</span><span class="p">)</span> <span class="c1"># e f g</span>
+</span></span><span class="line"><span class="cl">            <span class="n">temp1</span> <span class="o">=</span> <span class="p">(</span><span class="n">h</span> <span class="o">+</span> <span class="n">S1</span> <span class="o">+</span> <span class="n">ch</span> <span class="o">+</span> <span class="n">K</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span> <span class="c1"># h</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">temp1</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">S0</span> <span class="o">=</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">^</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span> <span class="o">^</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">22</span><span class="p">)</span> <span class="c1"># a</span>
+</span></span><span class="line"><span class="cl">            <span class="n">maj</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">a</span> <span class="o">&amp;</span> <span class="n">c</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">b</span> <span class="o">&amp;</span> <span class="n">c</span><span class="p">)</span> <span class="c1"># a b c</span>
+</span></span><span class="line"><span class="cl">            <span class="n">temp2</span> <span class="o">=</span> <span class="p">(</span><span class="n">S0</span> <span class="o">+</span> <span class="n">maj</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">h</span> <span class="o">=</span> <span class="n">g</span>
+</span></span><span class="line"><span class="cl">            <span class="n">g</span> <span class="o">=</span> <span class="n">f</span>
+</span></span><span class="line"><span class="cl">            <span class="n">f</span> <span class="o">=</span> <span class="n">e</span>
+</span></span><span class="line"><span class="cl">            <span class="n">e</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span> <span class="o">+</span> <span class="n">temp1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
+</span></span><span class="line"><span class="cl">            <span class="n">d</span> <span class="o">=</span> <span class="n">c</span>
+</span></span><span class="line"><span class="cl">            <span class="n">c</span> <span class="o">=</span> <span class="n">b</span>
+</span></span><span class="line"><span class="cl">            <span class="n">b</span> <span class="o">=</span> <span class="n">a</span>
+</span></span><span class="line"><span class="cl">            <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">temp1</span> <span class="o">+</span> <span class="n">temp2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">hash_pieces</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">hash_pieces</span><span class="p">,</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">])]</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 步骤 5: 拼接哈希值</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">piece</span><span class="si">:</span><span class="s1">08x</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">piece</span> <span class="ow">in</span> <span class="n">hash_pieces</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">hash_value</span> <span class="o">=</span> <span class="n">sha256</span><span class="p">(</span><span class="s1">&#39;admin&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;SHA-256: </span><span class="si">{</span><span class="n">hash_value</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><p>Java</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">com.sha256</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.nio.ByteBuffer</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Offers a {@code hash(byte[])} method for hashing messages with SHA-256.
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">class</span> <span class="nc">SHA256Demo</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">bytesToHexString</span><span class="p">(</span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">bytes</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">StringBuilder</span><span class="w"> </span><span class="n">builder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringBuilder</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">byte</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">bytes</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">builder</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="n">String</span><span class="p">.</span><span class="na">format</span><span class="p">(</span><span class="s">&#34;%02X&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">builder</span><span class="p">.</span><span class="na">toString</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;admin&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">s</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;sha256: &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">bytesToHexString</span><span class="p">(</span><span class="n">Sha256</span><span class="p">.</span><span class="na">hash</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="na">getBytes</span><span class="p">())));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">class</span> <span class="nc">Sha256</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">K</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">0x428a2f98</span><span class="p">,</span><span class="w"> </span><span class="n">0x71374491</span><span class="p">,</span><span class="w"> </span><span class="n">0xb5c0fbcf</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">0xe9b5dba5</span><span class="p">,</span><span class="w"> </span><span class="n">0x3956c25b</span><span class="p">,</span><span class="w"> </span><span class="n">0x59f111f1</span><span class="p">,</span><span class="w"> </span><span class="n">0x923f82a4</span><span class="p">,</span><span class="w"> </span><span class="n">0xab1c5ed5</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">0xd807aa98</span><span class="p">,</span><span class="w"> </span><span class="n">0x12835b01</span><span class="p">,</span><span class="w"> </span><span class="n">0x243185be</span><span class="p">,</span><span class="w"> </span><span class="n">0x550c7dc3</span><span class="p">,</span><span class="w"> </span><span class="n">0x72be5d74</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">0x80deb1fe</span><span class="p">,</span><span class="w"> </span><span class="n">0x9bdc06a7</span><span class="p">,</span><span class="w"> </span><span class="n">0xc19bf174</span><span class="p">,</span><span class="w"> </span><span class="n">0xe49b69c1</span><span class="p">,</span><span class="w"> </span><span class="n">0xefbe4786</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">0x0fc19dc6</span><span class="p">,</span><span class="w"> </span><span class="n">0x240ca1cc</span><span class="p">,</span><span class="w"> </span><span class="n">0x2de92c6f</span><span class="p">,</span><span class="w"> </span><span class="n">0x4a7484aa</span><span class="p">,</span><span class="w"> </span><span class="n">0x5cb0a9dc</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">0x76f988da</span><span class="p">,</span><span class="w"> </span><span class="n">0x983e5152</span><span class="p">,</span><span class="w"> </span><span class="n">0xa831c66d</span><span class="p">,</span><span class="w"> </span><span class="n">0xb00327c8</span><span class="p">,</span><span class="w"> </span><span class="n">0xbf597fc7</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">0xc6e00bf3</span><span class="p">,</span><span class="w"> </span><span class="n">0xd5a79147</span><span class="p">,</span><span class="w"> </span><span class="n">0x06ca6351</span><span class="p">,</span><span class="w"> </span><span class="n">0x14292967</span><span class="p">,</span><span class="w"> </span><span class="n">0x27b70a85</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">0x2e1b2138</span><span class="p">,</span><span class="w"> </span><span class="n">0x4d2c6dfc</span><span class="p">,</span><span class="w"> </span><span class="n">0x53380d13</span><span class="p">,</span><span class="w"> </span><span class="n">0x650a7354</span><span class="p">,</span><span class="w"> </span><span class="n">0x766a0abb</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">0x81c2c92e</span><span class="p">,</span><span class="w"> </span><span class="n">0x92722c85</span><span class="p">,</span><span class="w"> </span><span class="n">0xa2bfe8a1</span><span class="p">,</span><span class="w"> </span><span class="n">0xa81a664b</span><span class="p">,</span><span class="w"> </span><span class="n">0xc24b8b70</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">0xc76c51a3</span><span class="p">,</span><span class="w"> </span><span class="n">0xd192e819</span><span class="p">,</span><span class="w"> </span><span class="n">0xd6990624</span><span class="p">,</span><span class="w"> </span><span class="n">0xf40e3585</span><span class="p">,</span><span class="w"> </span><span class="n">0x106aa070</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">0x19a4c116</span><span class="p">,</span><span class="w"> </span><span class="n">0x1e376c08</span><span class="p">,</span><span class="w"> </span><span class="n">0x2748774c</span><span class="p">,</span><span class="w"> </span><span class="n">0x34b0bcb5</span><span class="p">,</span><span class="w"> </span><span class="n">0x391c0cb3</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">0x4ed8aa4a</span><span class="p">,</span><span class="w"> </span><span class="n">0x5b9cca4f</span><span class="p">,</span><span class="w"> </span><span class="n">0x682e6ff3</span><span class="p">,</span><span class="w"> </span><span class="n">0x748f82ee</span><span class="p">,</span><span class="w"> </span><span class="n">0x78a5636f</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">0x84c87814</span><span class="p">,</span><span class="w"> </span><span class="n">0x8cc70208</span><span class="p">,</span><span class="w"> </span><span class="n">0x90befffa</span><span class="p">,</span><span class="w"> </span><span class="n">0xa4506ceb</span><span class="p">,</span><span class="w"> </span><span class="n">0xbef9a3f7</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">0xc67178f2</span><span class="p">};</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">H0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">0x6a09e667</span><span class="p">,</span><span class="w"> </span><span class="n">0xbb67ae85</span><span class="p">,</span><span class="w"> </span><span class="n">0x3c6ef372</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">0xa54ff53a</span><span class="p">,</span><span class="w"> </span><span class="n">0x510e527f</span><span class="p">,</span><span class="w"> </span><span class="n">0x9b05688c</span><span class="p">,</span><span class="w"> </span><span class="n">0x1f83d9ab</span><span class="p">,</span><span class="w"> </span><span class="n">0x5be0cd19</span><span class="p">};</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// working arrays</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="o">[</span><span class="n">64</span><span class="o">]</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">H</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="o">[</span><span class="n">8</span><span class="o">]</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">TEMP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="o">[</span><span class="n">8</span><span class="o">]</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * Hashes the given message with SHA-256 and returns the hash.
+</span></span></span><span class="line"><span class="cl"><span class="cm">     *
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @param message The bytes to hash.
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @return The hash&#39;s bytes.
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="nf">hash</span><span class="p">(</span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// let H = H0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">arraycopy</span><span class="p">(</span><span class="n">H0</span><span class="p">,</span><span class="w"> </span><span class="n">0</span><span class="p">,</span><span class="w"> </span><span class="n">H</span><span class="p">,</span><span class="w"> </span><span class="n">0</span><span class="p">,</span><span class="w"> </span><span class="n">H0</span><span class="p">.</span><span class="na">length</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// initialize all words</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">words</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">toIntArray</span><span class="p">(</span><span class="n">pad</span><span class="p">(</span><span class="n">message</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// enumerate all blocks (each containing 16 words)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">0</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">words</span><span class="p">.</span><span class="na">length</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">16</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">// initialize W from the block&#39;s words</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">arraycopy</span><span class="p">(</span><span class="n">words</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">16</span><span class="p">,</span><span class="w"> </span><span class="n">W</span><span class="p">,</span><span class="w"> </span><span class="n">0</span><span class="p">,</span><span class="w"> </span><span class="n">16</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">16</span><span class="p">;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">W</span><span class="p">.</span><span class="na">length</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">W</span><span class="o">[</span><span class="n">t</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">smallSig1</span><span class="p">(</span><span class="n">W</span><span class="o">[</span><span class="n">t</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">2</span><span class="o">]</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">W</span><span class="o">[</span><span class="n">t</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">7</span><span class="o">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">smallSig0</span><span class="p">(</span><span class="n">W</span><span class="o">[</span><span class="n">t</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">15</span><span class="o">]</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="n">W</span><span class="o">[</span><span class="n">t</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">16</span><span class="o">]</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">// let TEMP = H</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">arraycopy</span><span class="p">(</span><span class="n">H</span><span class="p">,</span><span class="w"> </span><span class="n">0</span><span class="p">,</span><span class="w"> </span><span class="n">TEMP</span><span class="p">,</span><span class="w"> </span><span class="n">0</span><span class="p">,</span><span class="w"> </span><span class="n">H</span><span class="p">.</span><span class="na">length</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">// operate on TEMP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">0</span><span class="p">;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">W</span><span class="p">.</span><span class="na">length</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">t1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TEMP</span><span class="o">[</span><span class="n">7</span><span class="o">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">bigSig1</span><span class="p">(</span><span class="n">TEMP</span><span class="o">[</span><span class="n">4</span><span class="o">]</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ch</span><span class="p">(</span><span class="n">TEMP</span><span class="o">[</span><span class="n">4</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">TEMP</span><span class="o">[</span><span class="n">5</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">TEMP</span><span class="o">[</span><span class="n">6</span><span class="o">]</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">K</span><span class="o">[</span><span class="n">t</span><span class="o">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">W</span><span class="o">[</span><span class="n">t</span><span class="o">]</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">t2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bigSig0</span><span class="p">(</span><span class="n">TEMP</span><span class="o">[</span><span class="n">0</span><span class="o">]</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">maj</span><span class="p">(</span><span class="n">TEMP</span><span class="o">[</span><span class="n">0</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">TEMP</span><span class="o">[</span><span class="n">1</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">TEMP</span><span class="o">[</span><span class="n">2</span><span class="o">]</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">System</span><span class="p">.</span><span class="na">arraycopy</span><span class="p">(</span><span class="n">TEMP</span><span class="p">,</span><span class="w"> </span><span class="n">0</span><span class="p">,</span><span class="w"> </span><span class="n">TEMP</span><span class="p">,</span><span class="w"> </span><span class="n">1</span><span class="p">,</span><span class="w"> </span><span class="n">TEMP</span><span class="p">.</span><span class="na">length</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">TEMP</span><span class="o">[</span><span class="n">4</span><span class="o">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">t1</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">TEMP</span><span class="o">[</span><span class="n">0</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">t2</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">// add values in TEMP to values in H</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">0</span><span class="p">;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">H</span><span class="p">.</span><span class="na">length</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">H</span><span class="o">[</span><span class="n">t</span><span class="o">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">TEMP</span><span class="o">[</span><span class="n">t</span><span class="o">]</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">toByteArray</span><span class="p">(</span><span class="n">H</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * Internal method, no need to call. Pads the given message to have a length
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * that is a multiple of 512 bits (64 bytes), including the addition of a
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 1-bit, k 0-bits, and the message length as a 64-bit integer.
+</span></span></span><span class="line"><span class="cl"><span class="cm">     *
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @param message The message to pad.
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @return A new array with the padded message bytes.
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="nf">pad</span><span class="p">(</span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">final</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">blockBits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">512</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">final</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">blockBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blockBits</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">8</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// new message length: original + 1-bit and padding + 8-byte length</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">newMessageLength</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">message</span><span class="p">.</span><span class="na">length</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">8</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">padBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blockBytes</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">newMessageLength</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">blockBytes</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">newMessageLength</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">padBytes</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// copy message to extended array</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">final</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">paddedMessage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="n">newMessageLength</span><span class="o">]</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">arraycopy</span><span class="p">(</span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">0</span><span class="p">,</span><span class="w"> </span><span class="n">paddedMessage</span><span class="p">,</span><span class="w"> </span><span class="n">0</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">.</span><span class="na">length</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// write 1-bit</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">paddedMessage</span><span class="o">[</span><span class="n">message</span><span class="p">.</span><span class="na">length</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">byte</span><span class="p">)</span><span class="w"> </span><span class="n">0b10000000</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// skip padBytes many bytes (they are already 0)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// write 8-byte integer describing the original message length</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">lenPos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">message</span><span class="p">.</span><span class="na">length</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">padBytes</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ByteBuffer</span><span class="p">.</span><span class="na">wrap</span><span class="p">(</span><span class="n">paddedMessage</span><span class="p">,</span><span class="w"> </span><span class="n">lenPos</span><span class="p">,</span><span class="w"> </span><span class="n">8</span><span class="p">).</span><span class="na">putLong</span><span class="p">(</span><span class="n">message</span><span class="p">.</span><span class="na">length</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">8</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">paddedMessage</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * Converts the given byte array into an int array via big-endian conversion
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * (4 bytes become 1 int).
+</span></span></span><span class="line"><span class="cl"><span class="cm">     *
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @param bytes The source array.
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @return The converted array.
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="nf">toIntArray</span><span class="p">(</span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">bytes</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bytes</span><span class="p">.</span><span class="na">length</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">BYTES</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IllegalArgumentException</span><span class="p">(</span><span class="s">&#34;byte array length&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ByteBuffer</span><span class="w"> </span><span class="n">buf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ByteBuffer</span><span class="p">.</span><span class="na">wrap</span><span class="p">(</span><span class="n">bytes</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="o">[</span><span class="n">bytes</span><span class="p">.</span><span class="na">length</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">BYTES</span><span class="o">]</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="na">length</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">result</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buf</span><span class="p">.</span><span class="na">getInt</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * Converts the given int array into a byte array via big-endian conversion
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * (1 int becomes 4 bytes).
+</span></span></span><span class="line"><span class="cl"><span class="cm">     *
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @param ints The source array.
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @return The converted array.
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="nf">toByteArray</span><span class="p">(</span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">ints</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ByteBuffer</span><span class="w"> </span><span class="n">buf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ByteBuffer</span><span class="p">.</span><span class="na">allocate</span><span class="p">(</span><span class="n">ints</span><span class="p">.</span><span class="na">length</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">BYTES</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">ints</span><span class="p">.</span><span class="na">length</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">buf</span><span class="p">.</span><span class="na">putInt</span><span class="p">(</span><span class="n">ints</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">buf</span><span class="p">.</span><span class="na">array</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">ch</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">z</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">((</span><span class="o">~</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">z</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">maj</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">z</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">z</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">z</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">bigSig0</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">rotateRight</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">2</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">rotateRight</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">13</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="o">^</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">rotateRight</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">22</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">bigSig1</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">rotateRight</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">6</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">rotateRight</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">11</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="o">^</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">rotateRight</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">25</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">smallSig0</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">rotateRight</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">7</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">rotateRight</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">18</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="o">^</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;&gt;&gt;</span><span class="w"> </span><span class="n">3</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">smallSig1</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">rotateRight</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">17</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">rotateRight</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">19</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="o">^</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;&gt;&gt;</span><span class="w"> </span><span class="n">10</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div>
+      
+    </div>
+    <footer class="article-footer">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+      <ul class="article-tag-list" itemprop="keywords">
+  
+    <li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/sha-256"
+        rel="tag"
+        >SHA-256</a
+      >
+    </li>
+  
+    <li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/hash%e7%ae%97%e6%b3%95"
+        rel="tag"
+        >HASH算法</a
+      >
+    </li>
+  
+</ul>
+
+    </footer>
+  </div>
+  
+    
+  <nav
+    id="article-nav"
+    data-aos="fade-up"
+  >
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img
+              data-src="https://d-sketon.top/img/_backwebp/bg1.webp"
+              data-sizes="auto"
+              alt="SHA-1原理及代码实现"
+              class="lazyload"
+            />
+          
+        
+        <a href="/post/sha-1/"></a>
+        <div class="article-nav-caption">Newer</div>
+        <h3 class="article-nav-title">
+          
+            SHA-1原理及代码实现
+          
+        </h3>
+      </div>
+    
+
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+</section>
+        </div>
+        
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+
+<footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      
+        2020 -
+        2025
+      
+      <span class="footer-info-sep rotate"></span>
+      D-Sketon
+    </div>
+    
+      <div>
+        Powered by&nbsp;<a
+          href="https://gohugo.io/"
+          target="_blank"
+          >Hugo</a
+        >&nbsp; Theme.<a
+          href="https://github.com/D-Sketon/hugo-theme-reimu"
+          target="_blank"
+          >Reimu</a
+        >
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"
+          >&nbsp;
+            7.3k
+          </span
+        >
+        &nbsp;|&nbsp;
+        <span class="icon-coffee">&nbsp;
+          
+          
+
+          00:37
+        </span>
+      </div>
+    
+    
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv"
+          >Number of visits&nbsp;<span
+            id="busuanzi_value_site_pv"
+          ></span
+        ></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv"
+          >Number of visitors&nbsp;<span
+            id="busuanzi_value_site_uv"
+          ></span
+        ></span>
+      </div>
+    
+  </div>
+</footer>
+
+        
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      
+        <div class="sidebar-toc-sidebar">
+          <div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-算法实现过程">1. 算法实现过程</a>
+      <ul>
+        <li><a href="#11-第一步填充">1.1. 第一步：填充</a></li>
+        <li><a href="#12-第二步扩充">1.2. 第二步：扩充</a></li>
+        <li><a href="#13-第三步初始化常量">1.3. 第三步：初始化常量</a></li>
+        <li><a href="#14-第四步计算">1.4. 第四步：计算</a></li>
+        <li><a href="#15-更新结果">1.5. 更新结果</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-代码实现">2. 代码实现</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+        </div>
+        <div class="sidebar-common-sidebar hidden">
+          
+<div class="sidebar-author">
+  <img
+    data-src="/avatar/avatar.webp"
+    data-sizes="auto"
+    alt="D-Sketon"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">D-Sketon</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    
+    <div class="sidebar-state-number">4</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">
+      2
+    </div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">6</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="Home"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="Archives"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="About"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/friend"
+        aria-label="Friend"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+
+        </div>
+      
+    
+  </div>
+  
+    
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  
+</nav>
+
+    </div>
+    
+    
+    
+    
+
+
+
+
+
+
+  
+  
+    
+  
+  
+  
+  
+  
+  
+  
+  <script
+    src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"
+    
+    
+    
+    
+    integrity="sha384-3gT/vsepWkfz/ff7PpWNUeMzeWoH3cDhm/A8jM7ouoAK0/fP/9bcHHR5kHq2nf&#43;e" crossorigin="anonymous"
+  ></script>
+
+
+
+
+  
+  
+    
+  
+  
+  
+  
+  
+  
+  
+  <script
+    src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"
+    
+    
+    
+    
+    integrity="sha384-J08i8An/QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"
+  ></script>
+
+
+
+
+
+
+
+
+
+
+
+  
+      
+      <script src="/js/main.js" integrity="" crossorigin="anonymous" ></script>
+      
+
+
+
+  
+
+
+
+
+
+  
+      
+      <script src="/js/aos.js" integrity="" crossorigin="anonymous" ></script>
+      
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+
+
+
+
+
+  
+      
+      <script src="/js/pjax_main.js" integrity="" crossorigin="anonymous" data-pjax></script>
+      
+
+
+
+
+
+  
+
+  
+  
+    
+  
+  
+  
+  
+  
+  
+  
+  <script
+    src="https://npm.webcache.cn/mouse-firework@0.1.1/dist/index.umd.js"
+    
+    
+    
+    
+    integrity="sha384-8LyaidD9GPxQQgLJO/WRw/O2h3BoNq/ApI/ecpvM6RsrCz2qP2ppBXUKihP4V/2d" crossorigin="anonymous"
+  ></script>
+
+
+<script>
+  if (window.firework) {
+    const options = JSON.parse("{\"excludeelements\":[\"a\",\"button\"],\"particles\":[{\"colors\":[\"var(--red-1)\",\"var(--red-2)\",\"var(--red-3)\",\"var(--red-4)\"],\"duration\":[1200,1800],\"easing\":\"easeOutExpo\",\"move\":[\"emit\"],\"number\":20,\"shape\":\"circle\",\"shapeOptions\":{\"alpha\":[0.3,0.5],\"radius\":[16,32]}},{\"colors\":[\"var(--red-0)\"],\"duration\":[1200,1800],\"easing\":\"easeOutExpo\",\"move\":[\"diffuse\"],\"number\":1,\"shape\":\"circle\",\"shapeOptions\":{\"alpha\":[0.2,0.5],\"lineWidth\":6,\"radius\":20}}]}");
+    options.excludeElements = options.excludeelements;
+    delete options.excludeelements;
+    window.firework(options);
+  }
+</script>
+
+
+
+
+
+
+
+
+<div id="lazy-script">
+  <div>
+    
+      
+      
+        
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "D-Sketon",
+          title: "SHA-256原理及代码实现",
+          url: "https:\/\/asu1tty.github.io\/post\/sha-256\/",
+          description: "SHA256是SHA-2下细分出的一种算法 SHA-2，名称来自于安全散列算法2（英语：Secure Hash Algorithm 2）的缩写，一种密码散列函数算法标准，由美国国家安全局研发，属于SHA算法之一，是SHA-1的后继者。 SHA-2下又可再分为六个不同的算法标准 包括了：SHA-224、SHA-256、SHA-384、SHA-512、SHA-512\/224、SHA-512\/256。 SHA-1可以生成一个被称为消息摘要的256位（32字节）散列值，散列值通常的呈现形式为64个十六进制数。\n1. 算法实现过程 1.1. 第一步：填充 以字符串admin为例，十六进制如下\n61 64 …",
+          cover: "https:\/\/asu1tty.github.io\/images\/banner.webp",
+        };
+      </script>
+    
+    
+    
+      
+
+
+
+
+
+  
+      
+      <script src="/js/insert_highlight.js" integrity="" crossorigin="anonymous" data-pjax></script>
+      
+
+      
+      
+      
+      
+      <script type="module" data-pjax>
+        
+        const PhotoSwipeLightbox = (await safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js", "sha384-DiL6M\/gG\u002bwmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF\/N6lrZi\/")).default;
+        
+        const pswp = () => {
+          if (_$$('.article-entry a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-entry',
+              children: 'a.article-gallery-item',
+              
+              pswpModule: () => safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8\u002boTJ7m3DfYEWX1fu1scuS4\u002bs")
+              
+            }).init();
+          }
+          if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-gallery',
+              children: 'a.article-gallery-item',
+              
+              pswpModule: () => safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8\u002boTJ7m3DfYEWX1fu1scuS4\u002bs")
+              
+            }).init();
+          }
+          window.lightboxStatus = 'done';
+          window.removeEventListener('lightbox:ready', pswp);
+        }
+        if(window.lightboxStatus === 'ready') {
+          pswp()
+        } else {
+          window.addEventListener('lightbox:ready', pswp);
+        }
+      </script>
+      
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+      
+    
+    
+  </div>
+</div>
+
+
+
+
+  
+
+  
+  
+    
+  
+  
+  
+  
+  
+  
+  
+  <script
+    src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js"
+    
+    async
+    
+    
+    integrity="sha384-0M75wtSkhjIInv4coYlaJU83&#43;OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id&#43;S" crossorigin="anonymous"
+  ></script>
+
+
+
+
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
+  </script>
+
+
+<script>
+  const reimuCopyright = String.raw`
+   ______     ______     __     __    __     __  __    
+  /\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+  \ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+   \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+    \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                    
+  `;
+  console.log(String.raw`%c ${reimuCopyright}`, "color: #ff5252;");
+  console.log(
+    "%c Theme.Reimu" + " %c https://github.com/D-Sketon/hugo-theme-reimu ",
+    "color: white; background: #ff5252; padding:5px 0;",
+    "padding:4px;border:1px solid #ff5252;",
+  );
+</script>
+
+
+
+
+
+
+    
+  </body>
+</html>
