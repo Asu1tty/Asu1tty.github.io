@@ -1,0 +1,10 @@
+{{ define "main" }}
+  <div
+    class="archives-outer-wrap"
+    data-aos="{{ .Site.Params.animation.options.archive.whole }}"
+  >
+    {{ partialCached "archives.html" . }}
+    {{ .Render "list" }}
+  </div>
+  {{ partial "pagination.html" . }}
+{{ end }}

@@ -1,7 +1,0 @@
-<!-- layouts/shortcodes/details.html -->
-<div class="highlight-wrapper">
-    <details>
-        <summary>{{ .Get "filename" | default "Code" }}</summary>
-        {{ highlight (trim .Inner "\n\r") (.Get "language") (.Get "options" | default "") }}
-    </details>
-</div>
