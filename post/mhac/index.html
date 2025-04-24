@@ -573,16 +573,16 @@ HMAC算法利用哈希运算，以一个密钥和一个消息为输入，生成�
 hmac算法通常需要以一个hash函数为载体,比如常见的有hmacMd5,hmacSha1,hmacSha256,目前在so里只见到过hmacMd5,hmacSha256,但是hmac的规则是适用所有hash函数的</p>
 <p>HMAC算法的数学公式为：
 <img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/fb67423fa152e335f482c2a885c9f2bbed812e81" alt="{\displaystyle {\textit {HMAC}}(K,m)=H{\Bigl (}(K’\oplus opad)\;||\;H{\bigl (}(K’\oplus ipad)\;||\;m{\bigr )}{\Bigr )}}">
-其中：
-<strong>H</strong> 为密码Hash函数（如MD5或SHA-2），能够对明文进行分组循环压缩；
-<strong>k</strong> 为密钥（secret key）；
-<strong>m</strong> 为要认证的消息；
-<strong>k’</strong> 是从原始密钥 k 导出的另一个密钥（如果 k 短于散列函数的输入块大小，则向右填充零；如果比该块大小更长，则对 k 进行散列）
-<strong>ipad</strong> 内部填充（0x5C5C5C…5C5C，一段十六进制常量）；
-<strong>opad</strong> 外部填充（0x363636…3636，一段十六进制常量）；
-<strong>⊕</strong>：按位异或运算。
-<strong>||</strong>：字符串拼接。</p>
-<p>总结8个字就是 <strong>两次加盐,两次hash</strong>。</p>
+其中：</p>
+<p><strong>H</strong> 为密码Hash函数（如MD5或SHA-2)，能够对明文进行分组循环压缩；</p>
+<p><strong>K</strong> 为密钥（secret key）；</p>
+<p><strong>m</strong> 为要认证的消息；</p>
+<p><strong>K’</strong> 是从原始密钥 k 导出的另一个密钥（如果 k 短于散列函数的输入块大小，则向右填充零；如果比该块大小更长，则对 k 进行散列）；</p>
+<p><strong>ipad</strong> 内部填充（0x5C5C5C…5C5C，一段十六进制常量）；</p>
+<p><strong>opad</strong> 外部填充（0x363636…3636，一段十六进制常量)；</p>
+<p><strong>⊕</strong>：按位异或运算。</p>
+<p><strong>||</strong>：字符串拼接。</p>
+<p>总结8个字就是:<strong>两次加盐,两次hash</strong>。</p>
 <h2 id="1-算法实现过程">
 <a class="header-anchor" href="#1-%e7%ae%97%e6%b3%95%e5%ae%9e%e7%8e%b0%e8%bf%87%e7%a8%8b"></a>
 1. 算法实现过程
@@ -1148,7 +1148,7 @@ hmac算法通常需要以一个hash函数为载体,比如常见的有hmacMd5,hma
           author: "D-Sketon",
           title: "HMAC原理及代码实现",
           url: "https:\/\/asu1tty.github.io\/post\/mhac\/",
-          description: "HMAC（Hash-based Message Authentication Code，散列消息认证码）是一种使用密码散列函数，同时结合一个加密密钥，通过特别计算方式之后产生的消息认证码（MAC）。 HMAC算法利用哈希运算，以一个密钥和一个消息为输入，生成一个消息摘要作为输出。 hmac算法通常需要以一个hash函数为载体,比如常见的有hmacMd5,hmacSha1,hmacSha256,目前在so里只见到过hmacMd5,hmacSha256,但是hmac的规则是适用所有hash函数的\nHMAC算法的数学公式为： 其中： H 为密码Hash函数（如MD5或SHA-2），能够对明文进行分组 …",
+          description: "HMAC（Hash-based Message Authentication Code，散列消息认证码）是一种使用密码散列函数，同时结合一个加密密钥，通过特别计算方式之后产生的消息认证码（MAC）。 HMAC算法利用哈希运算，以一个密钥和一个消息为输入，生成一个消息摘要作为输出。 hmac算法通常需要以一个hash函数为载体,比如常见的有hmacMd5,hmacSha1,hmacSha256,目前在so里只见到过hmacMd5,hmacSha256,但是hmac的规则是适用所有hash函数的\nHMAC算法的数学公式为： 其中：\nH 为密码Hash函数（如MD5或SHA-2)，能够对明文进行分组 …",
           cover: "https:\/\/asu1tty.github.io\/images\/banner.webp",
         };
       </script>
