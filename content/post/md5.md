@@ -4,7 +4,7 @@ draft: false
 title: 'MD5原理及代码实现'
 tags:
   - MD5
-  - Hash算法
+  - Hash
 categories:
   - Crypto
 ---

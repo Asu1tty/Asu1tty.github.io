@@ -4,7 +4,7 @@ draft: false
 title: 'SHA-1原理及代码实现'
 tags:
   - SHA-1
-  - Hash算法
+  - Hash
 categories:
   - Crypto
 ---
