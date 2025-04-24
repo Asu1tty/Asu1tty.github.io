@@ -16,6 +16,18 @@
   , 
   {
     "objectID": "1745413836",
+    "permalink": "/post/wb_aes/",
+    "title": "AES原理及白盒AES的DFA攻击",
+    
+    "content": "AES（Advanced Encryption Standard） 高级加密标准是 Rijndael 分组密码 的一种变体，由两位密码学家 Joan Daemen 和 Vincent Rijmen 开发，他们在 AES 选择过程中向 NIST 提交了一份提案Rijndael 是一系列具有不同密钥和块大小的密码。对于 AES，NIST 选择了 Rijndael 家族的三个成员，每个成员的块大小为 128 位，但有三种不同的密钥长度：128、192 和 256 位。\n1. AES分类 分类 密钥长度 轮密钥长度 扩展密钥长度 分组长度 加密轮数 AES-128 16字节 16字节 16*11=172 16字节 10 AES-192 24字节 16字节 16*13=208 16字节 12 AES-256 32字节 16字节 16*15=240 16字节 14 AES 128 192 256 除了密钥编排算法不一样和加密轮数不一样 其余的计算逻辑相同\nAES 128 192 256 CBC 模式IV的长度都是16个字节 CBC计算逻辑相同\nAES-128 密钥编排中K0是原始密钥 共16个字节\nAES-192 密钥编排中K0和K1前半部分是原始密钥 共24个字节\nAES-256 密钥编排中K0和K1是原始密钥 共32个字节\n如非特别说明，下面加密介绍中AES都以AES-128为例\n2. PKCS填充方式 PKCS5填充字符串由一个1~8位的字节序列组成，每个字节填充该字节序列的长度 PKCS7（95% 都是PKCS7）填充字符串由一个1-255位的字节序列组成，每个字节填充该字节序列的长度 比如 AES-128的数据块长度是 16bytes，使用PKCS7进行填充时，填充的长度范围是 1 ~ 16\n示例一： 数据： FF FF FF FF FF FF FF FF FF\nPKCS5 填充： FF FF FF FF FF FF FF FF FF 07 07 07 07 07 07 07 PKCS7 填充： FF FF FF FF FF FF FF FF FF 07 07 07 07 07 07 07 示例二：\n数据： FF FF FF FF FF FF FF FF FF FF\nPKCS5 填充： FF FF FF FF FF FF FF FF FF FF 06 06 06 06 …",
+    
+    "date": "2025-04-23 21:10:36",
+    "updated": "2025-04-23 21:10:36"
+  }
+  
+  , 
+  {
+    "objectID": "1745413836",
     "permalink": "/post/sha-512/",
     "title": "SHA-512简介及代码实现",
     

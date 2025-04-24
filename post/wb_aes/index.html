@@ -1,0 +1,1664 @@
+<!doctype html>
+<html
+  lang="en" 
+  
+    data-theme-mode="auto"
+  
+>
+  <head>
+    
+    <meta charset="utf-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, shrink-to-fit=no"
+/>
+
+
+
+
+
+
+
+  
+
+<title>
+  AES原理及白盒AES的DFA攻击 | D-Sketon
+</title>
+<meta
+  name="description"
+  content="少女祈祷中..."
+/>
+
+
+
+
+
+
+
+
+
+
+<script>
+  window.siteConfig = JSON.parse("{\"anchor_icon\":null,\"clipboard\":{\"copyright\":{\"content\":\"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！\",\"count\":50,\"enable\":false},\"fail\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"success\":\"复制成功(*^▽^*)\"},\"code_block\":{\"expand\":true},\"icon_font\":\"4552607_0khxww3tj3q9\",\"outdate\":{\"daysago\":180,\"enable\":false,\"message\":\"本文最后更新于 {time}，请注意文中内容可能已经发生变化。\"}}");
+</script>
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+  
+  
+    
+  
+
+  
+  
+  
+    
+  
+
+  
+    
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="preload"
+  as="style"
+  href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7cNoto%20Serif%20SC:400,400italic,700,700italic%7c&amp;display=swap"
+/>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7cNoto%20Serif%20SC:400,400italic,700,700italic%7c&amp;display=swap"
+  media="print"
+  onload="this.media='all'"
+/>
+
+
+
+
+
+
+
+  <link
+    rel="preload"
+    href="//at.alicdn.com/t/c/font_4552607_0khxww3tj3q9.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+
+
+  
+
+
+
+
+
+
+
+  
+ <link rel="stylesheet" href="/css/loader.min.de78b85a8ed3b39f875bfab20023f359ada6d633fc6a5730d66b52313ad697d7.css" />
+
+
+
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="AES原理及白盒AES的DFA攻击 | D-Sketon" />
+  <meta
+    property="og:description"
+    content="少女祈祷中..."
+  />
+  <meta property="og:url" content="https://asu1tty.github.io/post/wb_aes/" />
+  <meta
+    property="og:site_name"
+    content="My New Hugo Site"
+  />
+  <meta
+    property="og:image"
+    content="/"
+  />
+  <meta property="article:author" content="D-Sketon" />
+  <meta property="article:published_time" content="2025-04-23T21:10:36&#43;08:00" />
+  <meta property="article:modified_time" content="2025-04-23T21:10:36&#43;08:00" />
+  
+    <meta property="article:tag" content="AESHash" />
+  
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:image" content="/" />
+  
+  
+  
+  
+  
+
+
+
+
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+
+
+
+
+
+
+  
+ <link rel="stylesheet" href="/css/main.min.fdf430b78ef019a0ab61de9399fdd010af5a139616a95d9b43ae5372856b6702.css" />
+
+
+
+
+
+  <link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+
+
+
+
+
+
+  <link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/katex@0.16.9/dist/katex.min.css"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+
+
+
+
+
+
+
+
+  
+
+  
+  
+    
+  
+  
+  
+  
+  
+  
+  
+  <script
+    src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"
+    
+    
+    
+    
+    integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"
+  ></script>
+
+
+
+
+
+  
+
+
+  <link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.0/dist/aos.css" />
+
+
+
+
+
+    
+  </head>
+  <body>
+    
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+        
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+          M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+        
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        
+<div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <div class='main-nav-icon icon rotate'>
+          
+            
+              &#xe62b;
+            
+          
+        </div>
+        <a class="main-nav-link" href="/">Home</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class='main-nav-icon icon rotate'>
+          
+            
+              &#xe62b;
+            
+          
+        </div>
+        <a class="main-nav-link" href="/archives">Archives</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class='main-nav-icon icon rotate'>
+          
+            
+              &#xe62b;
+            
+          
+        </div>
+        <a class="main-nav-link" href="/about">About</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class='main-nav-icon icon rotate'>
+          
+            
+              &#xe62b;
+            
+          
+        </div>
+        <a class="main-nav-link" href="/friend">Friend</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      
+        <picture>
+          
+        </picture>
+        
+          <img  fetchpriority="high" src="/images/banner.webp" alt="AES原理及白盒AES的DFA攻击">
+        
+      
+    
+  
+
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          
+        
+  
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">AES原理及白盒AES的DFA攻击</h1>
+          </a>
+        
+      
+  
+      
+        
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+        <div id="content"
+          
+          class="sidebar-right"  >
+          <aside id="sidebar">
+  
+  
+  
+  <div class="sidebar-wrapper wrap-sticky">
+    <div
+      class="sidebar-wrap"
+      data-aos="fade-up"
+    >
+      
+        
+          <div class="sidebar-toc-sidebar">
+            <div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-aes分类">1. AES分类</a></li>
+    <li><a href="#2-pkcs填充方式">2. PKCS填充方式</a></li>
+    <li><a href="#3-加密模式">3. 加密模式</a></li>
+    <li><a href="#4-计算流程">4. 计算流程</a>
+      <ul>
+        <li><a href="#41-密钥编排">4.1. 密钥编排</a></li>
+        <li><a href="#42-10轮运算">4.2. 10轮运算</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-白盒aes的dfa攻击">5. 白盒AES的DFA攻击</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+          </div>
+          <div class="sidebar-common-sidebar hidden">
+            
+<div class="sidebar-author">
+  <img
+    data-src="/avatar/avatar.webp"
+    data-sizes="auto"
+    alt="D-Sketon"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">D-Sketon</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    
+    <div class="sidebar-state-number">7</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">
+      2
+    </div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">8</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="Home"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="Archives"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="About"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/friend"
+        aria-label="Friend"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+
+          </div>
+        
+      
+
+      
+        
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+        
+      
+    </div>
+  </div>
+
+  <div class="sidebar-widget">
+    
+  </div>
+  
+</aside>
+
+          <section id="main">
+  <article
+  class="h-entry article"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div
+    class="article-inner"
+    data-aos="fade-up"
+  >
+    <div class="article-meta">
+      <div class="article-date">
+  <span
+    class="article-date-link"
+    data-aos="zoom-in"
+  >
+    <time datetime="2025-04-23 21:10:36 &#43;0800 &#43;0800" itemprop="datePublished"
+      >2025-04-23</time
+    >
+    <time style="display: none;" id="post-update-time"
+      >2025-04-23</time
+    >
+  </span>
+</div>
+
+      <div class="article-category">
+  
+    <a
+      class="article-category-link"
+      href="/categories/crypto"
+      data-aos="zoom-in"
+      >CRYPTO</a
+    >
+  
+</div>
+
+    </div>
+    <div class="hr-line"></div>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <p>AES（<strong>Advanced Encryption Standard</strong>） <strong>高级加密标准</strong>是 Rijndael <a href="https://en.wikipedia.org/wiki/Block_cipher" title="Block cipher">分组密码</a>  的一种变体，由两位密码学家 <a href="https://en.wikipedia.org/wiki/Joan_Daemen" title="Joan Daemen">Joan Daemen</a> 和 <a href="https://en.wikipedia.org/wiki/Vincent_Rijmen" title="Vincent Rijmen">Vincent Rijmen</a> 开发，他们在 <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard_process" title="Advanced Encryption Standard process">AES 选择过程中</a>向 NIST 提交了一份提案Rijndael 是一系列具有不同密钥和块大小的密码。对于 AES，NIST 选择了 Rijndael 家族的三个成员，每个成员的块大小为 128 位，但有三种不同的密钥长度：128、192 和 256 位。</p>
+<h2 id="1-aes分类">
+<a class="header-anchor" href="#1-aes%e5%88%86%e7%b1%bb"></a>
+1. AES分类
+</h2><table>
+  <thead>
+      <tr>
+          <th>分类</th>
+          <th>密钥长度</th>
+          <th>轮密钥长度</th>
+          <th>扩展密钥长度</th>
+          <th>分组长度</th>
+          <th>加密轮数</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>AES-128</td>
+          <td>16字节</td>
+          <td>16字节</td>
+          <td>16*11=172</td>
+          <td>16字节</td>
+          <td>10</td>
+      </tr>
+      <tr>
+          <td>AES-192</td>
+          <td>24字节</td>
+          <td>16字节</td>
+          <td>16*13=208</td>
+          <td>16字节</td>
+          <td>12</td>
+      </tr>
+      <tr>
+          <td>AES-256</td>
+          <td>32字节</td>
+          <td>16字节</td>
+          <td>16*15=240</td>
+          <td>16字节</td>
+          <td>14</td>
+      </tr>
+  </tbody>
+</table>
+<p>AES 128 192 256 除了密钥编排算法不一样和加密轮数不一样 其余的计算逻辑相同</p>
+<p>AES 128 192 256 CBC 模式IV的长度都是16个字节 CBC计算逻辑相同</p>
+<p>AES-128 密钥编排中K0是原始密钥 共16个字节</p>
+<p>AES-192 密钥编排中K0和K1前半部分是原始密钥 共24个字节</p>
+<p>AES-256 密钥编排中K0和K1是原始密钥 共32个字节</p>
+<p><strong>如非特别说明，下面加密介绍中<code>AES</code>都以<code>AES-128</code>为例</strong></p>
+<h2 id="2-pkcs填充方式">
+<a class="header-anchor" href="#2-pkcs%e5%a1%ab%e5%85%85%e6%96%b9%e5%bc%8f"></a>
+2. PKCS填充方式
+</h2><p>PKCS5填充字符串由一个1~8位的字节序列组成，每个字节填充该字节序列的长度
+PKCS7（<strong>95%</strong> 都是PKCS7）填充字符串由一个1-255位的字节序列组成，每个字节填充该字节序列的长度
+比如 AES-128的数据块长度是 16bytes，使用PKCS7进行填充时，填充的长度范围是 1 ~ 16</p>
+<p>示例一：
+数据： FF FF FF FF FF FF FF FF FF</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">PKCS5 填充： FF FF FF FF FF FF FF FF FF 07 07 07 07 07 07 07
+</span></span><span class="line"><span class="cl">PKCS7 填充： FF FF FF FF FF FF FF FF FF 07 07 07 07 07 07 07
+</span></span></code></pre></div><p>示例二：<br>
+数据： FF FF FF FF FF FF FF FF FF FF</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">PKCS5 填充： FF FF FF FF FF FF FF FF FF FF 06 06 06 06 06 06
+</span></span><span class="line"><span class="cl">PKCS7 填充： FF FF FF FF FF FF FF FF FF FF 06 06 06 06 06 06
+</span></span></code></pre></div><p><strong>思考</strong>：当明文恰好是：<code>FF FF FF FF FF FF FF FF FF FF 06 06 06 06 06 06</code> 时，应当如何分辨<code>06 06 06 06 06 06</code>到底是填充还是明文呢？</p>
+<p>示例三：
+明文恰好是：FF FF FF FF FF FF FF FF FF FF 06 06 06 06 06 06</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">PKCS5填充：FF FF FF FF FF FF FF FF FF FF 06 06 06 06 06 06 08 08 08 08 08 08 08 08
+</span></span><span class="line"><span class="cl">PKCS7填充：FF FF FF FF FF FF FF FF FF FF 06 06 06 06 06 06 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10
+</span></span></code></pre></div><p>PKCS7是兼容PKCS5的，PKCS5相当于PKCS7的一个子集</p>
+<h2 id="3-加密模式">
+<a class="header-anchor" href="#3-%e5%8a%a0%e5%af%86%e6%a8%a1%e5%bc%8f"></a>
+3. 加密模式
+</h2><p>常用加密模式分为<code>ECB</code>与<code>CBC</code>，<code>CBC</code>加密模式比<code>ECB</code>加密模式多一个IV
+在<code>ECB</code>模式下，将明文分成固定大小的块每个块独立加密，相同的明文块始终生成相同的密文块。
+<strong>优点</strong>：</p>
+<ul>
+<li>简单，易于并行处理。</li>
+<li>加密和解密速度快。</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>安全性较低，相同的明文块产生相同的密文块，容易受到模式分析攻击。</li>
+<li>不适合加密大数据或具有重复模式的明文（如图像）。</li>
+</ul>
+<p>在<code>CBC</code>模式下，每个明文块在加密前先与前一个密文块进行异或（XOR）操作，这时要求多一个IV的作用就来了，第一个块使用初始化向量（IV）。这使得相同的明文块在不同位置生成不同的密文。
+<strong>优点</strong>：</p>
+<ul>
+<li>安全性更高，相同的明文块不会产生相同的密文，抗模式分析能力强。</li>
+<li>适合加密大数据或结构化数据。</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>加密过程是串行的，无法并行化，速度稍慢。</li>
+<li>需要安全的初始化向量（IV），且IV必须在加密和解密时保持一致。</li>
+</ul>
+<p>在此附上一张经典加密Linux吉祥物企鹅位图（bitmap）格式的图片
+<img src="https://github.com/Asu1tty/blog_img/blob/main/picSource/image-20250424152317564.png?raw=true" alt="image.png">
+可以看出，因为同样的颜色编码序列被加密成相同的密文，所以生成的文件重现原图的大致模式，可以大致看出企鹅的轮廓。</p>
+<h2 id="4-计算流程">
+<a class="header-anchor" href="#4-%e8%ae%a1%e7%ae%97%e6%b5%81%e7%a8%8b"></a>
+4. 计算流程
+</h2><p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714394217281-9c474ec2-91c1-4ca8-b349-ccb7b6541661.png" alt="image.png"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714394336630-bdece8b0-888b-45d0-b1c1-7214e58e7950.png" alt="image.png">
+AES的整体图景可以分成左右两块，即明文的处理和密钥的编排</p>
+<p>明文的处理主体是一个初始化轮密钥加和十轮运算，在初始化轮密钥加十轮运算中都需要使用密钥编排的结果</p>
+<p>密钥编排将16个字节经过运算推演出11组轮密钥，每一组16个字节，称之为K0，K1&hellip;K10</p>
+<h3 id="41-密钥编排">
+<a class="header-anchor" href="#41-%e5%af%86%e9%92%a5%e7%bc%96%e6%8e%92"></a>
+4.1. 密钥编排
+</h3><p>假设密钥Key为： <strong>2b7e151628aed2a6abf7158809cf4f3c</strong>。为了区分密钥和密钥编排后的轮密钥，我们将此时的密钥叫主密钥。
+在AES-128中，密钥扩展后得<code>16*11</code>共176字节，使用时<strong>逐十六个字节</strong>划分成K0,K1,&hellip;K10使用，但是在生成时，它是<strong>逐四个字</strong>节生成的，即<code>44*4</code>。我们不妨用数组来描述它，即一个包含了44个元素的数组,叫W
+这四十四个元素的生成规则有三种，如下图所示
+<img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714394679115-935cf8de-f210-41f9-bdfe-291064ac4623.png" alt="">
+不同颜色代表了不同规则</p>
+<h4 id="411-蓝色区域">
+<a class="header-anchor" href="#411-%e8%93%9d%e8%89%b2%e5%8c%ba%e5%9f%9f"></a>
+4.1.1. 蓝色区域
+</h4><p>最上方蓝色区域的就是主密钥本身切成四段<img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714394811982-5f61936e-12d4-4761-8c32-91eeb366b9b1.png" alt=""></p>
+<h4 id="412-红色区域">
+<a class="header-anchor" href="#412-%e7%ba%a2%e8%89%b2%e5%8c%ba%e5%9f%9f"></a>
+4.1.2. 红色区域
+</h4><p>左侧的红色部分，W4，W8&hellip;W40 的生成复杂一点</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714394914198-e4b275b3-8727-4566-93b1-6f5cf0edcb16.png" alt=""></p>
+<p>xor 是异或运算，关键点就是这个g函数了，函数一共三个步骤——<strong>循环左移、S盒替换、字节异或</strong>
+我们以运算W4中所需的W3为例</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714395039925-e8dd3f8e-ba46-4563-af5d-dd7b31c32a87.png" alt=""></p>
+<p>第一步是循环左移，规则固定——将最左边的一个字节挪到右边即可</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714395105629-7f04a502-8f4f-4693-9b8a-2f6cce3d6a7b.png" alt=""></p>
+<p>第二步是S盒替换，S盒替换听着很高级，但操作上很简单——将数值本身作为索引取出S数组中对用的值，S 盒是固定的，在Findcrypt中，就会利用S盒来查找AES的存在</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">SBox</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x63</span><span class="p">,</span> <span class="mh">0x7C</span><span class="p">,</span> <span class="mh">0x77</span><span class="p">,</span> <span class="mh">0x7B</span><span class="p">,</span> <span class="mh">0xF2</span><span class="p">,</span> <span class="mh">0x6B</span><span class="p">,</span> <span class="mh">0x6F</span><span class="p">,</span> <span class="mh">0xC5</span><span class="p">,</span> <span class="mh">0x30</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x67</span><span class="p">,</span> <span class="mh">0x2B</span><span class="p">,</span> <span class="mh">0xFE</span><span class="p">,</span> <span class="mh">0xD7</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0xAB</span><span class="p">,</span> <span class="mh">0x76</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0xCA</span><span class="p">,</span> <span class="mh">0x82</span><span class="p">,</span> <span class="mh">0xC9</span><span class="p">,</span> <span class="mh">0x7D</span><span class="p">,</span> <span class="mh">0xFA</span><span class="p">,</span> <span class="mh">0x59</span><span class="p">,</span> <span class="mh">0x47</span><span class="p">,</span> <span class="mh">0xF0</span><span class="p">,</span> <span class="mh">0xAD</span><span class="p">,</span> <span class="mh">0xD4</span><span class="p">,</span> <span class="mh">0xA2</span><span class="p">,</span> <span class="mh">0xAF</span><span class="p">,</span> <span class="mh">0x9C</span><span class="p">,</span> <span class="mh">0xA4</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x72</span><span class="p">,</span> <span class="mh">0xC0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0xB7</span><span class="p">,</span> <span class="mh">0xFD</span><span class="p">,</span> <span class="mh">0x93</span><span class="p">,</span> <span class="mh">0x26</span><span class="p">,</span> <span class="mh">0x36</span><span class="p">,</span> <span class="mh">0x3F</span><span class="p">,</span> <span class="mh">0xF7</span><span class="p">,</span> <span class="mh">0xCC</span><span class="p">,</span> <span class="mh">0x34</span><span class="p">,</span> <span class="mh">0xA5</span><span class="p">,</span> <span class="mh">0xE5</span><span class="p">,</span> <span class="mh">0xF1</span><span class="p">,</span> <span class="mh">0x71</span><span class="p">,</span> <span class="mh">0xD8</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x31</span><span class="p">,</span> <span class="mh">0x15</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x04</span><span class="p">,</span> <span class="mh">0xC7</span><span class="p">,</span> <span class="mh">0x23</span><span class="p">,</span> <span class="mh">0xC3</span><span class="p">,</span> <span class="mh">0x18</span><span class="p">,</span> <span class="mh">0x96</span><span class="p">,</span> <span class="mh">0x05</span><span class="p">,</span> <span class="mh">0x9A</span><span class="p">,</span> <span class="mh">0x07</span><span class="p">,</span> <span class="mh">0x12</span><span class="p">,</span> <span class="mh">0x80</span><span class="p">,</span> <span class="mh">0xE2</span><span class="p">,</span> <span class="mh">0xEB</span><span class="p">,</span> <span class="mh">0x27</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0xB2</span><span class="p">,</span> <span class="mh">0x75</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x09</span><span class="p">,</span> <span class="mh">0x83</span><span class="p">,</span> <span class="mh">0x2C</span><span class="p">,</span> <span class="mh">0x1A</span><span class="p">,</span> <span class="mh">0x1B</span><span class="p">,</span> <span class="mh">0x6E</span><span class="p">,</span> <span class="mh">0x5A</span><span class="p">,</span> <span class="mh">0xA0</span><span class="p">,</span> <span class="mh">0x52</span><span class="p">,</span> <span class="mh">0x3B</span><span class="p">,</span> <span class="mh">0xD6</span><span class="p">,</span> <span class="mh">0xB3</span><span class="p">,</span> <span class="mh">0x29</span><span class="p">,</span> <span class="mh">0xE3</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x2F</span><span class="p">,</span> <span class="mh">0x84</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x53</span><span class="p">,</span> <span class="mh">0xD1</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0xED</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">,</span> <span class="mh">0xFC</span><span class="p">,</span> <span class="mh">0xB1</span><span class="p">,</span> <span class="mh">0x5B</span><span class="p">,</span> <span class="mh">0x6A</span><span class="p">,</span> <span class="mh">0xCB</span><span class="p">,</span> <span class="mh">0xBE</span><span class="p">,</span> <span class="mh">0x39</span><span class="p">,</span> <span class="mh">0x4A</span><span class="p">,</span> <span class="mh">0x4C</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x58</span><span class="p">,</span> <span class="mh">0xCF</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0xD0</span><span class="p">,</span> <span class="mh">0xEF</span><span class="p">,</span> <span class="mh">0xAA</span><span class="p">,</span> <span class="mh">0xFB</span><span class="p">,</span> <span class="mh">0x43</span><span class="p">,</span> <span class="mh">0x4D</span><span class="p">,</span> <span class="mh">0x33</span><span class="p">,</span> <span class="mh">0x85</span><span class="p">,</span> <span class="mh">0x45</span><span class="p">,</span> <span class="mh">0xF9</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">,</span> <span class="mh">0x7F</span><span class="p">,</span> <span class="mh">0x50</span><span class="p">,</span> <span class="mh">0x3C</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x9F</span><span class="p">,</span> <span class="mh">0xA8</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x51</span><span class="p">,</span> <span class="mh">0xA3</span><span class="p">,</span> <span class="mh">0x40</span><span class="p">,</span> <span class="mh">0x8F</span><span class="p">,</span> <span class="mh">0x92</span><span class="p">,</span> <span class="mh">0x9D</span><span class="p">,</span> <span class="mh">0x38</span><span class="p">,</span> <span class="mh">0xF5</span><span class="p">,</span> <span class="mh">0xBC</span><span class="p">,</span> <span class="mh">0xB6</span><span class="p">,</span> <span class="mh">0xDA</span><span class="p">,</span> <span class="mh">0x21</span><span class="p">,</span> <span class="mh">0x10</span><span class="p">,</span> <span class="mh">0xFF</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0xF3</span><span class="p">,</span> <span class="mh">0xD2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0xCD</span><span class="p">,</span> <span class="mh">0x0C</span><span class="p">,</span> <span class="mh">0x13</span><span class="p">,</span> <span class="mh">0xEC</span><span class="p">,</span> <span class="mh">0x5F</span><span class="p">,</span> <span class="mh">0x97</span><span class="p">,</span> <span class="mh">0x44</span><span class="p">,</span> <span class="mh">0x17</span><span class="p">,</span> <span class="mh">0xC4</span><span class="p">,</span> <span class="mh">0xA7</span><span class="p">,</span> <span class="mh">0x7E</span><span class="p">,</span> <span class="mh">0x3D</span><span class="p">,</span> <span class="mh">0x64</span><span class="p">,</span> <span class="mh">0x5D</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x19</span><span class="p">,</span> <span class="mh">0x73</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x60</span><span class="p">,</span> <span class="mh">0x81</span><span class="p">,</span> <span class="mh">0x4F</span><span class="p">,</span> <span class="mh">0xDC</span><span class="p">,</span> <span class="mh">0x22</span><span class="p">,</span> <span class="mh">0x2A</span><span class="p">,</span> <span class="mh">0x90</span><span class="p">,</span> <span class="mh">0x88</span><span class="p">,</span> <span class="mh">0x46</span><span class="p">,</span> <span class="mh">0xEE</span><span class="p">,</span> <span class="mh">0xB8</span><span class="p">,</span> <span class="mh">0x14</span><span class="p">,</span> <span class="mh">0xDE</span><span class="p">,</span> <span class="mh">0x5E</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x0B</span><span class="p">,</span> <span class="mh">0xDB</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0xE0</span><span class="p">,</span> <span class="mh">0x32</span><span class="p">,</span> <span class="mh">0x3A</span><span class="p">,</span> <span class="mh">0x0A</span><span class="p">,</span> <span class="mh">0x49</span><span class="p">,</span> <span class="mh">0x06</span><span class="p">,</span> <span class="mh">0x24</span><span class="p">,</span> <span class="mh">0x5C</span><span class="p">,</span> <span class="mh">0xC2</span><span class="p">,</span> <span class="mh">0xD3</span><span class="p">,</span> <span class="mh">0xAC</span><span class="p">,</span> <span class="mh">0x62</span><span class="p">,</span> <span class="mh">0x91</span><span class="p">,</span> <span class="mh">0x95</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0xE4</span><span class="p">,</span> <span class="mh">0x79</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0xE7</span><span class="p">,</span> <span class="mh">0xC8</span><span class="p">,</span> <span class="mh">0x37</span><span class="p">,</span> <span class="mh">0x6D</span><span class="p">,</span> <span class="mh">0x8D</span><span class="p">,</span> <span class="mh">0xD5</span><span class="p">,</span> <span class="mh">0x4E</span><span class="p">,</span> <span class="mh">0xA9</span><span class="p">,</span> <span class="mh">0x6C</span><span class="p">,</span> <span class="mh">0x56</span><span class="p">,</span> <span class="mh">0xF4</span><span class="p">,</span> <span class="mh">0xEA</span><span class="p">,</span> <span class="mh">0x65</span><span class="p">,</span> <span class="mh">0x7A</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0xAE</span><span class="p">,</span> <span class="mh">0x08</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0xBA</span><span class="p">,</span> <span class="mh">0x78</span><span class="p">,</span> <span class="mh">0x25</span><span class="p">,</span> <span class="mh">0x2E</span><span class="p">,</span> <span class="mh">0x1C</span><span class="p">,</span> <span class="mh">0xA6</span><span class="p">,</span> <span class="mh">0xB4</span><span class="p">,</span> <span class="mh">0xC6</span><span class="p">,</span> <span class="mh">0xE8</span><span class="p">,</span> <span class="mh">0xDD</span><span class="p">,</span> <span class="mh">0x74</span><span class="p">,</span> <span class="mh">0x1F</span><span class="p">,</span> <span class="mh">0x4B</span><span class="p">,</span> <span class="mh">0xBD</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x8B</span><span class="p">,</span> <span class="mh">0x8A</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x70</span><span class="p">,</span> <span class="mh">0x3E</span><span class="p">,</span> <span class="mh">0xB5</span><span class="p">,</span> <span class="mh">0x66</span><span class="p">,</span> <span class="mh">0x48</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">,</span> <span class="mh">0xF6</span><span class="p">,</span> <span class="mh">0x0E</span><span class="p">,</span> <span class="mh">0x61</span><span class="p">,</span> <span class="mh">0x35</span><span class="p">,</span> <span class="mh">0x57</span><span class="p">,</span> <span class="mh">0xB9</span><span class="p">,</span> <span class="mh">0x86</span><span class="p">,</span> <span class="mh">0xC1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x1D</span><span class="p">,</span> <span class="mh">0x9E</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0xE1</span><span class="p">,</span> <span class="mh">0xF8</span><span class="p">,</span> <span class="mh">0x98</span><span class="p">,</span> <span class="mh">0x11</span><span class="p">,</span> <span class="mh">0x69</span><span class="p">,</span> <span class="mh">0xD9</span><span class="p">,</span> <span class="mh">0x8E</span><span class="p">,</span> <span class="mh">0x94</span><span class="p">,</span> <span class="mh">0x9B</span><span class="p">,</span> <span class="mh">0x1E</span><span class="p">,</span> <span class="mh">0x87</span><span class="p">,</span> <span class="mh">0xE9</span><span class="p">,</span> <span class="mh">0xCE</span><span class="p">,</span> <span class="mh">0x55</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x28</span><span class="p">,</span> <span class="mh">0xDF</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0x8C</span><span class="p">,</span> <span class="mh">0xA1</span><span class="p">,</span> <span class="mh">0x89</span><span class="p">,</span> <span class="mh">0x0D</span><span class="p">,</span> <span class="mh">0xBF</span><span class="p">,</span> <span class="mh">0xE6</span><span class="p">,</span> <span class="mh">0x42</span><span class="p">,</span> <span class="mh">0x68</span><span class="p">,</span> <span class="mh">0x41</span><span class="p">,</span> <span class="mh">0x99</span><span class="p">,</span> <span class="mh">0x2D</span><span class="p">,</span> <span class="mh">0x0F</span><span class="p">,</span> <span class="mh">0xB0</span><span class="p">,</span> <span class="mh">0x54</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="mh">0xBB</span><span class="p">,</span> <span class="mh">0x16</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span></code></pre></div><p>第三步骤更简单，将上一步结果中的最高字节和一个固定常量异或，W4的生成是第一个，用如下Rcon 表的第一个元素0x1，W40即第十次，用最后一个元素0x36</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">rcon</span> <span class="o">=</span> <span class="p">[</span><span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">,</span> <span class="mh">0x04</span><span class="p">,</span> <span class="mh">0x08</span><span class="p">,</span> <span class="mh">0x10</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">,</span> <span class="mh">0x40</span><span class="p">,</span> <span class="mh">0x80</span><span class="p">,</span> <span class="mh">0x1B</span><span class="p">,</span> <span class="mh">0x36</span><span class="p">]</span>
+</span></span></code></pre></div><p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714395571691-e6a61272-3fb9-4ab6-8e53-26835454635c.png" alt=""></p>
+<p>最终结果</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714395608655-8716d83e-7d6c-4cff-b130-c68d87d8a524.png" alt=""></p>
+<p>上图中蓝色和红色的部分我们都讲完了，那么橙色部分呢？相当的简单，和红色部分类似，去掉g函数即可</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714395689385-bb301b33-428f-4e37-9f4e-13ea4e8081f9.png" alt=""></p>
+<p>打个比方， W5 = W4 ^ W1 = 0xa0fafe17 ^ 0x28aed2a6 = 0x88542cb1
+如下是完整的密钥编排部分的Python代码</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">Sbox</span> <span class="o">=</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x63</span><span class="p">,</span> <span class="mh">0x7C</span><span class="p">,</span> <span class="mh">0x77</span><span class="p">,</span> <span class="mh">0x7B</span><span class="p">,</span> <span class="mh">0xF2</span><span class="p">,</span> <span class="mh">0x6B</span><span class="p">,</span> <span class="mh">0x6F</span><span class="p">,</span> <span class="mh">0xC5</span><span class="p">,</span> <span class="mh">0x30</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x67</span><span class="p">,</span> <span class="mh">0x2B</span><span class="p">,</span> <span class="mh">0xFE</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0xD7</span><span class="p">,</span> <span class="mh">0xAB</span><span class="p">,</span> <span class="mh">0x76</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0xCA</span><span class="p">,</span> <span class="mh">0x82</span><span class="p">,</span> <span class="mh">0xC9</span><span class="p">,</span> <span class="mh">0x7D</span><span class="p">,</span> <span class="mh">0xFA</span><span class="p">,</span> <span class="mh">0x59</span><span class="p">,</span> <span class="mh">0x47</span><span class="p">,</span> <span class="mh">0xF0</span><span class="p">,</span> <span class="mh">0xAD</span><span class="p">,</span> <span class="mh">0xD4</span><span class="p">,</span> <span class="mh">0xA2</span><span class="p">,</span> <span class="mh">0xAF</span><span class="p">,</span> <span class="mh">0x9C</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0xA4</span><span class="p">,</span> <span class="mh">0x72</span><span class="p">,</span> <span class="mh">0xC0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0xB7</span><span class="p">,</span> <span class="mh">0xFD</span><span class="p">,</span> <span class="mh">0x93</span><span class="p">,</span> <span class="mh">0x26</span><span class="p">,</span> <span class="mh">0x36</span><span class="p">,</span> <span class="mh">0x3F</span><span class="p">,</span> <span class="mh">0xF7</span><span class="p">,</span> <span class="mh">0xCC</span><span class="p">,</span> <span class="mh">0x34</span><span class="p">,</span> <span class="mh">0xA5</span><span class="p">,</span> <span class="mh">0xE5</span><span class="p">,</span> <span class="mh">0xF1</span><span class="p">,</span> <span class="mh">0x71</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0xD8</span><span class="p">,</span> <span class="mh">0x31</span><span class="p">,</span> <span class="mh">0x15</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x04</span><span class="p">,</span> <span class="mh">0xC7</span><span class="p">,</span> <span class="mh">0x23</span><span class="p">,</span> <span class="mh">0xC3</span><span class="p">,</span> <span class="mh">0x18</span><span class="p">,</span> <span class="mh">0x96</span><span class="p">,</span> <span class="mh">0x05</span><span class="p">,</span> <span class="mh">0x9A</span><span class="p">,</span> <span class="mh">0x07</span><span class="p">,</span> <span class="mh">0x12</span><span class="p">,</span> <span class="mh">0x80</span><span class="p">,</span> <span class="mh">0xE2</span><span class="p">,</span> <span class="mh">0xEB</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x27</span><span class="p">,</span> <span class="mh">0xB2</span><span class="p">,</span> <span class="mh">0x75</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x09</span><span class="p">,</span> <span class="mh">0x83</span><span class="p">,</span> <span class="mh">0x2C</span><span class="p">,</span> <span class="mh">0x1A</span><span class="p">,</span> <span class="mh">0x1B</span><span class="p">,</span> <span class="mh">0x6E</span><span class="p">,</span> <span class="mh">0x5A</span><span class="p">,</span> <span class="mh">0xA0</span><span class="p">,</span> <span class="mh">0x52</span><span class="p">,</span> <span class="mh">0x3B</span><span class="p">,</span> <span class="mh">0xD6</span><span class="p">,</span> <span class="mh">0xB3</span><span class="p">,</span> <span class="mh">0x29</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0xE3</span><span class="p">,</span> <span class="mh">0x2F</span><span class="p">,</span> <span class="mh">0x84</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x53</span><span class="p">,</span> <span class="mh">0xD1</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0xED</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">,</span> <span class="mh">0xFC</span><span class="p">,</span> <span class="mh">0xB1</span><span class="p">,</span> <span class="mh">0x5B</span><span class="p">,</span> <span class="mh">0x6A</span><span class="p">,</span> <span class="mh">0xCB</span><span class="p">,</span> <span class="mh">0xBE</span><span class="p">,</span> <span class="mh">0x39</span><span class="p">,</span> <span class="mh">0x4A</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x4C</span><span class="p">,</span> <span class="mh">0x58</span><span class="p">,</span> <span class="mh">0xCF</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0xD0</span><span class="p">,</span> <span class="mh">0xEF</span><span class="p">,</span> <span class="mh">0xAA</span><span class="p">,</span> <span class="mh">0xFB</span><span class="p">,</span> <span class="mh">0x43</span><span class="p">,</span> <span class="mh">0x4D</span><span class="p">,</span> <span class="mh">0x33</span><span class="p">,</span> <span class="mh">0x85</span><span class="p">,</span> <span class="mh">0x45</span><span class="p">,</span> <span class="mh">0xF9</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">,</span> <span class="mh">0x7F</span><span class="p">,</span> <span class="mh">0x50</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x3C</span><span class="p">,</span> <span class="mh">0x9F</span><span class="p">,</span> <span class="mh">0xA8</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x51</span><span class="p">,</span> <span class="mh">0xA3</span><span class="p">,</span> <span class="mh">0x40</span><span class="p">,</span> <span class="mh">0x8F</span><span class="p">,</span> <span class="mh">0x92</span><span class="p">,</span> <span class="mh">0x9D</span><span class="p">,</span> <span class="mh">0x38</span><span class="p">,</span> <span class="mh">0xF5</span><span class="p">,</span> <span class="mh">0xBC</span><span class="p">,</span> <span class="mh">0xB6</span><span class="p">,</span> <span class="mh">0xDA</span><span class="p">,</span> <span class="mh">0x21</span><span class="p">,</span> <span class="mh">0x10</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0xFF</span><span class="p">,</span> <span class="mh">0xF3</span><span class="p">,</span> <span class="mh">0xD2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0xCD</span><span class="p">,</span> <span class="mh">0x0C</span><span class="p">,</span> <span class="mh">0x13</span><span class="p">,</span> <span class="mh">0xEC</span><span class="p">,</span> <span class="mh">0x5F</span><span class="p">,</span> <span class="mh">0x97</span><span class="p">,</span> <span class="mh">0x44</span><span class="p">,</span> <span class="mh">0x17</span><span class="p">,</span> <span class="mh">0xC4</span><span class="p">,</span> <span class="mh">0xA7</span><span class="p">,</span> <span class="mh">0x7E</span><span class="p">,</span> <span class="mh">0x3D</span><span class="p">,</span> <span class="mh">0x64</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x5D</span><span class="p">,</span> <span class="mh">0x19</span><span class="p">,</span> <span class="mh">0x73</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x60</span><span class="p">,</span> <span class="mh">0x81</span><span class="p">,</span> <span class="mh">0x4F</span><span class="p">,</span> <span class="mh">0xDC</span><span class="p">,</span> <span class="mh">0x22</span><span class="p">,</span> <span class="mh">0x2A</span><span class="p">,</span> <span class="mh">0x90</span><span class="p">,</span> <span class="mh">0x88</span><span class="p">,</span> <span class="mh">0x46</span><span class="p">,</span> <span class="mh">0xEE</span><span class="p">,</span> <span class="mh">0xB8</span><span class="p">,</span> <span class="mh">0x14</span><span class="p">,</span> <span class="mh">0xDE</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x5E</span><span class="p">,</span> <span class="mh">0x0B</span><span class="p">,</span> <span class="mh">0xDB</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0xE0</span><span class="p">,</span> <span class="mh">0x32</span><span class="p">,</span> <span class="mh">0x3A</span><span class="p">,</span> <span class="mh">0x0A</span><span class="p">,</span> <span class="mh">0x49</span><span class="p">,</span> <span class="mh">0x06</span><span class="p">,</span> <span class="mh">0x24</span><span class="p">,</span> <span class="mh">0x5C</span><span class="p">,</span> <span class="mh">0xC2</span><span class="p">,</span> <span class="mh">0xD3</span><span class="p">,</span> <span class="mh">0xAC</span><span class="p">,</span> <span class="mh">0x62</span><span class="p">,</span> <span class="mh">0x91</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x95</span><span class="p">,</span> <span class="mh">0xE4</span><span class="p">,</span> <span class="mh">0x79</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0xE7</span><span class="p">,</span> <span class="mh">0xC8</span><span class="p">,</span> <span class="mh">0x37</span><span class="p">,</span> <span class="mh">0x6D</span><span class="p">,</span> <span class="mh">0x8D</span><span class="p">,</span> <span class="mh">0xD5</span><span class="p">,</span> <span class="mh">0x4E</span><span class="p">,</span> <span class="mh">0xA9</span><span class="p">,</span> <span class="mh">0x6C</span><span class="p">,</span> <span class="mh">0x56</span><span class="p">,</span> <span class="mh">0xF4</span><span class="p">,</span> <span class="mh">0xEA</span><span class="p">,</span> <span class="mh">0x65</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x7A</span><span class="p">,</span> <span class="mh">0xAE</span><span class="p">,</span> <span class="mh">0x08</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0xBA</span><span class="p">,</span> <span class="mh">0x78</span><span class="p">,</span> <span class="mh">0x25</span><span class="p">,</span> <span class="mh">0x2E</span><span class="p">,</span> <span class="mh">0x1C</span><span class="p">,</span> <span class="mh">0xA6</span><span class="p">,</span> <span class="mh">0xB4</span><span class="p">,</span> <span class="mh">0xC6</span><span class="p">,</span> <span class="mh">0xE8</span><span class="p">,</span> <span class="mh">0xDD</span><span class="p">,</span> <span class="mh">0x74</span><span class="p">,</span> <span class="mh">0x1F</span><span class="p">,</span> <span class="mh">0x4B</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0xBD</span><span class="p">,</span> <span class="mh">0x8B</span><span class="p">,</span> <span class="mh">0x8A</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x70</span><span class="p">,</span> <span class="mh">0x3E</span><span class="p">,</span> <span class="mh">0xB5</span><span class="p">,</span> <span class="mh">0x66</span><span class="p">,</span> <span class="mh">0x48</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">,</span> <span class="mh">0xF6</span><span class="p">,</span> <span class="mh">0x0E</span><span class="p">,</span> <span class="mh">0x61</span><span class="p">,</span> <span class="mh">0x35</span><span class="p">,</span> <span class="mh">0x57</span><span class="p">,</span> <span class="mh">0xB9</span><span class="p">,</span> <span class="mh">0x86</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0xC1</span><span class="p">,</span> <span class="mh">0x1D</span><span class="p">,</span> <span class="mh">0x9E</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0xE1</span><span class="p">,</span> <span class="mh">0xF8</span><span class="p">,</span> <span class="mh">0x98</span><span class="p">,</span> <span class="mh">0x11</span><span class="p">,</span> <span class="mh">0x69</span><span class="p">,</span> <span class="mh">0xD9</span><span class="p">,</span> <span class="mh">0x8E</span><span class="p">,</span> <span class="mh">0x94</span><span class="p">,</span> <span class="mh">0x9B</span><span class="p">,</span> <span class="mh">0x1E</span><span class="p">,</span> <span class="mh">0x87</span><span class="p">,</span> <span class="mh">0xE9</span><span class="p">,</span> <span class="mh">0xCE</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x55</span><span class="p">,</span> <span class="mh">0x28</span><span class="p">,</span> <span class="mh">0xDF</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x8C</span><span class="p">,</span> <span class="mh">0xA1</span><span class="p">,</span> <span class="mh">0x89</span><span class="p">,</span> <span class="mh">0x0D</span><span class="p">,</span> <span class="mh">0xBF</span><span class="p">,</span> <span class="mh">0xE6</span><span class="p">,</span> <span class="mh">0x42</span><span class="p">,</span> <span class="mh">0x68</span><span class="p">,</span> <span class="mh">0x41</span><span class="p">,</span> <span class="mh">0x99</span><span class="p">,</span> <span class="mh">0x2D</span><span class="p">,</span> <span class="mh">0x0F</span><span class="p">,</span> <span class="mh">0xB0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mh">0x54</span><span class="p">,</span> <span class="mh">0xBB</span><span class="p">,</span> <span class="mh">0x16</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Rcon</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">,</span> <span class="mh">0x04</span><span class="p">,</span> <span class="mh">0x08</span><span class="p">,</span> <span class="mh">0x10</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">,</span> <span class="mh">0x40</span><span class="p">,</span> <span class="mh">0x80</span><span class="p">,</span> <span class="mh">0x1B</span><span class="p">,</span> <span class="mh">0x36</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">text2matrix</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">matrix</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">byte</span> <span class="o">=</span> <span class="p">(</span><span class="n">text</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="p">(</span><span class="mi">15</span> <span class="o">-</span> <span class="n">i</span><span class="p">)))</span> <span class="o">&amp;</span> <span class="mh">0xFF</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">4</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">matrix</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">byte</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">matrix</span><span class="p">[</span><span class="n">i</span> <span class="o">//</span> <span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">byte</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">matrix</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">shiftRound</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">num</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;&#39;&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">    :param array: 需要循环左移的数组
+</span></span></span><span class="line"><span class="cl"><span class="s1">    :param num: 循环左移的位数
+</span></span></span><span class="line"><span class="cl"><span class="s1">    :return: 使用Python切片，返回循环左移num个单位的array
+</span></span></span><span class="line"><span class="cl"><span class="s1">    &#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">array</span><span class="p">[</span><span class="n">num</span><span class="p">:]</span> <span class="o">+</span> <span class="n">array</span><span class="p">[:</span><span class="n">num</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;&#39;&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">    g 函数
+</span></span></span><span class="line"><span class="cl"><span class="s1">    :param array: 待处理的四字节数组
+</span></span></span><span class="line"><span class="cl"><span class="s1">    :index:从1-10，每次使用Rcon中不同的数
+</span></span></span><span class="line"><span class="cl"><span class="s1">    &#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 首先循环左移1位</span>
+</span></span><span class="line"><span class="cl">    <span class="n">array</span> <span class="o">=</span> <span class="n">shiftRound</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 字节替换</span>
+</span></span><span class="line"><span class="cl">    <span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="n">Sbox</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">array</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 首字节和rcon中对应元素异或</span>
+</span></span><span class="line"><span class="cl">    <span class="n">array</span> <span class="o">=</span> <span class="p">[(</span><span class="n">Rcon</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">^</span> <span class="n">array</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="o">+</span> <span class="n">array</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">array</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">xorTwoArray</span><span class="p">(</span><span class="n">array1</span><span class="p">,</span> <span class="n">array2</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;&#39;&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">    返回两个数组逐元素异或的新数组
+</span></span></span><span class="line"><span class="cl"><span class="s1">    :param array1: 一个array
+</span></span></span><span class="line"><span class="cl"><span class="s1">    :param array2: 另一个array
+</span></span></span><span class="line"><span class="cl"><span class="s1">    :return:
+</span></span></span><span class="line"><span class="cl"><span class="s1">    &#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">array1</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">array2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">[</span><span class="n">array1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">^</span> <span class="n">array2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">array1</span><span class="p">))]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">showRoundKeys</span><span class="p">(</span><span class="n">kList</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">kList</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;K</span><span class="si">%02d</span><span class="s2">:&#34;</span> <span class="o">%</span> <span class="n">i</span> <span class="o">+</span> <span class="s2">&#34;&#34;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">%02x</span><span class="s2">&#34;</span> <span class="o">%</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kList</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">keyExpand</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">master_key</span> <span class="o">=</span> <span class="n">text2matrix</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">round_keys</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">44</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 规则一(图中红色部分)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">round_keys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_key</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">11</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 规则二(图中红色部分)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">4</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">round_keys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">xorTwoArray</span><span class="p">(</span><span class="n">g</span><span class="p">(</span><span class="n">round_keys</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">i</span> <span class="o">//</span> <span class="mi">4</span><span class="p">),</span> <span class="n">round_keys</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">4</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 规则三(图中橙色部分)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">round_keys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">xorTwoArray</span><span class="p">(</span><span class="n">round_keys</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">round_keys</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">4</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 将轮密钥从44*4转成11*16,方便后面在明文的运算里使用</span>
+</span></span><span class="line"><span class="cl">    <span class="n">kList</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">11</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">round_keys</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">kList</span><span class="p">[</span><span class="n">i</span> <span class="o">//</span> <span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="n">round_keys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">showRoundKeys</span><span class="p">(</span><span class="n">kList</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">kList</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">input_bytes</span> <span class="o">=</span> <span class="mh">0x00112233445566778899aabbccddeeff</span>
+</span></span><span class="line"><span class="cl"><span class="n">key</span> <span class="o">=</span> <span class="mh">0x2b7e151628aed2a6abf7158809cf4f3c</span>
+</span></span><span class="line"><span class="cl"><span class="n">kList</span> <span class="o">=</span> <span class="n">keyExpand</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</span></span></code></pre></div><p>运行结果如下</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">K00:2b7e151628aed2a6abf7158809cf4f3c
+</span></span><span class="line"><span class="cl">K01:a0fafe1788542cb123a339392a6c7605
+</span></span><span class="line"><span class="cl">K02:f2c295f27a96b9435935807a7359f67f
+</span></span><span class="line"><span class="cl">K03:3d80477d4716fe3e1e237e446d7a883b
+</span></span><span class="line"><span class="cl">K04:ef44a541a8525b7fb671253bdb0bad00
+</span></span><span class="line"><span class="cl">K05:d4d1c6f87c839d87caf2b8bc11f915bc
+</span></span><span class="line"><span class="cl">K06:6d88a37a110b3efddbf98641ca0093fd
+</span></span><span class="line"><span class="cl">K07:4e54f70e5f5fc9f384a64fb24ea6dc4f
+</span></span><span class="line"><span class="cl">K08:ead27321b58dbad2312bf5607f8d292f
+</span></span><span class="line"><span class="cl">K09:ac7766f319fadc2128d12941575c006e
+</span></span><span class="line"><span class="cl">K10:d014f9a8c9ee2589e13f0cc8b6630ca6
+</span></span></code></pre></div><h3 id="42-10轮运算">
+<a class="header-anchor" href="#42-10%e8%bd%ae%e8%bf%90%e7%ae%97"></a>
+4.2. 10轮运算
+</h3><p>在AES中，数据以State的形式计算、中间存储和传输，中文名即状态。从明文转到state形式很简单，以我们的明文00112233445566778899aabbccddeeff为例。从上到下，从左到右
+<img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714396330904-f408437b-8456-4ed3-b404-75a5e7b91262.png" alt="">
+初始的轮密钥加使用K0 2b7e151628aed2a6abf7158809cf4f3c<img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714396464338-b7bb7565-b73b-4147-8e95-a1c2b9de2847.png" alt="image.png"></p>
+<p>接下来就是十轮主运算，看如下的伪代码，我们可以清楚看到一轮运算中有什么，以及第十轮和前九轮有什么区别</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714396609549-599374c9-2d16-4eef-a409-59ab2cb31235.png" alt="image.png"></p>
+<p>初始的明文转和最后的转明文自不必说，然后是初始轮密钥，使用K0<br>
+前九轮运算中，包含四个步骤：<strong>字节替换，循环左移，列混淆，轮密钥加</strong><br>
+第十轮中，包含三个步骤：<strong>字节替换，循环左移，轮密钥加，相比前九轮缺一个列混淆，其余相同</strong><br>
+而字节替换步骤，和密钥编排中的S盒替换完全一致<br>
+循环左移，和密钥编排中的循环左移类似，但有差异。密钥编排中，函数中也需循环左移，但其中待处理的数据仅有一行，而明文编排中是四行，其循环左移规则如下：第一行不循环左移，第二行循环左移1字节，第三行循环左移2字节，第四行循环左移3字节</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714396902808-c6c3bc24-82e1-4f07-ac7b-f618ec0647ca.png" alt="image.png"></p>
+<p>列混淆比较复杂<br>
+详见<a href="https://bbs.kanxue.com/thread-280335.htm">白盒AES算法详解(一)</a></p>
+<h2 id="5-白盒aes的dfa攻击">
+<a class="header-anchor" href="#5-%e7%99%bd%e7%9b%92aes%e7%9a%84dfa%e6%94%bb%e5%87%bb"></a>
+5. 白盒AES的DFA攻击
+</h2><p>AES白盒加密主流的方法就是通过将原本的字节替换，行移位，列混淆和轮密钥加等操作用查表的方法实现，轮密钥则被合并到这些表中。
+首先需要明确的是，可以通过轮密钥推出主密钥，这是解出白盒AES密钥的关键</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714396609549-599374c9-2d16-4eef-a409-59ab2cb31235.png" alt="image.png">
+在倒数两次列混淆(mixColumns)之间的state随机修改一个字节.
+也就是第9轮的subbytes和shiftRows以及第8轮的addRoundKey中的任何一个时机修改即可,一般shiftRows是比较常见的,因为比较容易看出来</p>
+<p>修改后的异常密文和原密文可以用phoenixAES 还原出来第10轮密钥,# 第一行是正确密文 后面是故障密文,一般两百个故障密文足够了,可以写脚本批量调用,frida和unidbg都可</p>
+<pre class="mermaid">pip install phoenixAES
+</pre>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">phoenixAES</span>
+</span></span><span class="line"><span class="cl"><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;tracefile&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>  <span class="c1"># 第一行是正确密文 后面是故障密文</span>
+</span></span><span class="line"><span class="cl">    <span class="n">t</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&#34;&#34;&#34;1E93FA28448415F6798A4BD121259632 
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93FA1E448426F679DE4BD1D0259632
+</span></span></span><span class="line"><span class="cl"><span class="s2">7693FA28448415C5798AA2D1210F9632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E937328447615F6A88A4BD121259683
+</span></span></span><span class="line"><span class="cl"><span class="s2">1EEAFA283C8415F6798A4BD721258F32
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93302844FF15F6598A4BD121259657
+</span></span></span><span class="line"><span class="cl"><span class="s2">3793FA284484157E798AB9D121509632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E936B28444D15F69F8A4BD121259666
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E07FA283F8415F6798A4BBB2125FA32
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E92FA28CF8415F6798A4B9B21256532
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93EC28441015F6EE8A4BD1212596E4
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93FAEA448477F6793B4BD1F2259632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1EB2FA28218415F6798A4B1B2125A432
+</span></span></span><span class="line"><span class="cl"><span class="s2">6293FA28448415E7798A14D121419632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93FA32448498F679B24BD186259632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93FA08448491F679C94BD110259632
+</span></span></span><span class="line"><span class="cl"><span class="s2">5993FA2844841576798AF6D121CB9632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1EB9FA28808415F6798A4B1B21259C32
+</span></span></span><span class="line"><span class="cl"><span class="s2">8093FA28448415C4798A96D121219632
+</span></span></span><span class="line"><span class="cl"><span class="s2">DA93FA284484155F798AE9D1213B9632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93FA63448491F6794E4BD134259632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93242844F115F67D8A4BD121259687
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93302844B615F6508A4BD12125962B
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93FA2F448422F679164BD199259632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93FAD34484F5F679D64BD16B259632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93FA154484FEF6796B4BD1B3259632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E97FA28DB8415F6798A4B9621251932
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93FAE34484EAF679484BD146259632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E96FA284B8415F6798A4B832125C132
+</span></span></span><span class="line"><span class="cl"><span class="s2">9793FA2844841514798A27D121CF9632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E22FA28F48415F6798A4BC621256232
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E01FA28A28415F6798A4B3E2125E932
+</span></span></span><span class="line"><span class="cl"><span class="s2">1EA6FA281B8415F6798A4BE321253532
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93302844E715F6A78A4BD1212596B9
+</span></span></span><span class="line"><span class="cl"><span class="s2">8593FA2844841578798A17D1212D9632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93FAB944847CF679C64BD1A5259632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E939D2844D215F69C8A4BD121259620
+</span></span></span><span class="line"><span class="cl"><span class="s2">1EE5FA28B48415F6798A4B7C21259F32
+</span></span></span><span class="line"><span class="cl"><span class="s2">6093FA2844841500798ACCD1215D9632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93FAFF4484BEF679504BD111259632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E37FA28ED8415F6798A4B712125F532
+</span></span></span><span class="line"><span class="cl"><span class="s2">0693FA284484156E798A2FD121F89632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1EBCFA28078415F6798A4B6E2125C932
+</span></span></span><span class="line"><span class="cl"><span class="s2">7493FA2844841535798AD3D121E19632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93A72844B915F6F98A4BD121259667
+</span></span></span><span class="line"><span class="cl"><span class="s2">5A93FA284484151C798A09D121BB9632
+</span></span></span><span class="line"><span class="cl"><span class="s2">BD93FA2844841560798A81D121DB9632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1EDAFA28B88415F6798A4B2621256C32
+</span></span></span><span class="line"><span class="cl"><span class="s2">2C93FA28448415D9798A9CD121109632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93F728440E15F6868A4BD121259681
+</span></span></span><span class="line"><span class="cl"><span class="s2">DE93FA2844841593798ACDD121009632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93FC2844F215F6298A4BD12125960D
+</span></span></span><span class="line"><span class="cl"><span class="s2">6C93FA2844841558798AB6D121B09632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E76FA28248415F6798A4BAF21257E32
+</span></span></span><span class="line"><span class="cl"><span class="s2">4693FA28448415EC798A98D121D59632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E60FA288B8415F6798A4BC021257A32
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E932528447715F66F8A4BD1212596A3
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93B328442215F6BE8A4BD12125961A
+</span></span></span><span class="line"><span class="cl"><span class="s2">4493FA2844841576798AACD121929632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93A92844BE15F6888A4BD121259649
+</span></span></span><span class="line"><span class="cl"><span class="s2">3293FA2844841575798A69D121E19632
+</span></span></span><span class="line"><span class="cl"><span class="s2">C993FA28448415A3798A39D121F89632
+</span></span></span><span class="line"><span class="cl"><span class="s2">3A93FA28448415F0798AC4D121D89632
+</span></span></span><span class="line"><span class="cl"><span class="s2">2793FA2844841550798A72D121D59632
+</span></span></span><span class="line"><span class="cl"><span class="s2">0493FA2844841593798A53D121869632
+</span></span></span><span class="line"><span class="cl"><span class="s2">0193FA28448415A9798A8FD121779632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93A128441815F66D8A4BD1212596E8
+</span></span></span><span class="line"><span class="cl"><span class="s2">1EE7FA284F8415F6798A4BD92125E932
+</span></span></span><span class="line"><span class="cl"><span class="s2">8393FA284484155B798AC7D121759632
+</span></span></span><span class="line"><span class="cl"><span class="s2">0493FA28448415E6798AB8D121299632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E931628444915F63C8A4BD121259601
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93FA12448494F679984BD137259632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93C02844BC15F60A8A4BD1212596CE
+</span></span></span><span class="line"><span class="cl"><span class="s2">1EB0FA28D58415F6798A4BF121256232
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E937C2844A715F6A28A4BD1212596E2
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93FADD4484A5F679DA4BD13E259632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93FB2844FD15F6038A4BD1212596EB
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E71FA28D68415F6798A4BBD2125B832
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93FAD94484B8F679A74BD125259632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93FAD544845AF679B24BD1A6259632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93332844AF15F6768A4BD12125966F
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93FA024484D5F6797A4BD1F0259632
+</span></span></span><span class="line"><span class="cl"><span class="s2">E093FA2844841540798A57D121169632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E16FA28BE8415F6798A4B092125E832
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E933728443B15F6238A4BD1212596B1
+</span></span></span><span class="line"><span class="cl"><span class="s2">B693FA2844841538798A12D121B99632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1EB7FA28DC8415F6798A4BA821256532
+</span></span></span><span class="line"><span class="cl"><span class="s2">5093FA2844841563798A33D121589632
+</span></span></span><span class="line"><span class="cl"><span class="s2">5B93FA284484158F798A37D121689632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93D828445F15F6CE8A4BD121259687
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93722844EE15F6E28A4BD12125966B
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93FA0E448435F679344BD195259632
+</span></span></span><span class="line"><span class="cl"><span class="s2">9A93FA28448415E8798A8AD121A99632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E935A2844D915F6648A4BD1212596B0
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93FAE144848DF679624BD1E4259632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93FA31448497F679F84BD1B2259632
+</span></span></span><span class="line"><span class="cl"><span class="s2">1E93CF28442215F6358A4BD12125965B
+</span></span></span><span class="line"><span class="cl"><span class="s2">0493FA28448415E6798AB8D121299632
+</span></span></span><span class="line"><span class="cl"><span class="s2">     &#34;&#34;&#34;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf8&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">phoenixAES</span><span class="o">.</span><span class="n">crack_file</span><span class="p">(</span><span class="s1">&#39;tracefile&#39;</span><span class="p">,</span> <span class="p">[],</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 第3个参数传False代表解密</span>
+</span></span></code></pre></div><p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20241204230647639.png" alt="image-20241204230647639"></p>
+<p>得到第10轮密钥可以利用aes_keyschedule还原出主密钥,即是最开始的密钥 <a href="https://github.com/SideChannelMarvels/Stark">https://github.com/SideChannelMarvels/Stark</a>
+<img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20241204230721196.png" alt="image-20241204230721196"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+      <ul class="article-tag-list" itemprop="keywords">
+  
+    <li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/aes"
+        rel="tag"
+        >AES</a
+      >
+    </li>
+  
+    <li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/hash"
+        rel="tag"
+        >HASH</a
+      >
+    </li>
+  
+</ul>
+
+    </footer>
+  </div>
+  
+    
+  <nav
+    id="article-nav"
+    data-aos="fade-up"
+  >
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img
+              data-src="https://d-sketon.top/img/_backwebp/bg1.webp"
+              data-sizes="auto"
+              alt="SHA-512简介及代码实现"
+              class="lazyload"
+            />
+          
+        
+        <a href="/post/sha-512/"></a>
+        <div class="article-nav-caption">Newer</div>
+        <h3 class="article-nav-title">
+          
+            SHA-512简介及代码实现
+          
+        </h3>
+      </div>
+    
+
+    
+      <div class="article-nav-link-wrap article-nav-link-right">
+        
+          
+          
+            <img
+              data-src="https://d-sketon.top/img/_backwebp/bg1.webp"
+              data-sizes="auto"
+              alt="HMAC原理及代码实现"
+              class="lazyload"
+            />
+          
+        
+        <a href="/post/mhac/"></a>
+        <div class="article-nav-caption">Older</div>
+        <h3 class="article-nav-title">
+          
+            HMAC原理及代码实现
+          
+        </h3>
+      </div>
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+</section>
+        </div>
+        
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+
+<footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      
+        2020 -
+        2025
+      
+      <span class="footer-info-sep rotate"></span>
+      D-Sketon
+    </div>
+    
+      <div>
+        Powered by&nbsp;<a
+          href="https://gohugo.io/"
+          target="_blank"
+          >Hugo</a
+        >&nbsp; Theme.<a
+          href="https://github.com/D-Sketon/hugo-theme-reimu"
+          target="_blank"
+          >Reimu</a
+        >
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"
+          >&nbsp;
+            9.1k
+          </span
+        >
+        &nbsp;|&nbsp;
+        <span class="icon-coffee">&nbsp;
+          
+          
+
+          00:46
+        </span>
+      </div>
+    
+    
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv"
+          >Number of visits&nbsp;<span
+            id="busuanzi_value_site_pv"
+          ></span
+        ></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv"
+          >Number of visitors&nbsp;<span
+            id="busuanzi_value_site_uv"
+          ></span
+        ></span>
+      </div>
+    
+  </div>
+</footer>
+
+        
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      
+        <div class="sidebar-toc-sidebar">
+          <div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-aes分类">1. AES分类</a></li>
+    <li><a href="#2-pkcs填充方式">2. PKCS填充方式</a></li>
+    <li><a href="#3-加密模式">3. 加密模式</a></li>
+    <li><a href="#4-计算流程">4. 计算流程</a>
+      <ul>
+        <li><a href="#41-密钥编排">4.1. 密钥编排</a></li>
+        <li><a href="#42-10轮运算">4.2. 10轮运算</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-白盒aes的dfa攻击">5. 白盒AES的DFA攻击</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+        </div>
+        <div class="sidebar-common-sidebar hidden">
+          
+<div class="sidebar-author">
+  <img
+    data-src="/avatar/avatar.webp"
+    data-sizes="auto"
+    alt="D-Sketon"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">D-Sketon</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    
+    <div class="sidebar-state-number">7</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">
+      2
+    </div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">8</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="Home"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="Archives"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="About"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/friend"
+        aria-label="Friend"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+
+        </div>
+      
+    
+  </div>
+  
+    
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  
+</nav>
+
+    </div>
+    
+    
+    
+    
+
+
+
+
+
+
+  
+  
+    
+  
+  
+  
+  
+  
+  
+  
+  <script
+    src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"
+    
+    
+    
+    
+    integrity="sha384-3gT/vsepWkfz/ff7PpWNUeMzeWoH3cDhm/A8jM7ouoAK0/fP/9bcHHR5kHq2nf&#43;e" crossorigin="anonymous"
+  ></script>
+
+
+
+
+  
+  
+    
+  
+  
+  
+  
+  
+  
+  
+  <script
+    src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"
+    
+    
+    
+    
+    integrity="sha384-J08i8An/QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"
+  ></script>
+
+
+
+
+
+
+
+
+
+
+
+  
+      
+      <script src="/js/main.js" integrity="" crossorigin="anonymous" ></script>
+      
+
+
+
+  
+
+
+
+
+
+  
+      
+      <script src="/js/aos.js" integrity="" crossorigin="anonymous" ></script>
+      
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+
+
+
+
+
+  
+      
+      <script src="/js/pjax_main.js" integrity="" crossorigin="anonymous" data-pjax></script>
+      
+
+
+
+
+
+  
+
+  
+  
+    
+  
+  
+  
+  
+  
+  
+  
+  <script
+    src="https://npm.webcache.cn/mouse-firework@0.1.1/dist/index.umd.js"
+    
+    
+    
+    
+    integrity="sha384-8LyaidD9GPxQQgLJO/WRw/O2h3BoNq/ApI/ecpvM6RsrCz2qP2ppBXUKihP4V/2d" crossorigin="anonymous"
+  ></script>
+
+
+<script>
+  if (window.firework) {
+    const options = JSON.parse("{\"excludeelements\":[\"a\",\"button\"],\"particles\":[{\"colors\":[\"var(--red-1)\",\"var(--red-2)\",\"var(--red-3)\",\"var(--red-4)\"],\"duration\":[1200,1800],\"easing\":\"easeOutExpo\",\"move\":[\"emit\"],\"number\":20,\"shape\":\"circle\",\"shapeOptions\":{\"alpha\":[0.3,0.5],\"radius\":[16,32]}},{\"colors\":[\"var(--red-0)\"],\"duration\":[1200,1800],\"easing\":\"easeOutExpo\",\"move\":[\"diffuse\"],\"number\":1,\"shape\":\"circle\",\"shapeOptions\":{\"alpha\":[0.2,0.5],\"lineWidth\":6,\"radius\":20}}]}");
+    options.excludeElements = options.excludeelements;
+    delete options.excludeelements;
+    window.firework(options);
+  }
+</script>
+
+
+
+
+
+
+
+
+<div id="lazy-script">
+  <div>
+    
+      
+      
+        
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "D-Sketon",
+          title: "AES原理及白盒AES的DFA攻击",
+          url: "https:\/\/asu1tty.github.io\/post\/wb_aes\/",
+          description: "AES（Advanced Encryption Standard） 高级加密标准是 Rijndael 分组密码 的一种变体，由两位密码学家 Joan Daemen 和 Vincent Rijmen 开发，他们在 AES 选择过程中向 NIST 提交了一份提案Rijndael 是一系列具有不同密钥和块大小的密码。对于 AES，NIST 选择了 Rijndael 家族的三个成员，每个成员的块大小为 128 位，但有三种不同的密钥长度：128、192 和 256 位。\n1. AES分类 分类 密钥长度 轮密钥长度 扩展密钥长度 分组长度 加密轮数 AES-128 16字节 16 …",
+          cover: "https:\/\/asu1tty.github.io\/images\/banner.webp",
+        };
+      </script>
+    
+    
+    
+      
+
+
+
+
+
+  
+      
+      <script src="/js/insert_highlight.js" integrity="" crossorigin="anonymous" data-pjax></script>
+      
+
+      
+      
+      
+      
+      <script type="module" data-pjax>
+        
+        const PhotoSwipeLightbox = (await safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js", "sha384-DiL6M\/gG\u002bwmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF\/N6lrZi\/")).default;
+        
+        const pswp = () => {
+          if (_$$('.article-entry a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-entry',
+              children: 'a.article-gallery-item',
+              
+              pswpModule: () => safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8\u002boTJ7m3DfYEWX1fu1scuS4\u002bs")
+              
+            }).init();
+          }
+          if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-gallery',
+              children: 'a.article-gallery-item',
+              
+              pswpModule: () => safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8\u002boTJ7m3DfYEWX1fu1scuS4\u002bs")
+              
+            }).init();
+          }
+          window.lightboxStatus = 'done';
+          window.removeEventListener('lightbox:ready', pswp);
+        }
+        if(window.lightboxStatus === 'ready') {
+          pswp()
+        } else {
+          window.addEventListener('lightbox:ready', pswp);
+        }
+      </script>
+      
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+      
+    
+    
+  </div>
+</div>
+
+
+
+
+  
+
+  
+  
+    
+  
+  
+  
+  
+  
+  
+  
+  <script
+    src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js"
+    
+    async
+    
+    
+    integrity="sha384-0M75wtSkhjIInv4coYlaJU83&#43;OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id&#43;S" crossorigin="anonymous"
+  ></script>
+
+
+
+
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
+  </script>
+
+
+<script>
+  const reimuCopyright = String.raw`
+   ______     ______     __     __    __     __  __    
+  /\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+  \ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+   \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+    \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                    
+  `;
+  console.log(String.raw`%c ${reimuCopyright}`, "color: #ff5252;");
+  console.log(
+    "%c Theme.Reimu" + " %c https://github.com/D-Sketon/hugo-theme-reimu ",
+    "color: white; background: #ff5252; padding:5px 0;",
+    "padding:4px;border:1px solid #ff5252;",
+  );
+</script>
+
+
+
+
+
+
+    
+  </body>
+</html>
