@@ -1,0 +1,1437 @@
+<!doctype html>
+<html
+  lang="en" 
+  
+    data-theme-mode="auto"
+  
+>
+  <head>
+    
+    <meta charset="utf-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, shrink-to-fit=no"
+/>
+
+
+
+
+
+
+
+  
+
+<title>
+  RC4原理及代码实现 | D-Sketon
+</title>
+<meta
+  name="description"
+  content="少女祈祷中..."
+/>
+
+
+
+
+
+
+
+
+
+
+<script>
+  window.siteConfig = JSON.parse("{\"anchor_icon\":null,\"clipboard\":{\"copyright\":{\"content\":\"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！\",\"count\":50,\"enable\":false},\"fail\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"success\":\"复制成功(*^▽^*)\"},\"code_block\":{\"expand\":true},\"icon_font\":\"4552607_0khxww3tj3q9\",\"outdate\":{\"daysago\":180,\"enable\":true,\"message\":\"本文最后更新于 {time}，请注意文中内容可能已经发生变化。\"}}");
+</script>
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+  
+  
+    
+  
+
+  
+  
+  
+    
+  
+
+  
+    
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="preload"
+  as="style"
+  href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7cNoto%20Serif%20SC:400,400italic,700,700italic%7c&amp;display=swap"
+/>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7cNoto%20Serif%20SC:400,400italic,700,700italic%7c&amp;display=swap"
+  media="print"
+  onload="this.media='all'"
+/>
+
+
+
+
+
+
+
+  <link
+    rel="preload"
+    href="//at.alicdn.com/t/c/font_4552607_0khxww3tj3q9.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+
+
+  
+
+
+
+
+
+
+
+  
+ <link rel="stylesheet" href="/css/loader.min.de78b85a8ed3b39f875bfab20023f359ada6d633fc6a5730d66b52313ad697d7.css" />
+
+
+
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="RC4原理及代码实现 | D-Sketon" />
+  <meta
+    property="og:description"
+    content="少女祈祷中..."
+  />
+  <meta property="og:url" content="https://asu1tty.github.io/post/rc4/" />
+  <meta
+    property="og:site_name"
+    content="My New Hugo Site"
+  />
+  <meta
+    property="og:image"
+    content="/"
+  />
+  <meta property="article:author" content="D-Sketon" />
+  <meta property="article:published_time" content="2025-04-25T17:21:36&#43;08:00" />
+  <meta property="article:modified_time" content="2025-04-25T17:21:36&#43;08:00" />
+  
+    <meta property="article:tag" content="RC4流密码" />
+  
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:image" content="/" />
+  
+  
+  
+  
+  
+
+
+
+
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+
+
+
+
+
+
+  
+ <link rel="stylesheet" href="/css/main.min.917b4b64b3077b6ca379a339089491bc00c53a533398bfe4cba9118183cd7806.css" />
+
+
+
+
+
+  <link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+
+
+
+
+
+
+  <link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/katex@0.16.9/dist/katex.min.css"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+
+
+
+
+
+
+
+
+  
+
+  
+  
+    
+  
+  
+  
+  
+  
+  
+  
+  <script
+    src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"
+    
+    
+    
+    
+    integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"
+  ></script>
+
+
+
+
+
+  
+
+
+  <link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.0/dist/aos.css" />
+
+
+
+
+
+    
+  </head>
+  <body>
+    
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+        
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+          M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+        
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        
+<div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <div class='main-nav-icon icon rotate'>
+          
+            
+              &#xe62b;
+            
+          
+        </div>
+        <a class="main-nav-link" href="/">Home</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class='main-nav-icon icon rotate'>
+          
+            
+              &#xe62b;
+            
+          
+        </div>
+        <a class="main-nav-link" href="/archives">Archives</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class='main-nav-icon icon rotate'>
+          
+            
+              &#xe62b;
+            
+          
+        </div>
+        <a class="main-nav-link" href="/about">About</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class='main-nav-icon icon rotate'>
+          
+            
+              &#xe62b;
+            
+          
+        </div>
+        <a class="main-nav-link" href="/friend">Friend</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      
+        <picture>
+          
+        </picture>
+        
+          <img  fetchpriority="high" src="/images/banner.webp" alt="RC4原理及代码实现">
+        
+      
+    
+  
+
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          
+        
+  
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">RC4原理及代码实现</h1>
+          </a>
+        
+      
+  
+      
+        
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+        <div id="content"
+          
+          class="sidebar-right"  >
+          <aside id="sidebar">
+  
+  
+  
+  <div class="sidebar-wrapper wrap-sticky">
+    <div
+      class="sidebar-wrap"
+      data-aos="fade-up"
+    >
+      
+        
+          <div class="sidebar-toc-sidebar">
+            <div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-密码学中为什么经常使用异或">1. 密码学中为什么经常使用异或？</a></li>
+    <li><a href="#2-算法实现过程">2. 算法实现过程</a>
+      <ul>
+        <li><a href="#21-ksakey-scheduling-algorithm">2.1. KSA(key-scheduling algorithm)</a></li>
+        <li><a href="#22-prgapseudo-random-generation-algorithm">2.2. PRGA(pseudo-random generation algorithm)</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-密文与明文关系">3. 密文与明文关系</a></li>
+    <li><a href="#4-代码实现">4. 代码实现</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+          </div>
+          <div class="sidebar-common-sidebar hidden">
+            
+<div class="sidebar-author">
+  <img
+    data-src="/avatar/avatar.webp"
+    data-sizes="auto"
+    alt="D-Sketon"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">D-Sketon</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    
+    <div class="sidebar-state-number">8</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">
+      2
+    </div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">10</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="Home"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="Archives"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="About"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/friend"
+        aria-label="Friend"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+
+          </div>
+        
+      
+
+      
+        
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+        
+      
+    </div>
+  </div>
+
+  <div class="sidebar-widget">
+    
+  </div>
+  
+</aside>
+
+          <section id="main">
+  <article
+  class="h-entry article"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div
+    class="article-inner"
+    data-aos="fade-up"
+  >
+    <div class="article-meta">
+      <div class="article-date">
+  <span
+    class="article-date-link"
+    data-aos="zoom-in"
+  >
+    <time datetime="2025-04-25 17:21:36 &#43;0800 &#43;0800" itemprop="datePublished"
+      >2025-04-25</time
+    >
+    <time style="display: none;" id="post-update-time"
+      >2025-04-25</time
+    >
+  </span>
+</div>
+
+      <div class="article-category">
+  
+    <a
+      class="article-category-link"
+      href="/categories/crypto"
+      data-aos="zoom-in"
+      >CRYPTO</a
+    >
+  
+</div>
+
+    </div>
+    <div class="hr-line"></div>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote id="outdate-blockquote" style="display: none;">
+          <p></p>
+        </blockquote>
+      
+      
+        <p>在<a href="https://en.wikipedia.org/wiki/Cryptography" title="Cryptography">密码学</a>中，<strong>RC4</strong>（Rivest Cipher 4，也称为 <strong>ARC4</strong> 或 <strong>ARCFOUR，</strong> 意思是Alleged（所谓的） RC4，见下文）是一种<a href="https://en.wikipedia.org/wiki/Stream_cipher" title="Stream cipher">流密码</a> 。虽然它在软件中以其简单性和速度而著称，但在 RC4 中发现了多个漏洞，使其不安全。
+流密码（streamcipher）是对数据流进行连续处理的一类密码算法。流密码中一般以1比特、8比特或32比特等为单位进行加密和解密。其中RC4的加解密单位为8比特，也就是一个字节。</p>
+<h2 id="1-密码学中为什么经常使用异或">
+<a class="header-anchor" href="#1-%e5%af%86%e7%a0%81%e5%ad%a6%e4%b8%ad%e4%b8%ba%e4%bb%80%e4%b9%88%e7%bb%8f%e5%b8%b8%e4%bd%bf%e7%94%a8%e5%bc%82%e6%88%96"></a>
+1. 密码学中为什么经常使用异或？
+</h2><p>在密码学中经常使用异或运算，<code>RC4</code>的原理也依赖异或运算。
+下面解释摘自《图解密码技术 第三版》</p>
+<p><code>由于两个相同的数进行XOR运算的结果一定为0，因此如果将A⊕B的结果再与B进行XOR运算，则结果会变回A。也就是说，两个公式中的B会相互抵消。</code></p>
+<ul>
+<li>将明文A用密钥B进行加密，得到密文A⊕B</li>
+<li>将密文A⊕B用密钥B进行解密，得到明文A
+<img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250425172319106.png" alt="image-20250425172319106">
+图片摘自《图解密码技术 第三版》</li>
+</ul>
+<p><code>从图中可以看出，执行一次蒙版操作后，原来的图像被隐藏（掩盖）了，而执行两次蒙版操作后，就又可以得到原来的图像了。</code>
+<code>如果所使用的蒙版是完全随机的比特序列，则使用XOR就可以将原来的图像掩盖起来。但如果蒙版中的比特序列的排列是可以被推测出来的，那么实质上图像就没有被真正掩盖。对于密码技术来说，“是否可以预测”是非常重要的一点。能够产生不可预测的比特序列，对于密码技术的贡献是巨大的。这种不可预测的比特序列就称为随机数。</code></p>
+<h2 id="2-算法实现过程">
+<a class="header-anchor" href="#2-%e7%ae%97%e6%b3%95%e5%ae%9e%e7%8e%b0%e8%bf%87%e7%a8%8b"></a>
+2. 算法实现过程
+</h2><h3 id="21-ksakey-scheduling-algorithm">
+<a class="header-anchor" href="#21-ksakey-scheduling-algorithm"></a>
+2.1. KSA(key-scheduling algorithm)
+</h3><p>使用密钥调度算法(key-scheduling algorithm)</p>
+<ul>
+<li><strong>输入</strong>：一个可变长度的密钥（通常8-2048位）。</li>
+<li><strong>输出</strong>：一个256字节的置换数组S（S[0]到S[255]）。</li>
+</ul>
+<h4 id="211-第一步">
+<a class="header-anchor" href="#211-%e7%ac%ac%e4%b8%80%e6%ad%a5"></a>
+2.1.1. 第一步
+</h4><p>先初始化256字节的数组S，填充0到255的整数，即S[0]=0, S[1]=1, &hellip;, S[255]=255。</p>
+<h4 id="212-第二步">
+<a class="header-anchor" href="#212-%e7%ac%ac%e4%ba%8c%e6%ad%a5"></a>
+2.1.2. 第二步
+</h4><p>创建一个临时数组T，长度与密钥相同，将密钥循环填充到T中（如果密钥长度不足256字节，则重复密钥）。</p>
+<h4 id="213-第三步">
+<a class="header-anchor" href="#213-%e7%ac%ac%e4%b8%89%e6%ad%a5"></a>
+2.1.3. 第三步
+</h4><p>使用以下伪代码进行置换</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">for i = 0 to 255
+</span></span><span class="line"><span class="cl">    j = (j + S[i] + T[i]) mod 256
+</span></span><span class="line"><span class="cl">    swap S[i] and S[j]
+</span></span></code></pre></div><p>S数组被打乱，形成一个基于密钥的伪随机置换表。这样处理之后，就得到了介绍中提到的<code>不可预测的比特序列</code></p>
+<h3 id="22-prgapseudo-random-generation-algorithm">
+<a class="header-anchor" href="#22-prgapseudo-random-generation-algorithm"></a>
+2.2. PRGA(pseudo-random generation algorithm)
+</h3><p>使用伪随机生成算法生成比特流。</p>
+<ul>
+<li><strong>输入</strong>：初始化后的S数组，待加密/解密的明文/密文。</li>
+<li><strong>输出</strong>：与明文/密文等长的密钥流（keystream）。
+初始化两个变量i和j为0，执行以下伪代码</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">i = (i + 1) mod 256
+</span></span><span class="line"><span class="cl">j = (j + S[i]) mod 256
+</span></span><span class="line"><span class="cl">swap S[i] and S[j]
+</span></span><span class="line"><span class="cl">t = (S[i] + S[j]) mod 256
+</span></span><span class="line"><span class="cl">output S[t]
+</span></span></code></pre></div><p>生成与输入明文/密文等长的密钥流。</p>
+<h2 id="3-密文与明文关系">
+<a class="header-anchor" href="#3-%e5%af%86%e6%96%87%e4%b8%8e%e6%98%8e%e6%96%87%e5%85%b3%e7%b3%bb"></a>
+3. 密文与明文关系
+</h2><p>根据前面的介绍可以得到如下关系</p>
+<ul>
+<li>将生成的密钥流与明文逐字节进行<code>异或(XOR)</code>操作，得到密文：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">密文[i] = 明文[i] XOR 密钥流[i]
+</span></span></code></pre></div><ul>
+<li>解密过程相同，因为XOR是可逆的：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">明文[i] = 密文[i] XOR 密钥流[i]
+</span></span></code></pre></div><h2 id="4-代码实现">
+<a class="header-anchor" href="#4-%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0"></a>
+4. 代码实现
+</h2><p>Python</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env python</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># -*- coding: utf-8 -*-</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># author: @manojpandey</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Python 3 implementation for RC4 algorithm</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Brief: https://en.wikipedia.org/wiki/RC4</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Will use codecs, as &#39;str&#39; object in Python 3 doesn&#39;t have any attribute &#39;decode&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">codecs</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">MOD</span> <span class="o">=</span> <span class="mi">256</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">KSA</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;&#39;&#39; Key Scheduling Algorithm (from wikipedia):
+</span></span></span><span class="line"><span class="cl"><span class="s1">        for i from 0 to 255
+</span></span></span><span class="line"><span class="cl"><span class="s1">            S[i] := i
+</span></span></span><span class="line"><span class="cl"><span class="s1">        endfor
+</span></span></span><span class="line"><span class="cl"><span class="s1">        j := 0
+</span></span></span><span class="line"><span class="cl"><span class="s1">        for i from 0 to 255
+</span></span></span><span class="line"><span class="cl"><span class="s1">            j := (j + S[i] + key[i mod keylength]) mod 256
+</span></span></span><span class="line"><span class="cl"><span class="s1">            swap values of S[i] and S[j]
+</span></span></span><span class="line"><span class="cl"><span class="s1">        endfor
+</span></span></span><span class="line"><span class="cl"><span class="s1">    &#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># create the array &#34;S&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">S</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">MOD</span><span class="p">))</span>  <span class="c1"># [0,1,2, ... , 255]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">MOD</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">j</span> <span class="o">=</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">key</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="n">key_length</span><span class="p">])</span> <span class="o">%</span> <span class="n">MOD</span>
+</span></span><span class="line"><span class="cl">        <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">S</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="c1"># swap values</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">S</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">PRGA</span><span class="p">(</span><span class="n">S</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;&#39;&#39; Psudo Random Generation Algorithm (from wikipedia):
+</span></span></span><span class="line"><span class="cl"><span class="s1">        i := 0
+</span></span></span><span class="line"><span class="cl"><span class="s1">        j := 0
+</span></span></span><span class="line"><span class="cl"><span class="s1">        while GeneratingOutput:
+</span></span></span><span class="line"><span class="cl"><span class="s1">            i := (i + 1) mod 256
+</span></span></span><span class="line"><span class="cl"><span class="s1">            j := (j + S[i]) mod 256
+</span></span></span><span class="line"><span class="cl"><span class="s1">            swap values of S[i] and S[j]
+</span></span></span><span class="line"><span class="cl"><span class="s1">            K := S[(S[i] + S[j]) mod 256]
+</span></span></span><span class="line"><span class="cl"><span class="s1">            output K
+</span></span></span><span class="line"><span class="cl"><span class="s1">        endwhile
+</span></span></span><span class="line"><span class="cl"><span class="s1">    &#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">MOD</span>
+</span></span><span class="line"><span class="cl">        <span class="n">j</span> <span class="o">=</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">%</span> <span class="n">MOD</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">S</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="c1"># swap values</span>
+</span></span><span class="line"><span class="cl">        <span class="n">K</span> <span class="o">=</span> <span class="n">S</span><span class="p">[(</span><span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">S</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">%</span> <span class="n">MOD</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">yield</span> <span class="n">K</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">get_keystream</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;&#39;&#39; Takes the encryption key to get the keystream using PRGA
+</span></span></span><span class="line"><span class="cl"><span class="s1">        return object is a generator
+</span></span></span><span class="line"><span class="cl"><span class="s1">    &#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">S</span> <span class="o">=</span> <span class="n">KSA</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">PRGA</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">encrypt_logic</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;&#39;&#39; :key -&gt; encryption key used for encrypting, as hex string
+</span></span></span><span class="line"><span class="cl"><span class="s1">        :text -&gt; array of unicode values/ byte string to encrpyt/decrypt
+</span></span></span><span class="line"><span class="cl"><span class="s1">    &#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># For plaintext key, use this</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key</span> <span class="o">=</span> <span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">key</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># If key is in hex:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># key = codecs.decode(key, &#39;hex_codec&#39;)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># key = [c for c in key]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">keystream</span> <span class="o">=</span> <span class="n">get_keystream</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">val</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&#34;</span><span class="si">%02X</span><span class="s2">&#34;</span> <span class="o">%</span> <span class="p">(</span><span class="n">c</span> <span class="o">^</span> <span class="nb">next</span><span class="p">(</span><span class="n">keystream</span><span class="p">)))</span>  <span class="c1"># XOR and taking hex</span>
+</span></span><span class="line"><span class="cl">        <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">plaintext</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;&#39;&#39; :key -&gt; encryption key used for encrypting, as hex string
+</span></span></span><span class="line"><span class="cl"><span class="s1">        :plaintext -&gt; plaintext string to encrpyt
+</span></span></span><span class="line"><span class="cl"><span class="s1">    &#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">plaintext</span> <span class="o">=</span> <span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">plaintext</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">encrypt_logic</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">plaintext</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">decrypt</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;&#39;&#39; :key -&gt; encryption key used for encrypting, as hex string
+</span></span></span><span class="line"><span class="cl"><span class="s1">        :ciphertext -&gt; hex encoded ciphered text using RC4
+</span></span></span><span class="line"><span class="cl"><span class="s1">    &#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">,</span> <span class="s1">&#39;hex_codec&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">res</span> <span class="o">=</span> <span class="n">encrypt_logic</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">codecs</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s1">&#39;hex_codec&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;not-so-random-key&#39;</span>  <span class="c1"># plaintext</span>
+</span></span><span class="line"><span class="cl">    <span class="n">plaintext</span> <span class="o">=</span> <span class="s1">&#39;Good work! Your implementation is correct&#39;</span>  <span class="c1"># plaintext</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># encrypt the plaintext, using key and RC4 algorithm</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">encrypt</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">plaintext</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;plaintext:&#39;</span><span class="p">,</span> <span class="n">plaintext</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;ciphertext:&#39;</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># ..</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># Let&#39;s check the implementation</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># ..</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ciphertext</span> <span class="o">=</span> <span class="s1">&#39;2D7FEE79FFCE80B7DDB7BDA5A7F878CE298615&#39;</span>\
+</span></span><span class="line"><span class="cl">        <span class="s1">&#39;476F86F3B890FD4746BE2D8F741395F884B4A35CE979&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># change ciphertext to string again</span>
+</span></span><span class="line"><span class="cl">    <span class="n">decrypted</span> <span class="o">=</span> <span class="n">decrypt</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;decrypted:&#39;</span><span class="p">,</span> <span class="n">decrypted</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">plaintext</span> <span class="o">==</span> <span class="n">decrypted</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Congrats ! You made it.&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Shit! You pooped your pants ! .-.&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># until next time folks !</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># Test case 1</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># key = &#39;4B6579&#39; # &#39;Key&#39; in hex</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># key = &#39;Key&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># plaintext = &#39;Plaintext&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># ciphertext = &#39;BBF316E8D940AF0AD3&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span><span class="p">(</span><span class="n">encrypt</span><span class="p">(</span><span class="s1">&#39;Key&#39;</span><span class="p">,</span> <span class="s1">&#39;Plaintext&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;BBF316E8D940AF0AD3&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span><span class="p">(</span><span class="n">decrypt</span><span class="p">(</span><span class="s1">&#39;Key&#39;</span><span class="p">,</span> <span class="s1">&#39;BBF316E8D940AF0AD3&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;Plaintext&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># Test case 2</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># key = &#39;Wiki&#39; # &#39;57696b69&#39;in hex</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># plaintext = &#39;pedia&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># ciphertext should be 1021BF0420</span>
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span><span class="p">(</span><span class="n">encrypt</span><span class="p">(</span><span class="s1">&#39;Wiki&#39;</span><span class="p">,</span> <span class="s1">&#39;pedia&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;1021BF0420&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span><span class="p">(</span><span class="n">decrypt</span><span class="p">(</span><span class="s1">&#39;Wiki&#39;</span><span class="p">,</span> <span class="s1">&#39;1021BF0420&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;pedia&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># Test case 3</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># key = &#39;Secret&#39; # &#39;536563726574&#39; in hex</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># plaintext = &#39;Attack at dawn&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># ciphertext should be 45A01F645FC35B383552544B9BF5</span>
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span><span class="p">(</span><span class="n">encrypt</span><span class="p">(</span><span class="s1">&#39;Secret&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                   <span class="s1">&#39;Attack at dawn&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;45A01F645FC35B383552544B9BF5&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span><span class="p">(</span><span class="n">decrypt</span><span class="p">(</span><span class="s1">&#39;Secret&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                   <span class="s1">&#39;45A01F645FC35B383552544B9BF5&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;Attack at dawn&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">main</span><span class="p">()</span>
+</span></span></code></pre></div>
+      
+    </div>
+    <footer class="article-footer">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+      <ul class="article-tag-list" itemprop="keywords">
+  
+    <li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/rc4"
+        rel="tag"
+        >RC4</a
+      >
+    </li>
+  
+    <li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e6%b5%81%e5%af%86%e7%a0%81"
+        rel="tag"
+        >流密码</a
+      >
+    </li>
+  
+</ul>
+
+    </footer>
+  </div>
+  
+    
+  <nav
+    id="article-nav"
+    data-aos="fade-up"
+  >
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img
+              data-src="https://d-sketon.top/img/_backwebp/bg1.webp"
+              data-sizes="auto"
+              alt="AES原理及白盒AES的DFA攻击"
+              class="lazyload"
+            />
+          
+        
+        <a href="/post/wb_aes/"></a>
+        <div class="article-nav-caption">Newer</div>
+        <h3 class="article-nav-title">
+          
+            AES原理及白盒AES的DFA攻击
+          
+        </h3>
+      </div>
+    
+
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+</section>
+        </div>
+        
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+
+<footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      
+        2020 -
+        2025
+      
+      <span class="footer-info-sep rotate"></span>
+      D-Sketon
+    </div>
+    
+      <div>
+        Powered by&nbsp;<a
+          href="https://gohugo.io/"
+          target="_blank"
+          >Hugo</a
+        >&nbsp; Theme.<a
+          href="https://github.com/D-Sketon/hugo-theme-reimu"
+          target="_blank"
+          >Reimu</a
+        >
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"
+          >&nbsp;
+            9.8k
+          </span
+        >
+        &nbsp;|&nbsp;
+        <span class="icon-coffee">&nbsp;
+          
+          
+
+          00:50
+        </span>
+      </div>
+    
+    
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv"
+          >Number of visits&nbsp;<span
+            id="busuanzi_value_site_pv"
+          ></span
+        ></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv"
+          >Number of visitors&nbsp;<span
+            id="busuanzi_value_site_uv"
+          ></span
+        ></span>
+      </div>
+    
+  </div>
+</footer>
+
+        
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      
+        <div class="sidebar-toc-sidebar">
+          <div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-密码学中为什么经常使用异或">1. 密码学中为什么经常使用异或？</a></li>
+    <li><a href="#2-算法实现过程">2. 算法实现过程</a>
+      <ul>
+        <li><a href="#21-ksakey-scheduling-algorithm">2.1. KSA(key-scheduling algorithm)</a></li>
+        <li><a href="#22-prgapseudo-random-generation-algorithm">2.2. PRGA(pseudo-random generation algorithm)</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-密文与明文关系">3. 密文与明文关系</a></li>
+    <li><a href="#4-代码实现">4. 代码实现</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+        </div>
+        <div class="sidebar-common-sidebar hidden">
+          
+<div class="sidebar-author">
+  <img
+    data-src="/avatar/avatar.webp"
+    data-sizes="auto"
+    alt="D-Sketon"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">D-Sketon</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    
+    <div class="sidebar-state-number">8</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">
+      2
+    </div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">10</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="Home"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="Archives"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="About"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/friend"
+        aria-label="Friend"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+
+        </div>
+      
+    
+  </div>
+  
+    
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  
+</nav>
+
+    </div>
+    
+    
+    
+    
+
+
+
+
+
+
+  
+  
+    
+  
+  
+  
+  
+  
+  
+  
+  <script
+    src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"
+    
+    
+    
+    
+    integrity="sha384-3gT/vsepWkfz/ff7PpWNUeMzeWoH3cDhm/A8jM7ouoAK0/fP/9bcHHR5kHq2nf&#43;e" crossorigin="anonymous"
+  ></script>
+
+
+
+
+  
+  
+    
+  
+  
+  
+  
+  
+  
+  
+  <script
+    src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"
+    
+    
+    
+    
+    integrity="sha384-J08i8An/QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"
+  ></script>
+
+
+
+
+
+
+
+
+
+
+
+  
+      
+      <script src="/js/main.js" integrity="" crossorigin="anonymous" ></script>
+      
+
+
+
+  
+
+
+
+
+
+  
+      
+      <script src="/js/aos.js" integrity="" crossorigin="anonymous" ></script>
+      
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+
+
+
+
+
+  
+      
+      <script src="/js/pjax_main.js" integrity="" crossorigin="anonymous" data-pjax></script>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="lazy-script">
+  <div>
+    
+      
+      
+        
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "D-Sketon",
+          title: "RC4原理及代码实现",
+          url: "https:\/\/asu1tty.github.io\/post\/rc4\/",
+          description: "在密码学中，RC4（Rivest Cipher 4，也称为 ARC4 或 ARCFOUR， 意思是Alleged（所谓的） RC4，见下文）是一种流密码 。虽然它在软件中以其简单性和速度而著称，但在 RC4 中发现了多个漏洞，使其不安全。 流密码（streamcipher）是对数据流进行连续处理的一类密码算法。流密码中一般以1比特、8比特或32比特等为单位进行加密和解密。其中RC4的加解密单位为8比特，也就是一个字节。\n1. 密码学中为什么经常使用异或？ 在密码学中经常使用异或运算，RC4的原理也依赖异或运算。 下面解释摘自《图解密码技术 第三版》\n由于两个相同的数进行XOR运算的结果一定 …",
+          cover: "https:\/\/asu1tty.github.io\/images\/banner.webp",
+        };
+      </script>
+    
+    
+    
+      
+
+
+
+
+
+  
+      
+      <script src="/js/insert_highlight.js" integrity="" crossorigin="anonymous" data-pjax></script>
+      
+
+      
+      
+      
+      
+      <script type="module" data-pjax>
+        
+        const PhotoSwipeLightbox = (await safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js", "sha384-DiL6M\/gG\u002bwmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF\/N6lrZi\/")).default;
+        
+        const pswp = () => {
+          if (_$$('.article-entry a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-entry',
+              children: 'a.article-gallery-item',
+              
+              pswpModule: () => safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8\u002boTJ7m3DfYEWX1fu1scuS4\u002bs")
+              
+            }).init();
+          }
+          if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-gallery',
+              children: 'a.article-gallery-item',
+              
+              pswpModule: () => safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8\u002boTJ7m3DfYEWX1fu1scuS4\u002bs")
+              
+            }).init();
+          }
+          window.lightboxStatus = 'done';
+          window.removeEventListener('lightbox:ready', pswp);
+        }
+        if(window.lightboxStatus === 'ready') {
+          pswp()
+        } else {
+          window.addEventListener('lightbox:ready', pswp);
+        }
+      </script>
+      
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+      
+    
+    
+  </div>
+</div>
+
+
+  <script data-pjax>
+    var updateTime = _$('#post-update-time')?.innerHTML;
+
+    if (updateTime) {
+      const update = new Date(updateTime);
+      const now = new Date();
+      const diff = now - update;
+      const days = diff / 86400000;
+      const { daysago: daysAgo, message: template } = window.siteConfig.outdate;
+      if (days >= daysAgo) {
+        const message = template.replace(/{time}/, updateTime);
+        const blockquote = _$('#outdate-blockquote');
+        if (blockquote) {
+          blockquote.querySelector('p').innerText = message;
+          blockquote.style.display = 'block';
+        }
+      }
+    }
+  </script>
+
+
+
+  
+
+  
+  
+    
+  
+  
+  
+  
+  
+  
+  
+  <script
+    src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js"
+    
+    async
+    
+    
+    integrity="sha384-0M75wtSkhjIInv4coYlaJU83&#43;OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id&#43;S" crossorigin="anonymous"
+  ></script>
+
+
+
+
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
+  </script>
+
+
+<script>
+  const reimuCopyright = String.raw`
+   ______     ______     __     __    __     __  __    
+  /\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+  \ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+   \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+    \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                    
+  `;
+  console.log(String.raw`%c ${reimuCopyright}`, "color: #ff5252;");
+  console.log(
+    "%c Theme.Reimu" + " %c https://github.com/D-Sketon/hugo-theme-reimu ",
+    "color: white; background: #ff5252; padding:5px 0;",
+    "padding:4px;border:1px solid #ff5252;",
+  );
+</script>
+
+
+
+
+
+
+    
+  </body>
+</html>
