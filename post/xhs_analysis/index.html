@@ -1,0 +1,1767 @@
+<!doctype html>
+<html
+  lang="en" 
+  
+    data-theme-mode="auto"
+  
+>
+  <head>
+    
+    <meta charset="utf-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, shrink-to-fit=no"
+/>
+
+
+
+
+
+
+
+  
+
+<title>
+  某红薯shield参数分析 | D-Sketon
+</title>
+<meta
+  name="description"
+  content="少女祈祷中..."
+/>
+
+
+
+
+
+
+
+
+
+
+<script>
+  window.siteConfig = JSON.parse("{\"anchor_icon\":null,\"clipboard\":{\"copyright\":{\"content\":\"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！\",\"count\":50,\"enable\":false},\"fail\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"success\":\"复制成功(*^▽^*)\"},\"code_block\":{\"expand\":true},\"icon_font\":\"4552607_0khxww3tj3q9\",\"outdate\":{\"daysago\":180,\"enable\":true,\"message\":\"本文最后更新于 {time}，请注意文中内容可能已经发生变化。\"}}");
+</script>
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+  
+  
+    
+  
+
+  
+  
+  
+    
+  
+
+  
+    
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="preload"
+  as="style"
+  href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7cNoto%20Serif%20SC:400,400italic,700,700italic%7c&amp;display=swap"
+/>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7cNoto%20Serif%20SC:400,400italic,700,700italic%7c&amp;display=swap"
+  media="print"
+  onload="this.media='all'"
+/>
+
+
+
+
+
+
+
+  <link
+    rel="preload"
+    href="//at.alicdn.com/t/c/font_4552607_0khxww3tj3q9.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+
+
+
+  
+
+
+
+
+
+
+
+  
+ <link rel="stylesheet" href="/css/loader.min.de78b85a8ed3b39f875bfab20023f359ada6d633fc6a5730d66b52313ad697d7.css" />
+
+
+
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="某红薯shield参数分析 | D-Sketon" />
+  <meta
+    property="og:description"
+    content="少女祈祷中..."
+  />
+  <meta property="og:url" content="https://asu1tty.github.io/post/xhs_analysis/" />
+  <meta
+    property="og:site_name"
+    content="My New Hugo Site"
+  />
+  <meta
+    property="og:image"
+    content="/"
+  />
+  <meta property="article:author" content="D-Sketon" />
+  <meta property="article:published_time" content="2025-04-25T17:48:36&#43;08:00" />
+  <meta property="article:modified_time" content="2025-04-25T17:48:36&#43;08:00" />
+  
+    <meta property="article:tag" content="app reverse" />
+  
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:image" content="/" />
+  
+  
+  
+  
+  
+
+
+
+
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+
+
+
+
+
+
+  
+ <link rel="stylesheet" href="/css/main.min.917b4b64b3077b6ca379a339089491bc00c53a533398bfe4cba9118183cd7806.css" />
+
+
+
+
+
+  <link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+
+
+
+
+
+
+  <link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/katex@0.16.9/dist/katex.min.css"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+
+
+
+
+
+
+
+
+  
+
+  
+  
+    
+  
+  
+  
+  
+  
+  
+  
+  <script
+    src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"
+    
+    
+    
+    
+    integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"
+  ></script>
+
+
+
+
+
+  
+
+
+  <link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.0/dist/aos.css" />
+
+
+
+
+
+    
+  </head>
+  <body>
+    
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+        
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+          M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+        
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        
+<div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <div class='main-nav-icon icon rotate'>
+          
+            
+              &#xe62b;
+            
+          
+        </div>
+        <a class="main-nav-link" href="/">Home</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class='main-nav-icon icon rotate'>
+          
+            
+              &#xe62b;
+            
+          
+        </div>
+        <a class="main-nav-link" href="/archives">Archives</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class='main-nav-icon icon rotate'>
+          
+            
+              &#xe62b;
+            
+          
+        </div>
+        <a class="main-nav-link" href="/about">About</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class='main-nav-icon icon rotate'>
+          
+            
+              &#xe62b;
+            
+          
+        </div>
+        <a class="main-nav-link" href="/friend">Friend</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      
+        <picture>
+          
+        </picture>
+        
+          <img  fetchpriority="high" src="/images/banner.webp" alt="某红薯shield参数分析">
+        
+      
+    
+  
+
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          
+        
+  
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">某红薯shield参数分析</h1>
+          </a>
+        
+      
+  
+      
+        
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+        <div id="content"
+          
+          class="sidebar-right"  >
+          <aside id="sidebar">
+  
+  
+  
+  <div class="sidebar-wrapper wrap-sticky">
+    <div
+      class="sidebar-wrap"
+      data-aos="fade-up"
+    >
+      
+        
+          <div class="sidebar-toc-sidebar">
+            <div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-加密入口">1. 加密入口</a></li>
+    <li><a href="#确认初始化操作">确认初始化操作</a></li>
+    <li><a href="#上unidbg">上Unidbg</a></li>
+    <li><a href="#补环境">补环境</a>
+      <ul>
+        <li><a href="#第一个初始化">第一个初始化</a></li>
+        <li><a href="#第二个初始化">第二个初始化</a></li>
+      </ul>
+    </li>
+    <li><a href="#trace">trace</a></li>
+    <li><a href="#分析算法">分析算法</a>
+      <ul>
+        <li><a href="#base64">base64</a></li>
+        <li><a href="#后面的0x53字节">后面的0x53字节</a></li>
+        <li><a href="#rc4">RC4</a></li>
+        <li><a href="#魔改hmac-md5">魔改HMAC MD5</a></li>
+        <li><a href="#aes">AES</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+          </div>
+          <div class="sidebar-common-sidebar hidden">
+            
+<div class="sidebar-author">
+  <img
+    data-src="/avatar/avatar.webp"
+    data-sizes="auto"
+    alt="D-Sketon"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">D-Sketon</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    
+    <div class="sidebar-state-number">9</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">
+      3
+    </div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">11</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="Home"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="Archives"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="About"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/friend"
+        aria-label="Friend"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+
+          </div>
+        
+      
+
+      
+        
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+        
+      
+    </div>
+  </div>
+
+  <div class="sidebar-widget">
+    
+  </div>
+  
+</aside>
+
+          <section id="main">
+  <article
+  class="h-entry article"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div
+    class="article-inner"
+    data-aos="fade-up"
+  >
+    <div class="article-meta">
+      <div class="article-date">
+  <span
+    class="article-date-link"
+    data-aos="zoom-in"
+  >
+    <time datetime="2025-04-25 17:48:36 &#43;0800 &#43;0800" itemprop="datePublished"
+      >2025-04-25</time
+    >
+    <time style="display: none;" id="post-update-time"
+      >2025-04-25</time
+    >
+  </span>
+</div>
+
+      <div class="article-category">
+  
+    <a
+      class="article-category-link"
+      href="/categories/%e9%80%86%e5%90%91%e5%ae%9e%e6%88%98"
+      data-aos="zoom-in"
+      >逆向实战</a
+    >
+  
+</div>
+
+    </div>
+    <div class="hr-line"></div>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote id="outdate-blockquote" style="display: none;">
+          <p></p>
+        </blockquote>
+      
+      
+        <p>版本：8.70.0</p>
+<h2 id="1-加密入口">
+<a class="header-anchor" href="#1-%e5%8a%a0%e5%af%86%e5%85%a5%e5%8f%a3"></a>
+1. 加密入口
+</h2><p>加密入口在<code>com.xingin.shield.http.XhsHttpInterceptor</code></p>
+<p>jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器，并且打印<code>chain.request()</code>中的参数会发现传入前没有<code>shield</code>参数，执行完后有<code>shield</code>参数，正是在此Native层拦截器完成加密，并且通过函数名称也能猜测到so层有初始化操作</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250425175501568.png" alt="image-20250425175501568"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250425175516047.png" alt="image-20250425175516047"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250425175533360.png" alt="image-20250425175533360"></p>
+<p>在jadx反编译中并没有看到加载so的字样，所以通过hook<code>registerNatives</code>查找动态注册地址</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250425180205084.png" alt="image-20250425180205084"></p>
+<h2 id="确认初始化操作">
+<a class="header-anchor" href="#%e7%a1%ae%e8%ae%a4%e5%88%9d%e5%a7%8b%e5%8c%96%e6%93%8d%e4%bd%9c"></a>
+确认初始化操作
+</h2><p>对上面三个Native层函数进行hook</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250425180700015.png" alt="image-20250425180700015"></p>
+<p>可以发现：</p>
+<ul>
+<li>首先调用<code>initializeNative</code></li>
+<li>然后调用<code>initialize</code>,传入字符串<code>main</code>，得到long类型返回值</li>
+<li>后面的拦截器都传入了初始化后得到的long类型返回值</li>
+</ul>
+<h2 id="上unidbg">
+<a class="header-anchor" href="#%e4%b8%8aunidbg"></a>
+上Unidbg
+</h2><p>unidbg补环境模板</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.AndroidEmulator</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.Emulator</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.Module</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.arm.backend.Unicorn2Factory</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.file.FileResult</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.file.IOResolver</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.linux.android.AndroidEmulatorBuilder</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.linux.android.AndroidResolver</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.linux.android.dvm.*</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.linux.android.dvm.array.ArrayObject</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.memory.Memory</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.virtualmodule.android.AndroidModule</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.virtualmodule.android.JniGraphics</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.virtualmodule.android.MediaNdkModule</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.virtualmodule.android.SystemProperties</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.File</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.ArrayList</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.List</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">tmp</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">AbstractJni</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">IOResolver</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">AndroidEmulator</span><span class="w"> </span><span class="n">emulator</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">VM</span><span class="w"> </span><span class="n">vm</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Module</span><span class="w"> </span><span class="n">module</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">FileResult</span><span class="w"> </span><span class="nf">resolve</span><span class="p">(</span><span class="n">Emulator</span><span class="w"> </span><span class="n">emulator</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">pathname</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">oflags</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;==================open file=========================&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;open file:&#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">pathname</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">tmp</span><span class="p">(){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 创建模拟器实例</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emulator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AndroidEmulatorBuilder</span><span class="p">.</span><span class="na">for64Bit</span><span class="p">().</span><span class="na">setProcessName</span><span class="p">(</span><span class="s">&#34;com.xxx&#34;</span><span class="p">).</span><span class="na">addBackendFactory</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Unicorn2Factory</span><span class="p">(</span><span class="kc">false</span><span class="p">)).</span><span class="na">build</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 添加IO接口要加这句</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emulator</span><span class="p">.</span><span class="na">getSyscallHandler</span><span class="p">().</span><span class="na">addIOResolver</span><span class="p">(</span><span class="k">this</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 获取模拟器的内存操作接口</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">final</span><span class="w"> </span><span class="n">Memory</span><span class="w"> </span><span class="n">memory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">emulator</span><span class="p">.</span><span class="na">getMemory</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 设置系统类库解析</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">memory</span><span class="p">.</span><span class="na">setLibraryResolver</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">AndroidResolver</span><span class="p">(</span><span class="n">23</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 创建Android虚拟机,传入APK，Unidbg可以替我们做部分签名校验的工作</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">vm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">emulator</span><span class="p">.</span><span class="na">createDalvikVM</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">File</span><span class="p">(</span><span class="s">&#34;unidbg-android/src/test/java/com//files/.apk&#34;</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 4个虚拟模块</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">AndroidModule</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span><span class="n">vm</span><span class="p">).</span><span class="na">register</span><span class="p">(</span><span class="n">memory</span><span class="p">);</span><span class="w"> </span><span class="c1">//libandroid.so</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">MediaNdkModule</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span><span class="n">vm</span><span class="p">).</span><span class="na">register</span><span class="p">(</span><span class="n">memory</span><span class="p">);</span><span class="w"> </span><span class="c1">// libmediandk.so</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">JniGraphics</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span><span class="n">vm</span><span class="p">).</span><span class="na">register</span><span class="p">(</span><span class="n">memory</span><span class="p">);</span><span class="w"> </span><span class="c1">// libjnigraphics.so</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">SystemProperties</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span><span class="kc">null</span><span class="p">).</span><span class="na">register</span><span class="p">(</span><span class="n">memory</span><span class="p">);</span><span class="w"> </span><span class="c1">// libsystemproperties.so</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 设置JNI</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">vm</span><span class="p">.</span><span class="na">setJni</span><span class="p">(</span><span class="k">this</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 打印日志</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">vm</span><span class="p">.</span><span class="na">setVerbose</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 加载目标SO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">DalvikModule</span><span class="w"> </span><span class="n">dm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vm</span><span class="p">.</span><span class="na">loadLibrary</span><span class="p">(</span><span class="s">&#34;soname&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// DalvikModule dm = vm.loadLibrary(new File(&#34;unidbg-android/apks/xx/lib.so&#34;), true);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//获取本SO模块的句柄,后续需要用它</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dm</span><span class="p">.</span><span class="na">getModule</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 调用JNI OnLoad</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">dm</span><span class="p">.</span><span class="na">callJNI_OnLoad</span><span class="p">(</span><span class="n">emulator</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">};</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">callByAddress</span><span class="p">(){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// args list</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">10</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// jnienv</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">vm</span><span class="p">.</span><span class="na">getJNIEnv</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// jclazz</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">0</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// str1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">vm</span><span class="p">.</span><span class="na">addLocalObject</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">StringObject</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;str1&#34;</span><span class="p">)));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// strArr 假设字符串包含两个字符串</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// str6_1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">StringObject</span><span class="w"> </span><span class="n">str6_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringObject</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;str6_1&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">vm</span><span class="p">.</span><span class="na">addLocalObject</span><span class="p">(</span><span class="n">str6_1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// str6_2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">StringObject</span><span class="w"> </span><span class="n">str6_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringObject</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;str6_2&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">vm</span><span class="p">.</span><span class="na">addLocalObject</span><span class="p">(</span><span class="n">str6_2</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ArrayObject</span><span class="w"> </span><span class="n">arrayObject</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayObject</span><span class="p">(</span><span class="n">str6_1</span><span class="p">,</span><span class="n">str6_2</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">vm</span><span class="p">.</span><span class="na">addLocalObject</span><span class="p">(</span><span class="n">arrayObject</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 最后的int</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Number</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">module</span><span class="p">.</span><span class="na">callFunction</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span><span class="w"> </span><span class="n">0x2301</span><span class="p">,</span><span class="w"> </span><span class="n">list</span><span class="p">.</span><span class="na">toArray</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ArrayObject</span><span class="w"> </span><span class="n">resultArr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vm</span><span class="p">.</span><span class="na">getObject</span><span class="p">(</span><span class="n">number</span><span class="p">.</span><span class="na">intValue</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;result:&#34;</span><span class="o">+</span><span class="n">resultArr</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">};</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">callByAPI</span><span class="p">(){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">DvmClass</span><span class="w"> </span><span class="n">RequestCryptUtils</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vm</span><span class="p">.</span><span class="na">resolveClass</span><span class="p">(</span><span class="s">&#34;com/meituan/android/payguard/RequestCryptUtils&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">StringObject</span><span class="w"> </span><span class="n">str6_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringObject</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;str6_1&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">vm</span><span class="p">.</span><span class="na">addLocalObject</span><span class="p">(</span><span class="n">str6_1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">StringObject</span><span class="w"> </span><span class="n">str6_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringObject</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;str6_2&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">vm</span><span class="p">.</span><span class="na">addLocalObject</span><span class="p">(</span><span class="n">str6_2</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ArrayObject</span><span class="w"> </span><span class="n">arrayObject</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayObject</span><span class="p">(</span><span class="n">str6_1</span><span class="p">,</span><span class="n">str6_2</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ArrayObject</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RequestCryptUtils</span><span class="p">.</span><span class="na">callStaticJniMethodObject</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;encryptRequestWithRandom()&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;str1&#34;</span><span class="p">,</span><span class="s">&#34;str2&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;str3&#34;</span><span class="p">,</span><span class="s">&#34;str4&#34;</span><span class="p">,</span><span class="s">&#34;str5&#34;</span><span class="p">,</span><span class="n">arrayObject</span><span class="p">,</span><span class="n">1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">result</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">};</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">trace</span><span class="p">(){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">traceFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;unidbg-android/src/test/java/com/xx/trace.txt&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">PrintStream</span><span class="w"> </span><span class="n">traceStream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">try</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">traceStream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">PrintStream</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">FileOutputStream</span><span class="p">(</span><span class="n">traceFile</span><span class="p">),</span><span class="w"> </span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">FileNotFoundException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">//核心 trace 开启代码，也可以自己指定函数地址和偏移量</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	    </span><span class="n">emulator</span><span class="p">.</span><span class="na">traceCode</span><span class="p">(</span><span class="n">module</span><span class="p">.</span><span class="na">base</span><span class="p">,</span><span class="n">module</span><span class="p">.</span><span class="na">base</span><span class="o">+</span><span class="n">module</span><span class="p">.</span><span class="na">size</span><span class="p">).</span><span class="na">setRedirect</span><span class="p">(</span><span class="n">traceStream</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">HookByConsoleDebugger</span><span class="p">(){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Debugger</span><span class="w"> </span><span class="n">debugger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">emulator</span><span class="p">.</span><span class="na">attach</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">//        debugger.addBreakPoint(module.base + 0x15610);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">//        emulator.traceWrite(0x40420bc0, 0x40420bc0+32);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">debugger</span><span class="p">.</span><span class="na">addBreakPoint</span><span class="p">(</span><span class="n">module</span><span class="p">.</span><span class="na">findSymbolByName</span><span class="p">(</span><span class="s">&#34;memcpy&#34;</span><span class="p">).</span><span class="na">getAddress</span><span class="p">(),</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BreakPointCallback</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">onHit</span><span class="p">(</span><span class="n">Emulator</span><span class="o">&lt;?&gt;</span><span class="w"> </span><span class="n">emulator</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">address</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">RegisterContext</span><span class="w"> </span><span class="n">context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">emulator</span><span class="p">.</span><span class="na">getContext</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">context</span><span class="p">.</span><span class="na">getIntArg</span><span class="p">(</span><span class="n">2</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">UnidbgPointer</span><span class="w"> </span><span class="n">pointer1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">context</span><span class="p">.</span><span class="na">getPointerArg</span><span class="p">(</span><span class="n">0</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">UnidbgPointer</span><span class="w"> </span><span class="n">pointer2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">context</span><span class="p">.</span><span class="na">getPointerArg</span><span class="p">(</span><span class="n">1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Inspector</span><span class="p">.</span><span class="na">inspect</span><span class="p">(</span><span class="n">pointer2</span><span class="p">.</span><span class="na">getByteArray</span><span class="p">(</span><span class="n">0</span><span class="p">,</span><span class="n">len</span><span class="p">),</span><span class="s">&#34;dest &#34;</span><span class="o">+</span><span class="n">Long</span><span class="p">.</span><span class="na">toHexString</span><span class="p">(</span><span class="n">pointer1</span><span class="p">.</span><span class="na">peer</span><span class="p">)</span><span class="o">+</span><span class="s">&#34; src &#34;</span><span class="o">+</span><span class="n">Long</span><span class="p">.</span><span class="na">toHexString</span><span class="p">(</span><span class="n">pointer2</span><span class="p">.</span><span class="na">peer</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">});</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">tmp</span><span class="w"> </span><span class="n">demo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">tmp</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//demo.callByAddress();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//demo.callByAPI();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>修改包名，填写apk地址，填写so名称后，开始运行</p>
+<h2 id="补环境">
+<a class="header-anchor" href="#%e8%a1%a5%e7%8e%af%e5%a2%83"></a>
+补环境
+</h2><p>出现第一个环境错误</p>
+<p><code>com/xingin/shield/http/ContextHolder-&gt;sLogger:Lcom/xingin/shield/http/ShieldLogger;</code></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250425181625443.png" alt="image-20250425181625443"></p>
+<p>补上</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250425181810806.png" alt="image-20250425181810806"></p>
+<p>再次运行，JNI_Onload返回正常。</p>
+<h3 id="第一个初始化">
+<a class="header-anchor" href="#%e7%ac%ac%e4%b8%80%e4%b8%aa%e5%88%9d%e5%a7%8b%e5%8c%96"></a>
+第一个初始化
+</h3><p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250425191507576.png" alt="image-20250425191507576"></p>
+<p>运行报错，补环境</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250425191602776.png" alt="image-20250425191602776"></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">case</span><span class="w"> </span><span class="s">&#34;com/xingin/shield/http/ShieldLogger-&gt;nativeInitializeStart()V&#34;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>继续补</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250425191806115.png" alt="image-20250425191806115"></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">case</span><span class="w"> </span><span class="s">&#34;java/nio/charset/Charset-&gt;defaultCharset()Ljava/nio/charset/Charset;&#34;</span><span class="p">:{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">dvmClass</span><span class="p">.</span><span class="na">newObject</span><span class="p">(</span><span class="n">Charset</span><span class="p">.</span><span class="na">defaultCharset</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>继续补</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250425192257786.png" alt="image-20250425192257786"></p>
+<p>通过名称可以看到是在取deviceid，把真机的拿过来就行了</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250425192239711.png" alt="image-20250425192239711"></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">case</span><span class="w"> </span><span class="s">&#34;com/xingin/shield/http/ContextHolder-&gt;sDeviceId:Ljava/lang/String;&#34;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringObject</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span><span class="s">&#34;b2e8e75b-d18d-35dc-87c3-490cf0bb7f30&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>继续补，刚才的appid也拿出来</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250425192523305.png" alt="image-20250425192523305"></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">case</span><span class="w"> </span><span class="s">&#34;com/xingin/shield/http/ContextHolder-&gt;sAppId:I&#34;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">-</span><span class="n">319115519</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>继续补</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250425192716192.png" alt="image-20250425192716192"></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">case</span><span class="w"> </span><span class="s">&#34;com/xingin/shield/http/ShieldLogger-&gt;nativeInitializeEnd()V&#34;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>到此第一个初始化完成</p>
+<h3 id="第二个初始化">
+<a class="header-anchor" href="#%e7%ac%ac%e4%ba%8c%e4%b8%aa%e5%88%9d%e5%a7%8b%e5%8c%96"></a>
+第二个初始化
+</h3><p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250425193000047.png" alt="image-20250425193000047"></p>
+<p>继续补环境</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250425193147241.png" alt="image-20250425193147241"></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">case</span><span class="w"> </span><span class="s">&#34;com/xingin/shield/http/ShieldLogger-&gt;initializeStart()V&#34;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>继续补环境，下面这是经典的补环境问题，建议看龙哥这篇文章<a href="https://blog.csdn.net/qq_38851536/article/details/118024298">SO逆向入门实战教程八：文件读写</a></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250425193300633.png" alt="image-20250425193300633"></p>
+<p>直接给出代码</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">case</span><span class="w"> </span><span class="s">&#34;android/content/Context-&gt;getSharedPreferences(Ljava/lang/String;I)Landroid/content/SharedPreferences;&#34;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">vm</span><span class="p">.</span><span class="na">resolveClass</span><span class="p">(</span><span class="s">&#34;android/content/SharedPreferences&#34;</span><span class="p">).</span><span class="na">newObject</span><span class="p">(</span><span class="n">vaList</span><span class="p">.</span><span class="na">getObjectArg</span><span class="p">(</span><span class="n">0</span><span class="p">).</span><span class="na">getValue</span><span class="p">().</span><span class="na">toString</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>继续补，跟上面问题是同一个</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250425193750515.png" alt="image-20250425193750515"></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">case</span><span class="w"> </span><span class="s">&#34;android/content/SharedPreferences-&gt;getString(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;&#34;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">fileName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dvmObject</span><span class="p">.</span><span class="na">getValue</span><span class="p">().</span><span class="na">toString</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="s">&#34;s&#34;</span><span class="p">:{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">String</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vaList</span><span class="p">.</span><span class="na">getObjectArg</span><span class="p">(</span><span class="n">0</span><span class="p">).</span><span class="na">getValue</span><span class="p">().</span><span class="na">toString</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;key:&#34;</span><span class="o">+</span><span class="n">key</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="s">&#34;main&#34;</span><span class="p">:{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringObject</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span><span class="s">&#34;&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="s">&#34;main_hmac&#34;</span><span class="p">:{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringObject</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span><span class="s">&#34;u4IlKqm1pHQ/Y6YVkZRNG5+q2KYrjnQUdALX9aN8qWiLP2w8IjCtWoEB35lsCqqOURXQLZ4dPf+HjtuNs/RNUX2KaMHwxCfJN+HTOgUWmdEbbqYn42qyGX/Qw0b19LAo&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>继续补</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250425194029295.png" alt="image-20250425194029295"></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">case</span><span class="w"> </span><span class="s">&#34;com/xingin/shield/http/Base64Helper-&gt;decode(Ljava/lang/String;)[B&#34;</span><span class="p">:{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vaList</span><span class="p">.</span><span class="na">getObjectArg</span><span class="p">(</span><span class="n">0</span><span class="p">).</span><span class="na">getValue</span><span class="p">().</span><span class="na">toString</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ByteArray</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span><span class="w"> </span><span class="n">Base64</span><span class="p">.</span><span class="na">decodeBase64</span><span class="p">(</span><span class="n">input</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><h2 id="trace">
+<a class="header-anchor" href="#trace"></a>
+trace
+</h2><p>首先trace一份代码，放在一边。</p>
+<h2 id="分析算法">
+<a class="header-anchor" href="#%e5%88%86%e6%9e%90%e7%ae%97%e6%b3%95"></a>
+分析算法
+</h2><h3 id="base64">
+<a class="header-anchor" href="#base64"></a>
+base64
+</h3><p>在日志中搜索结果，找到第一次出现的位置</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427133326861.png" alt="image-20250427133326861"></p>
+<p>IDA中跳转过去看看</p>
+<p>别忘记是NewStringUTF函数生成字符串，所以参数<code>a1</code>很有可能是<code>JNIEnv</code>,重命名一下</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427134801541.png" alt="image-20250427134801541"></p>
+<p>看一下这一行的汇编</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427134910915.png" alt="image-20250427134910915"></p>
+<p><code>x1</code>就应该是第一个参数，下断点看一下</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Debugger</span><span class="w"> </span><span class="n">debugger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">emulator</span><span class="p">.</span><span class="na">attach</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">debugger</span><span class="p">.</span><span class="na">addBreakPoint</span><span class="p">(</span><span class="n">module</span><span class="p">.</span><span class="na">base</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">0xBCF2C</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427135157251.png" alt="image-20250427135157251"></p>
+<p>直接监控谁往地址<code>0x40461018</code>写入，一共134字节</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">emulator</span><span class="p">.</span><span class="na">traceWrite</span><span class="p">(</span><span class="n">0x40461018</span><span class="p">,</span><span class="w"> </span><span class="n">0x40461018</span><span class="o">+</span><span class="n">134</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427135424123.png" alt="image-20250427135424123"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427135513290.png" alt="image-20250427135513290"></p>
+<p>前两个字节 <code>58 59</code>是固定的，所以看后面的写入,到<code>0x9f0f0</code>看看</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427135811260.png" alt="image-20250427135811260"></p>
+<p>上一行是<code>memcpy</code>，下断点看看源数据地址</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Debugger</span><span class="w"> </span><span class="n">debugger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">emulator</span><span class="p">.</span><span class="na">attach</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">debugger</span><span class="p">.</span><span class="na">addBreakPoint</span><span class="p">(</span><span class="n">module</span><span class="p">.</span><span class="na">base</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">0x9F0EC</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427140038478.png" alt="image-20250427140038478"></p>
+<p>追踪地址<code>0x4059a018</code>写入</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427140221103.png" alt="image-20250427140221103"></p>
+<p>跳转到<code>0x4bfac</code>看一下</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427140628796.png" alt="image-20250427140628796"></p>
+<p>点进<code>byte_c0244</code>看一下</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427140700979.png" alt="image-20250427140700979"></p>
+<p>如果熟悉会发现这个base64的ASCII码表</p>
+<p>不熟悉也没事，将整个<code>sub_4BF44</code>函数丢给AI，让AI分析</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427140851887.png" alt="image-20250427140851887"></p>
+<p>现在的关键就是要验证这是不是标准的base64</p>
+<p>在<code>4BF44</code>下断点，看看入参</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427141112488.png" alt="image-20250427141112488"></p>
+<p>对比发现是标准的base64</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427141138180.png" alt="image-20250427141138180"></p>
+<p>那么需要追踪的数据就变成了</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427141244694.png" alt="image-20250427141244694"></p>
+<p>那么继续追踪地址<code>0x40456098</code>的写入</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427141610108.png" alt="image-20250427141610108"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427141630804.png" alt="image-20250427141630804"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427141819502.png" alt="image-20250427141819502"></p>
+<p>继续追踪<code>0x40593000</code>的写入</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427141854821.png" alt="image-20250427141854821"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427142152023.png" alt="image-20250427142152023"></p>
+<p>可以发现，前16个字节是在不同的地址写入的，先看前16字节,<code>0x4972c</code></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427142340223.png" alt="image-20250427142340223"></p>
+<p><code>v4</code>来自于第一个入参，看看入参</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427142534193.png" alt="image-20250427142534193"></p>
+<p>是指针，看看这个地址,注意内存中小端序<code>0x404531f0</code></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427142729386.png" alt="image-20250427142729386"></p>
+<p>那么继续跟踪<code>0x404531f5</code>偏移16字节的写入</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427143340084.png" alt="image-20250427143340084"></p>
+<p>跳转过去可以看到</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427143443778.png" alt="image-20250427143443778"></p>
+<p>前两个<code>00000001</code>都是在so里面固定的</p>
+<p><code>a1</code>是入参第一个，看看入参</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Debugger</span><span class="w"> </span><span class="n">debugger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">emulator</span><span class="p">.</span><span class="na">attach</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">debugger</span><span class="p">.</span><span class="na">addBreakPoint</span><span class="p">(</span><span class="n">module</span><span class="p">.</span><span class="na">base</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">0x4926C</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427143859160.png" alt="image-20250427143859160"></p>
+<p>是一个地址，看看这个地址<code>0x4058e010</code></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427143937058.png" alt="image-20250427143937058"></p>
+<p>那么根据这个地址的数据以及</p>
+<p><code>n0x18 = (*(*a1 + 20LL) + *(*a1 + 24LL) + *(*a1 + 28LL) + 24);</code>可以得到</p>
+<p><code>0x07+0x24+0x10+24 = 0x53</code></p>
+<p>那么继续看看这<code>0x07+0x24+0x10</code>三个数据是怎么来</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">emulator</span><span class="p">.</span><span class="na">traceWrite</span><span class="p">(</span><span class="n">0x4058e024</span><span class="p">,</span><span class="w"> </span><span class="n">0x4058e024</span><span class="o">+</span><span class="n">9</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p>分别来自</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427144941488.png" alt="image-20250427144941488"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427144951754.png" alt="image-20250427144951754"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427145009772.png" alt="image-20250427145009772"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427144841923.png" alt="image-20250427144841923">分别来自<code>a2</code>，<code>a5</code>，<code>n</code>，来自函数<code>4908C</code>的第二个，第五个，第七个参数</p>
+<p>下断点看看参数</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Debugger</span><span class="w"> </span><span class="n">debugger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">emulator</span><span class="p">.</span><span class="na">attach</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">debugger</span><span class="p">.</span><span class="na">addBreakPoint</span><span class="p">(</span><span class="n">module</span><span class="p">.</span><span class="na">base</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">0x4908C</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427145322541.png" alt="image-20250427145322541"></p>
+<p>是个地址，看看<code>0x40459038</code></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427145354404.png" alt="image-20250427145354404"></p>
+<p>此时就会发现这个数组是传入的<code>appVersionCode</code></p>
+<p>长度是0x07</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427145550310.png" alt="image-20250427145550310"></p>
+<p>又是一个地址，看看<code>0x4045a018</code></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427145614323.png" alt="image-20250427145614323"></p>
+<p>是<code>deviceId</code>，长度0x24</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427151444701.png" alt="image-20250427151444701"></p>
+<p>长度0x10，是后面魔改md5的结果</p>
+<p>前16字节到此分析结束，其实通过前面的抓包对比，心里就要有预期，前面可能是固定的</p>
+<h3 id="后面的0x53字节">
+<a class="header-anchor" href="#%e5%90%8e%e9%9d%a2%e7%9a%840x53%e5%ad%97%e8%8a%82"></a>
+后面的0x53字节
+</h3><h3 id="rc4">
+<a class="header-anchor" href="#rc4"></a>
+RC4
+</h3><p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427151725341.png" alt="image-20250427151725341"></p>
+<p>追踪地址<code>0x4045e060</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">emulator</span><span class="p">.</span><span class="na">traceWrite</span><span class="p">(</span><span class="n">0x4045e060</span><span class="p">,</span><span class="w"> </span><span class="n">0x4045e060</span><span class="o">+</span><span class="n">0x53</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427151852633.png" alt="image-20250427151852633"></p>
+<p>跳转过去看看<code>0x5126c</code></p>
+<p>代码里面出现许多置换操作和异或操作，很可能是RC4，通过将伪代码丢给AI，也可以分析得到</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427152410958.png" alt="image-20250427152410958"></p>
+<p>那么看看入参</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Debugger</span><span class="w"> </span><span class="n">debugger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">emulator</span><span class="p">.</span><span class="na">attach</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">debugger</span><span class="p">.</span><span class="na">addBreakPoint</span><span class="p">(</span><span class="n">module</span><span class="p">.</span><span class="na">base</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">0x511E0</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427152613283.png" alt="image-20250427152613283"></p>
+<p>x1寄存器的0x53不正好是我们数据的长度吗？</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427152726030.png" alt="image-20250427152726030"></p>
+<p>第一个参数就是RC4算法的S盒</p>
+<p>在结果处下断点</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427153437764.png" alt="image-20250427153437764"></p>
+<p>查看入参显示的地址<code>0x4045e060</code>
+<img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427153520879.png" alt="image-20250427153520879"></p>
+<p>正好是我们想要的结果</p>
+<p>那么需要验证是否是我们想要的标准RC4算法，那么先找到入参</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427153810159.png" alt="image-20250427153810159"></p>
+<p>我们还知道RC4算法的S盒生成需要密钥，所以我们需要找到这个密钥</p>
+<p>看看是谁调用了函数<code>sub_511E0</code></p>
+<p>可以看到有两个调用，这个时候使用trace的代码可以轻松的判断只走了第一个</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427154039388.png" alt="image-20250427154039388"></p>
+<p>跳过去看看</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427154119183.png" alt="image-20250427154119183"></p>
+<p>我们知道第一个参数，也就是<code>v21</code>是S盒，那么S盒很有可能在<code>sub_51698</code>中生成</p>
+<p>丢给AI也可以很容易的分析到，这就是RC4的密钥调度算法，用于初始化RC4的S盒。</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427154442513.png" alt="image-20250427154442513"></p>
+<p>那么我们只需要得到这个函数的第三个参数就行了</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427154626631.png" alt="image-20250427154626631"></p>
+<p>其实细心的朋友可以发现，IDA早就帮我们把密钥显示出来了，密钥就是字符<code>std::abort();</code></p>
+<p>那么验证一下</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427154922588.png" alt="image-20250427154922588"></p>
+<p>验证成功，那么需要追踪的数据就变成了</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427155015789.png" alt="image-20250427155015789"></p>
+<p>可以先分析这段数据的组成</p>
+<p><code>00 00 00 01 + app_id + 00 00 00 02 00 00 00 07 00 00 00 24 00 00 00 10 + build + deviceId + 18 D2 64 FD 56 08 DB 27 20 90 1F F0 65 A4 BF 27</code></p>
+<p>看看unidbg日志中有没有这段数据的记录</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427155105590.png" alt="image-20250427155105590"></p>
+<p>其中<code>00 00 00 01</code>固定，<code>00 00 00 02 00 00 00 07 00 00 00 24 00 00 00 10</code>是之前分析前16字节的数据</p>
+<p>那么只剩下最后的16字节未知，16字节的数据，那么很有可能与哈希算法中的md5有关。</p>
+<h3 id="魔改hmac-md5">
+<a class="header-anchor" href="#%e9%ad%94%e6%94%b9hmac-md5"></a>
+魔改HMAC MD5
+</h3><p>在unidbg控制台搜索一下</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427163809176.png" alt="image-20250427163809176"></p>
+<p>追踪一下地址<code>0xbffff478</code>,16个字节</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">emulator</span><span class="p">.</span><span class="na">traceWrite</span><span class="p">(</span><span class="n">0xbffff478L</span><span class="p">,</span><span class="w"> </span><span class="n">0xbffff478</span><span class="o">+</span><span class="n">16</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427164147693.png" alt="image-20250427164147693"></p>
+<p>跳转过去看一下<code>0x546d8</code></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427164256403.png" alt="image-20250427164256403"></p>
+<p>跳转过去正在赋值</p>
+<p><code>a1</code>来自<code>a2</code>，<code>a2</code>被传入了函数<code>sub_539DC</code>，点进去看看，发现大量的移位，异或等操作，这就是加密的地方</p>
+<p>在trace的日志中发现这个函数执行了五次</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427165447800.png" alt="image-20250427165447800"></p>
+<p>看看入参</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427165551513.png" alt="image-20250427165551513"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427165609206.png" alt="image-20250427165609206"></p>
+<p>第一次进入<code>sub_539DC</code></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427180138728.png" alt="image-20250427180138728"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427180152363.png" alt="image-20250427180152363"></p>
+<p>第一个参数很像md5的初始化常量，但是顺序被魔改了</p>
+<p>正常的初始化常量</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">A=0x67452301
+</span></span><span class="line"><span class="cl">B=0xefcdab89
+</span></span><span class="line"><span class="cl">C=0x98badcfe
+</span></span><span class="line"><span class="cl">D=0x10325476
+</span></span></code></pre></div><p>这里传入的初始化常量</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">A=0X10325476
+</span></span><span class="line"><span class="cl">B=0X98BADCFE
+</span></span><span class="line"><span class="cl">C=0XEFCDAB89
+</span></span><span class="line"><span class="cl">D=0X67452301
+</span></span></code></pre></div><p>第二个参数中出现了大量的0x36</p>
+<p>返回值</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427180220317.png" alt="image-20250427180220317"></p>
+<p>第二次进入<code>sub_539DC</code></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427180256868.png" alt="image-20250427180256868"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427180305790.png" alt="image-20250427180305790"></p>
+<p>同样的初始化常量</p>
+<p><code>5C</code>也是HMAC的特征</p>
+<p>返回值</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427180417888.png" alt="image-20250427180417888"></p>
+<p>第三次进入<code>sub_539DC</code></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427180536990.png" alt="image-20250427180536990"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427180829603.png" alt="image-20250427180829603"></p>
+<p>传入的第一个参数用到了第一次md5的结果，第二个参数是要加密的字符串</p>
+<p>返回值
+<img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427180949402.png" alt="image-20250427180949402"></p>
+<p>第四次进入<code>sub_539DC</code></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427181146090.png" alt="image-20250427181146090"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427181214549.png" alt="image-20250427181214549"></p>
+<p>第一个参数是第三次的MD5结果，第二个参数明显可以看到填充特征<code>0x80</code>，以及最后八个字节消息长度，注意是小端序，那么长度为<code>0x30e8</code>。</p>
+<p>返回值</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427181539578.png" alt="image-20250427181539578"></p>
+<p>第五次进入<code>sub_539DC</code></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427181613297.png" alt="image-20250427181613297"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427181713606.png" alt="image-20250427181713606"></p>
+<p>第一个参数是第二次的返回值，第二个参数是第四次的返回值以及填充</p>
+<p>返回值</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427182017770.png" alt="image-20250427182017770"></p>
+<p>返回值正是我们要找的数据。</p>
+<p>分析一下加密流程</p>
+<ul>
+<li>第一次将HMAC的密钥与0x36异或生成扩展密钥1，由于恰好扩展密钥1长度为64字节，恰好为一个分组，那么可以先计算出第一次md5结果，称为<code>md5-1</code></li>
+<li>第二次将HMAC的密钥与0x36异或生成扩展密钥2，由于恰好扩展密钥2长度为64字节，恰好为一个分组，那么可以先计算出第一次md5结果，称为<code>md5-2</code></li>
+<li>第三次，回到之前我的文章中介绍，第一次hash的输入是<code>扩展密钥1 + 输入字符串</code>,并且md5分组加密，第二组的初始化常量为第一组的md5结果。如此一来，恰好对应第三次的初始化常量为第一次的md5结果。</li>
+<li>第四次，初始化常量为第三次计算的md5结果，输入为剩余未加密的数据，当函数运行完，至此HMAC的第一次hash完结</li>
+<li>第五次正是HMAC的第二次hash，第二次hash的输入是<code>扩展密钥2+第一次哈希</code>，由于扩展密钥2长度为64字节，恰好为一个分组，那么第一个参数初始化常量不正好是第二次的md5结果吗，再加上第二个参数输入为第一次哈希并且填充。最终得到我们想要的结果。</li>
+</ul>
+<p>那么到现在先确定初始化常量是被魔改了的，找来一份标准的md5，将初始化常量修改，并且传进入参，看看是不是这样
+入参</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427182642976.png" alt="image-20250427182642976"></p>
+<p>会发现结果不对，说明魔改点不仅仅是初始化常量，分析ida的伪代码。</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427182906920.png" alt="image-20250427182906920"></p>
+<p>仔细分析可以发现，在标准算法中的循环左移变成了循环右移，这不是关键，可能是伪代码的识别问题，但是这里第一个循环右移位数是26，等价于循环左移6位。但在标准的md5算法中，第一个循环左移位数是7。那么循环左移的位数发生了变化，照着伪代码修改循环左移的位数。</p>
+<p>会发现修改了循环左移位数还是不行，那么考虑经常遇到的魔改K表</p>
+<p>那么通过分析64轮中第一轮的计算情况</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427184224006.png" alt="image-20250427184224006"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427184242562.png" alt="image-20250427184242562"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427184304448.png" alt="image-20250427184304448"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427184754951.png" alt="image-20250427184754951"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427184916839.png" alt="image-20250427184916839"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427185134268.png" alt="image-20250427185134268"></p>
+<p>从<code>a = (a + F(b, c, d) + x + ac) &amp; 0xFFFFFFFF</code>来着手分析</p>
+<p>其中<code>((v3 ^ v4) &amp; v5 ^ v4)</code>对应着F函数，<code>v6</code>对应着a，<code>v7</code>来自入参a2，对应着标准代码中的words[0]，那么<code>result[23]</code>就是代表从K表中取值了。搜索伪代码发现存在<code>result[86]</code>,刚好对应从0-63即64个K值表</p>
+<p>K表可以从trace从一个个找，也可以从unidbg中直接打印出来</p>
+<p>我选择从unidbg中打印出来</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427190259436.png" alt="image-20250427190259436"></p>
+<p>鼠标放在result上，按下TAB，查看这一行的汇编</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427190352989.png" alt="image-20250427190352989"></p>
+<ul>
+<li><strong>ldp</strong>: Load Pair，表示加载一对寄存器值</li>
+<li><strong>w27, w30</strong>: 目标寄存器，表示将数据加载到 32 位寄存器 w27 和 w30 中（w 表示 32 位，相对于 64 位的 x 寄存器）。</li>
+</ul>
+<p>那么在<code>0X53D5C</code>处下断，<code>x0</code>里就是我们的K表了</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427190615306.png" alt="image-20250427190615306"></p>
+<p>第一行是不是很熟悉，说明传入的第一个参数里面除了包含初始化常量，还包含了K表</p>
+<p>将K表拿下来，替换标准md5，照着伪代码改，注意在第二大轮中的第一轮，第四轮，第十四轮K值还分别与<code>0xFF00FF00</code>,<code>FF0011FF</code>,<code>0xFF110011</code></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427214830677.png" alt="image-20250427214830677"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427214904199.png" alt="image-20250427214904199"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427214931808.png" alt="image-20250427214931808"></p>
+<p>然而，改完之后，发现MD5的结果还是不对。</p>
+<p>那么尝试在四大轮，每一轮结束后打印<code>A,B,C,D</code>的值，然后再trace中搜索</p>
+<p>搜索发现第一，第二大轮的结果能搜索到，第三大轮开始就搜索不到，那么问题就出现在这之间了，继续缩小范围</p>
+<p>缩小到第40轮时，发现B值无法在trace中搜索到</p>
+<p>通过对上面正确的轮加密进行变量重命名
+<img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427222750153.png" alt="image-20250427222750153"></p>
+<p><code>v102</code>的值应该是A，重复此操作，会发现40轮与41轮发生了交换，42与43轮发生了交换</p>
+<p>其实使用上面修改完的MD5实现还原时，会发现前面两次函数进入的结果都对，第三次传入的字符串不对，最终发现填充也发生了魔改，最后的消息长度会加上一个分组的长度。</p>
+<p>到此md5还原成功。</p>
+<p>还剩下HMAC的key不知道是怎么来的</p>
+<h3 id="aes">
+<a class="header-anchor" href="#aes"></a>
+AES
+</h3><p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427232604700.png" alt="image-20250427232604700"></p>
+<p>现在就变成了寻找这一段数据</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427232643608.png" alt="image-20250427232643608"></p>
+<p>在unidbg中看看日志</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427232905364.png" alt="image-20250427232905364"></p>
+<p>trace这一段内存的写入</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">emulator</span><span class="p">.</span><span class="na">traceWrite</span><span class="p">(</span><span class="n">0x4045e010</span><span class="p">,</span><span class="w"> </span><span class="n">0x4045e010</span><span class="o">+</span><span class="n">64</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250427232842916.png" alt="image-20250427232842916"></p>
+<p>跳转过去看看汇编</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250428151559540.png" alt="image-20250428151559540"></p>
+<p>看不懂思密达，问一下AI</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250428151701325.png" alt="image-20250428151701325"></p>
+<p>那么<code>Q0</code>的值就是来自于<code>Q0</code>与<code>Q1</code>的异或，在trace文件中可以看到这一地址执行了6次，可惜在trace的文件中无法看到Q系列寄存器，没事，下断点看</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Debugger</span><span class="w"> </span><span class="n">debugger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">emulator</span><span class="p">.</span><span class="na">attach</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">debugger</span><span class="p">.</span><span class="na">addBreakPoint</span><span class="p">(</span><span class="n">module</span><span class="p">.</span><span class="na">base</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">0x52A68</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p>在python中打印结果</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250428152802524.png" alt="image-20250428152802524"></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250428152825993.png" alt="image-20250428152825993"></p>
+<p>正是我们需要的结果，不过是反着来的</p>
+<p>那么我们就需要找到前面异或的数据是怎么来的</p>
+<p>别忘了前面传入的数据还没用到从<code>SharedPreferences</code>读取到的<code>main-hmac</code></p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250428153056714.png" alt="image-20250428153056714"></p>
+<p>正是输入的右边部分</p>
+<p>在这里<code>a6</code>正是加密函数</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250428162626552.png" alt="image-20250428162626552"></p>
+<p>可是跳转不过去</p>
+<p>在trace中找到这一行的地址，跳转过去</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250428162708119.png" alt="image-20250428162708119"></p>
+<p>看一下输入</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250428162914605.png" alt="image-20250428162914605"></p>
+<p>x0是不是很熟悉</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250428162949317.png" alt="image-20250428162949317"></p>
+<p>x1看不出来什么</p>
+<p><img src="https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250428163022495.png" alt="image-20250428163022495"></p>
+<p>x2 的大小<code>16 * 11 = 176</code>字节，这不正好是AES扩展后的11个密钥吗？</p>
+<p>不建议照着标准AES改，后面的魔改AES就得照着IDA跟trace扣代码了，最后剩下体力活</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+      <ul class="article-tag-list" itemprop="keywords">
+  
+    <li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/app-reverse"
+        rel="tag"
+        >APP REVERSE</a
+      >
+    </li>
+  
+</ul>
+
+    </footer>
+  </div>
+  
+    
+  <nav
+    id="article-nav"
+    data-aos="fade-up"
+  >
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img
+              data-src="https://d-sketon.top/img/_backwebp/bg1.webp"
+              data-sizes="auto"
+              alt="RC4原理及代码实现"
+              class="lazyload"
+            />
+          
+        
+        <a href="/post/rc4/"></a>
+        <div class="article-nav-caption">Newer</div>
+        <h3 class="article-nav-title">
+          
+            RC4原理及代码实现
+          
+        </h3>
+      </div>
+    
+
+    
+  </nav>
+
+
+  
+</article>
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+</section>
+        </div>
+        
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+
+<footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      
+        2020 -
+        2025
+      
+      <span class="footer-info-sep rotate"></span>
+      D-Sketon
+    </div>
+    
+      <div>
+        Powered by&nbsp;<a
+          href="https://gohugo.io/"
+          target="_blank"
+          >Hugo</a
+        >&nbsp; Theme.<a
+          href="https://github.com/D-Sketon/hugo-theme-reimu"
+          target="_blank"
+          >Reimu</a
+        >
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"
+          >&nbsp;
+            10.6k
+          </span
+        >
+        &nbsp;|&nbsp;
+        <span class="icon-coffee">&nbsp;
+          
+          
+
+          00:54
+        </span>
+      </div>
+    
+    
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv"
+          >Number of visits&nbsp;<span
+            id="busuanzi_value_site_pv"
+          ></span
+        ></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv"
+          >Number of visitors&nbsp;<span
+            id="busuanzi_value_site_uv"
+          ></span
+        ></span>
+      </div>
+    
+  </div>
+</footer>
+
+        
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      
+        <div class="sidebar-toc-sidebar">
+          <div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-加密入口">1. 加密入口</a></li>
+    <li><a href="#确认初始化操作">确认初始化操作</a></li>
+    <li><a href="#上unidbg">上Unidbg</a></li>
+    <li><a href="#补环境">补环境</a>
+      <ul>
+        <li><a href="#第一个初始化">第一个初始化</a></li>
+        <li><a href="#第二个初始化">第二个初始化</a></li>
+      </ul>
+    </li>
+    <li><a href="#trace">trace</a></li>
+    <li><a href="#分析算法">分析算法</a>
+      <ul>
+        <li><a href="#base64">base64</a></li>
+        <li><a href="#后面的0x53字节">后面的0x53字节</a></li>
+        <li><a href="#rc4">RC4</a></li>
+        <li><a href="#魔改hmac-md5">魔改HMAC MD5</a></li>
+        <li><a href="#aes">AES</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+        </div>
+        <div class="sidebar-common-sidebar hidden">
+          
+<div class="sidebar-author">
+  <img
+    data-src="/avatar/avatar.webp"
+    data-sizes="auto"
+    alt="D-Sketon"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">D-Sketon</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    
+    <div class="sidebar-state-number">9</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">
+      3
+    </div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">11</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="Home"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="Archives"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="About"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/friend"
+        aria-label="Friend"
+      ></a>
+      <div class='sidebar-menu-icon icon rotate'>
+        
+          
+            &#xe62b;
+          
+        
+      </div>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+
+        </div>
+      
+    
+  </div>
+  
+    
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  
+</nav>
+
+    </div>
+    
+    
+    
+    
+
+
+
+
+
+
+  
+  
+    
+  
+  
+  
+  
+  
+  
+  
+  <script
+    src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"
+    
+    
+    
+    
+    integrity="sha384-3gT/vsepWkfz/ff7PpWNUeMzeWoH3cDhm/A8jM7ouoAK0/fP/9bcHHR5kHq2nf&#43;e" crossorigin="anonymous"
+  ></script>
+
+
+
+
+  
+  
+    
+  
+  
+  
+  
+  
+  
+  
+  <script
+    src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"
+    
+    
+    
+    
+    integrity="sha384-J08i8An/QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"
+  ></script>
+
+
+
+
+
+
+
+
+
+
+
+  
+      
+      <script src="/js/main.js" integrity="" crossorigin="anonymous" ></script>
+      
+
+
+
+  
+
+
+
+
+
+  
+      
+      <script src="/js/aos.js" integrity="" crossorigin="anonymous" ></script>
+      
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+
+
+
+
+
+  
+      
+      <script src="/js/pjax_main.js" integrity="" crossorigin="anonymous" data-pjax></script>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="lazy-script">
+  <div>
+    
+      
+      
+        
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "D-Sketon",
+          title: "某红薯shield参数分析",
+          url: "https:\/\/asu1tty.github.io\/post\/xhs_analysis\/",
+          description: "版本：8.70.0\n1. 加密入口 加密入口在com.xingin.shield.http.XhsHttpInterceptor\njadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器，并且打印chain.request()中的参数会发现传入前没有shield参数，执行完后有shield参数，正是在此Native层拦截器完成加密，并且通过函数名称也能猜测到so层有初始化操作\n在jadx反编译中并没有看到加载so的字样，所以通过hookregisterNatives查找动态注册地址\n确认初始化操作 对上面三个Native层函数进行hook\n可以发现：\n首先调 …",
+          cover: "https:\/\/asu1tty.github.io\/images\/banner.webp",
+        };
+      </script>
+    
+    
+    
+      
+
+
+
+
+
+  
+      
+      <script src="/js/insert_highlight.js" integrity="" crossorigin="anonymous" data-pjax></script>
+      
+
+      
+      
+      
+      
+      <script type="module" data-pjax>
+        
+        const PhotoSwipeLightbox = (await safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js", "sha384-DiL6M\/gG\u002bwmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF\/N6lrZi\/")).default;
+        
+        const pswp = () => {
+          if (_$$('.article-entry a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-entry',
+              children: 'a.article-gallery-item',
+              
+              pswpModule: () => safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8\u002boTJ7m3DfYEWX1fu1scuS4\u002bs")
+              
+            }).init();
+          }
+          if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-gallery',
+              children: 'a.article-gallery-item',
+              
+              pswpModule: () => safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8\u002boTJ7m3DfYEWX1fu1scuS4\u002bs")
+              
+            }).init();
+          }
+          window.lightboxStatus = 'done';
+          window.removeEventListener('lightbox:ready', pswp);
+        }
+        if(window.lightboxStatus === 'ready') {
+          pswp()
+        } else {
+          window.addEventListener('lightbox:ready', pswp);
+        }
+      </script>
+      
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+      
+    
+    
+  </div>
+</div>
+
+
+  <script data-pjax>
+    var updateTime = _$('#post-update-time')?.innerHTML;
+
+    if (updateTime) {
+      const update = new Date(updateTime);
+      const now = new Date();
+      const diff = now - update;
+      const days = diff / 86400000;
+      const { daysago: daysAgo, message: template } = window.siteConfig.outdate;
+      if (days >= daysAgo) {
+        const message = template.replace(/{time}/, updateTime);
+        const blockquote = _$('#outdate-blockquote');
+        if (blockquote) {
+          blockquote.querySelector('p').innerText = message;
+          blockquote.style.display = 'block';
+        }
+      }
+    }
+  </script>
+
+
+
+  
+
+  
+  
+    
+  
+  
+  
+  
+  
+  
+  
+  <script
+    src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js"
+    
+    async
+    
+    
+    integrity="sha384-0M75wtSkhjIInv4coYlaJU83&#43;OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id&#43;S" crossorigin="anonymous"
+  ></script>
+
+
+
+
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
+  </script>
+
+
+<script>
+  const reimuCopyright = String.raw`
+   ______     ______     __     __    __     __  __    
+  /\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+  \ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+   \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+    \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                    
+  `;
+  console.log(String.raw`%c ${reimuCopyright}`, "color: #ff5252;");
+  console.log(
+    "%c Theme.Reimu" + " %c https://github.com/D-Sketon/hugo-theme-reimu ",
+    "color: white; background: #ff5252; padding:5px 0;",
+    "padding:4px;border:1px solid #ff5252;",
+  );
+</script>
+
+
+
+
+
+
+    
+  </body>
+</html>

@@ -421,17 +421,17 @@
   <div class="sidebar-state-article">
     <div>Posts</div>
     
-    <div class="sidebar-state-number">8</div>
+    <div class="sidebar-state-number">9</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
     <div class="sidebar-state-number">
-      2
+      3
     </div>
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">10</div>
+    <div class="sidebar-state-number">11</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -893,9 +893,8 @@ AES的整体图景可以分成左右两块，即明文的处理和密钥的编�
 在倒数两次列混淆(mixColumns)之间的state随机修改一个字节.
 也就是第9轮的subbytes和shiftRows以及第8轮的addRoundKey中的任何一个时机修改即可,一般shiftRows是比较常见的,因为比较容易看出来</p>
 <p>修改后的异常密文和原密文可以用phoenixAES 还原出来第10轮密钥,# 第一行是正确密文 后面是故障密文,一般两百个故障密文足够了,可以写脚本批量调用,frida和unidbg都可</p>
-<pre class="mermaid">pip install phoenixAES
-</pre>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">phoenixAES</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">pip install phoenixAES
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">phoenixAES</span>
 </span></span><span class="line"><span class="cl"><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;tracefile&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>  <span class="c1"># 第一行是正确密文 后面是故障密文</span>
 </span></span><span class="line"><span class="cl">    <span class="n">t</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&#34;&#34;&#34;1E93FA28448415F6798A4BD121259632 
 </span></span></span><span class="line"><span class="cl"><span class="s2">1E93FA1E448426F679DE4BD1D0259632
@@ -1148,6 +1147,9 @@ AES的整体图景可以分成左右两块，即明文的处理和密钥的编�
   
   
 
+  
+  
+
 
 
 <footer id="footer">
@@ -1182,7 +1184,7 @@ AES的整体图景可以分成左右两块，即明文的处理和密钥的编�
       <div>
         <span class="icon-brush"
           >&nbsp;
-            9.8k
+            10.6k
           </span
         >
         &nbsp;|&nbsp;
@@ -1190,7 +1192,7 @@ AES的整体图景可以分成左右两块，即明文的处理和密钥的编�
           
           
 
-          00:50
+          00:54
         </span>
       </div>
     
@@ -1265,17 +1267,17 @@ AES的整体图景可以分成左右两块，即明文的处理和密钥的编�
   <div class="sidebar-state-article">
     <div>Posts</div>
     
-    <div class="sidebar-state-number">8</div>
+    <div class="sidebar-state-number">9</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
     <div class="sidebar-state-number">
-      2
+      3
     </div>
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">10</div>
+    <div class="sidebar-state-number">11</div>
   </div>
 </div>
 <div class="sidebar-social">

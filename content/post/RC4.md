@@ -9,7 +9,7 @@ categories:
   - Crypto
 ---
 
-在[密码学](https://en.wikipedia.org/wiki/Cryptography "Cryptography")中，**RC4**（Rivest Cipher 4，也称为 **ARC4** 或 **ARCFOUR，** 意思是Alleged（所谓的） RC4，见下文）是一种[流密码](https://en.wikipedia.org/wiki/Stream_cipher "Stream cipher") 。虽然它在软件中以其简单性和速度而著称，但在 RC4 中发现了多个漏洞，使其不安全。
+在[密码学](https://en.wikipedia.org/wiki/Cryptography "Cryptography")中，**RC4**（Rivest Cipher 4，也称为 **ARC4** 或 **ARCFOUR，** 意思是Alleged（所谓的） RC4）是一种[流密码](https://en.wikipedia.org/wiki/Stream_cipher "Stream cipher") 。虽然它在软件中以其简单性和速度而著称，但在 RC4 中发现了多个漏洞，使其不安全。
 流密码（streamcipher）是对数据流进行连续处理的一类密码算法。流密码中一般以1比特、8比特或32比特等为单位进行加密和解密。其中RC4的加解密单位为8比特，也就是一个字节。
 
 
