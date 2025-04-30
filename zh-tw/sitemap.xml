@@ -2,33 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://asu1tty.github.io/zh-tw/categories/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://asu1tty.github.io/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="ja"
-                href="https://asu1tty.github.io/ja/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://asu1tty.github.io/zh-cn/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-tw"
-                href="https://asu1tty.github.io/zh-tw/categories/"
-                />
-  </url><url>
     <loc>https://asu1tty.github.io/zh-tw/</loc>
     <xhtml:link
                 rel="alternate"
-                hreflang="en"
+                hreflang="zh-cn"
                 href="https://asu1tty.github.io/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://asu1tty.github.io/en/"
                 />
     <xhtml:link
                 rel="alternate"
@@ -37,30 +20,47 @@
                 />
     <xhtml:link
                 rel="alternate"
+                hreflang="zh-tw"
+                href="https://asu1tty.github.io/zh-tw/"
+                />
+  </url><url>
+    <loc>https://asu1tty.github.io/zh-tw/categories/</loc>
+    <xhtml:link
+                rel="alternate"
                 hreflang="zh-cn"
-                href="https://asu1tty.github.io/zh-cn/"
+                href="https://asu1tty.github.io/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://asu1tty.github.io/en/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ja"
+                href="https://asu1tty.github.io/ja/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://asu1tty.github.io/zh-tw/"
+                href="https://asu1tty.github.io/zh-tw/categories/"
                 />
   </url><url>
     <loc>https://asu1tty.github.io/zh-tw/tags/</loc>
     <xhtml:link
                 rel="alternate"
-                hreflang="en"
+                hreflang="zh-cn"
                 href="https://asu1tty.github.io/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://asu1tty.github.io/en/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
                 href="https://asu1tty.github.io/ja/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://asu1tty.github.io/zh-cn/tags/"
                 />
     <xhtml:link
                 rel="alternate"

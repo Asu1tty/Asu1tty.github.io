@@ -1,6 +1,6 @@
 <!doctype html>
 <html
-  lang="en" 
+  lang="zh-cn" 
   
     data-theme-mode="auto"
   
@@ -22,11 +22,11 @@
   
 
 <title>
-  ELF结构及加载流程分析 | D-Sketon
+  ELF结构及加载流程分析 | Asu1tty
 </title>
 <meta
   name="description"
-  content="少女祈祷中..."
+  content="逆向小白学习中..."
 />
 
 
@@ -125,21 +125,21 @@
 
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="ELF结构及加载流程分析 | D-Sketon" />
+  <meta property="og:title" content="ELF结构及加载流程分析 | Asu1tty" />
   <meta
     property="og:description"
-    content="少女祈祷中..."
+    content="逆向小白学习中..."
   />
   <meta property="og:url" content="https://asu1tty.github.io/post/elfreader/" />
   <meta
     property="og:site_name"
-    content="My New Hugo Site"
+    content="Asu1tty&#39;s Blog"
   />
   <meta
     property="og:image"
     content="/"
   />
-  <meta property="article:author" content="D-Sketon" />
+  <meta property="article:author" content="Asu1tty" />
   <meta property="article:published_time" content="2025-04-30T11:18:36&#43;08:00" />
   <meta property="article:modified_time" content="2025-04-30T11:18:36&#43;08:00" />
   
@@ -299,7 +299,7 @@
             
           
         </div>
-        <a class="main-nav-link" href="/">Home</a>
+        <a class="main-nav-link" href="/">首页</a>
       </span>
     
       <span class="main-nav-link-wrap">
@@ -310,7 +310,7 @@
             
           
         </div>
-        <a class="main-nav-link" href="/archives">Archives</a>
+        <a class="main-nav-link" href="/archives">归档</a>
       </span>
     
       <span class="main-nav-link-wrap">
@@ -321,7 +321,7 @@
             
           
         </div>
-        <a class="main-nav-link" href="/about">About</a>
+        <a class="main-nav-link" href="/about">关于</a>
       </span>
     
       <span class="main-nav-link-wrap">
@@ -332,7 +332,7 @@
             
           
         </div>
-        <a class="main-nav-link" href="/friend">Friend</a>
+        <a class="main-nav-link" href="/friend">友链</a>
       </span>
     
     <a id="main-nav-toggle" class="nav-icon"></a>
@@ -397,7 +397,7 @@
         
           <div class="sidebar-toc-sidebar">
             <div class="sidebar-toc">
-  <h3 class="toc-title">Contents</h3>
+  <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class">
     <nav id="TableOfContents">
   <ul>
@@ -440,26 +440,26 @@
   <img
     data-src="/avatar/avatar.webp"
     data-sizes="auto"
-    alt="D-Sketon"
+    alt="Asu1tty"
     class="lazyload"
   />
-  <div class="sidebar-author-name">D-Sketon</div>
-  <div class="sidebar-description">少女祈祷中...</div>
+  <div class="sidebar-author-name">Asu1tty</div>
+  <div class="sidebar-description">逆向小白学习中...</div>
 </div>
 <div class="sidebar-state">
   <div class="sidebar-state-article">
-    <div>Posts</div>
+    <div>文章</div>
     
     <div class="sidebar-state-number">10</div>
   </div>
   <div class="sidebar-state-category">
-    <div>Categories</div>
+    <div>分类</div>
     <div class="sidebar-state-number">
       3
     </div>
   </div>
   <div class="sidebar-state-tag">
-    <div>Tags</div>
+    <div>标签</div>
     <div class="sidebar-state-number">12</div>
   </div>
 </div>
@@ -472,7 +472,7 @@
       <a
         class="sidebar-menu-link-dummy"
         href="/"
-        aria-label="Home"
+        aria-label="首页"
       ></a>
       <div class='sidebar-menu-icon icon rotate'>
         
@@ -481,14 +481,14 @@
           
         
       </div>
-      <div class="sidebar-menu-link">Home</div>
+      <div class="sidebar-menu-link">首页</div>
     </div>
   
     <div class="sidebar-menu-link-wrap">
       <a
         class="sidebar-menu-link-dummy"
         href="/archives"
-        aria-label="Archives"
+        aria-label="归档"
       ></a>
       <div class='sidebar-menu-icon icon rotate'>
         
@@ -497,14 +497,14 @@
           
         
       </div>
-      <div class="sidebar-menu-link">Archives</div>
+      <div class="sidebar-menu-link">归档</div>
     </div>
   
     <div class="sidebar-menu-link-wrap">
       <a
         class="sidebar-menu-link-dummy"
         href="/about"
-        aria-label="About"
+        aria-label="关于"
       ></a>
       <div class='sidebar-menu-icon icon rotate'>
         
@@ -513,14 +513,14 @@
           
         
       </div>
-      <div class="sidebar-menu-link">About</div>
+      <div class="sidebar-menu-link">关于</div>
     </div>
   
     <div class="sidebar-menu-link-wrap">
       <a
         class="sidebar-menu-link-dummy"
         href="/friend"
-        aria-label="Friend"
+        aria-label="友链"
       ></a>
       <div class='sidebar-menu-icon icon rotate'>
         
@@ -529,7 +529,7 @@
           
         
       </div>
-      <div class="sidebar-menu-link">Friend</div>
+      <div class="sidebar-menu-link">友链</div>
     </div>
   
 </div>
@@ -1363,7 +1363,7 @@ ELF文件的魔数为0x7f, &lsquo;E&rsquo;, &lsquo;L&rsquo;, &lsquo;F&rsquo;，�
           
         
         <a href="/post/xhs_analysis/"></a>
-        <div class="article-nav-caption">Newer</div>
+        <div class="article-nav-caption">前一篇</div>
         <h3 class="article-nav-title">
           
             某红薯shield参数分析
@@ -1447,11 +1447,11 @@ ELF文件的魔数为0x7f, &lsquo;E&rsquo;, &lsquo;L&rsquo;, &lsquo;F&rsquo;，�
         2025
       
       <span class="footer-info-sep rotate"></span>
-      D-Sketon
+      Asu1tty
     </div>
     
       <div>
-        Powered by&nbsp;<a
+        基于&nbsp;<a
           href="https://gohugo.io/"
           target="_blank"
           >Hugo</a
@@ -1466,7 +1466,7 @@ ELF文件的魔数为0x7f, &lsquo;E&rsquo;, &lsquo;L&rsquo;, &lsquo;F&rsquo;，�
       <div>
         <span class="icon-brush"
           >&nbsp;
-            12.3k
+            36.7k
           </span
         >
         &nbsp;|&nbsp;
@@ -1474,7 +1474,7 @@ ELF文件的魔数为0x7f, &lsquo;E&rsquo;, &lsquo;L&rsquo;, &lsquo;F&rsquo;，�
           
           
 
-          01:03
+          01:17
         </span>
       </div>
     
@@ -1484,14 +1484,14 @@ ELF文件的魔数为0x7f, &lsquo;E&rsquo;, &lsquo;L&rsquo;, &lsquo;F&rsquo;，�
       <div>
         <span class="icon-eye"></span>
         <span id="busuanzi_container_site_pv"
-          >Number of visits&nbsp;<span
+          >总访问量&nbsp;<span
             id="busuanzi_value_site_pv"
           ></span
         ></span>
         &nbsp;|&nbsp;
         <span class="icon-user"></span>
         <span id="busuanzi_container_site_uv"
-          >Number of visitors&nbsp;<span
+          >总访客量&nbsp;<span
             id="busuanzi_value_site_uv"
           ></span
         ></span>
@@ -1514,7 +1514,7 @@ ELF文件的魔数为0x7f, &lsquo;E&rsquo;, &lsquo;L&rsquo;, &lsquo;F&rsquo;，�
       
         <div class="sidebar-toc-sidebar">
           <div class="sidebar-toc">
-  <h3 class="toc-title">Contents</h3>
+  <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class">
     <nav id="TableOfContents">
   <ul>
@@ -1557,26 +1557,26 @@ ELF文件的魔数为0x7f, &lsquo;E&rsquo;, &lsquo;L&rsquo;, &lsquo;F&rsquo;，�
   <img
     data-src="/avatar/avatar.webp"
     data-sizes="auto"
-    alt="D-Sketon"
+    alt="Asu1tty"
     class="lazyload"
   />
-  <div class="sidebar-author-name">D-Sketon</div>
-  <div class="sidebar-description">少女祈祷中...</div>
+  <div class="sidebar-author-name">Asu1tty</div>
+  <div class="sidebar-description">逆向小白学习中...</div>
 </div>
 <div class="sidebar-state">
   <div class="sidebar-state-article">
-    <div>Posts</div>
+    <div>文章</div>
     
     <div class="sidebar-state-number">10</div>
   </div>
   <div class="sidebar-state-category">
-    <div>Categories</div>
+    <div>分类</div>
     <div class="sidebar-state-number">
       3
     </div>
   </div>
   <div class="sidebar-state-tag">
-    <div>Tags</div>
+    <div>标签</div>
     <div class="sidebar-state-number">12</div>
   </div>
 </div>
@@ -1589,7 +1589,7 @@ ELF文件的魔数为0x7f, &lsquo;E&rsquo;, &lsquo;L&rsquo;, &lsquo;F&rsquo;，�
       <a
         class="sidebar-menu-link-dummy"
         href="/"
-        aria-label="Home"
+        aria-label="首页"
       ></a>
       <div class='sidebar-menu-icon icon rotate'>
         
@@ -1598,14 +1598,14 @@ ELF文件的魔数为0x7f, &lsquo;E&rsquo;, &lsquo;L&rsquo;, &lsquo;F&rsquo;，�
           
         
       </div>
-      <div class="sidebar-menu-link">Home</div>
+      <div class="sidebar-menu-link">首页</div>
     </div>
   
     <div class="sidebar-menu-link-wrap">
       <a
         class="sidebar-menu-link-dummy"
         href="/archives"
-        aria-label="Archives"
+        aria-label="归档"
       ></a>
       <div class='sidebar-menu-icon icon rotate'>
         
@@ -1614,14 +1614,14 @@ ELF文件的魔数为0x7f, &lsquo;E&rsquo;, &lsquo;L&rsquo;, &lsquo;F&rsquo;，�
           
         
       </div>
-      <div class="sidebar-menu-link">Archives</div>
+      <div class="sidebar-menu-link">归档</div>
     </div>
   
     <div class="sidebar-menu-link-wrap">
       <a
         class="sidebar-menu-link-dummy"
         href="/about"
-        aria-label="About"
+        aria-label="关于"
       ></a>
       <div class='sidebar-menu-icon icon rotate'>
         
@@ -1630,14 +1630,14 @@ ELF文件的魔数为0x7f, &lsquo;E&rsquo;, &lsquo;L&rsquo;, &lsquo;F&rsquo;，�
           
         
       </div>
-      <div class="sidebar-menu-link">About</div>
+      <div class="sidebar-menu-link">关于</div>
     </div>
   
     <div class="sidebar-menu-link-wrap">
       <a
         class="sidebar-menu-link-dummy"
         href="/friend"
-        aria-label="Friend"
+        aria-label="友链"
       ></a>
       <div class='sidebar-menu-icon icon rotate'>
         
@@ -1646,7 +1646,7 @@ ELF文件的魔数为0x7f, &lsquo;E&rsquo;, &lsquo;L&rsquo;, &lsquo;F&rsquo;，�
           
         
       </div>
-      <div class="sidebar-menu-link">Friend</div>
+      <div class="sidebar-menu-link">友链</div>
     </div>
   
 </div>
@@ -1793,10 +1793,10 @@ ELF文件的魔数为0x7f, &lsquo;E&rsquo;, &lsquo;L&rsquo;, &lsquo;F&rsquo;，�
       
       <script data-pjax>
         window.REIMU_POST = {
-          author: "D-Sketon",
+          author: "Asu1tty",
           title: "ELF结构及加载流程分析",
           url: "https:\/\/asu1tty.github.io\/post\/elfreader\/",
-          description: " 目前，PC平台流行的 可执行文件格式（Executable） 主要包含如下两种：\nWindows下的 PE（Portable Executable） Linux下的 ELF（Executable Linkable Format） ELF（Executable and Linkable Format，可执行和可链接格式）是Linux系统中广泛使用的文件格式，用于存储可执行文件、目标代码、共享库和核心转储（core dump）。它是一种灵活、通用的格式，支持多种处理器架构和操作系统，具有跨平台特性。\n主要特点：\n跨平台支持：ELF支持多种处理器架构（如x86、x86_64、ARM、MIPS）和字 …",
+          description: " 目前，PC平台流行的 可执行文件格式（Executable） 主要包含如下两种：\nWindows下的 PE（Portable Executable） Linux下的 ELF（Executable Linkable Format） ELF（Executable and Linkable Format，可执行和可链接格式）是Linux系统中广泛使用的文件格式，用于存储可执行文件、目标代码、共享库和核心转储（core dump）。它是一种灵活、通用的格式，支持多种处理器架构和操作系统，具有跨平台特性。\n",
           cover: "https:\/\/asu1tty.github.io\/images\/banner.webp",
         };
       </script>

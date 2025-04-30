@@ -2,11 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Asu1tty&#39;s Blog</title>
-    <link>https://asu1tty.github.io/archives/</link>
+    <link>https://asu1tty.github.io/en/algolia.json</link>
     <description>Recent content on Asu1tty&#39;s Blog</description>
     <generator>Hugo</generator>
-    <language>zh-cn</language>
-    <lastBuildDate></lastBuildDate>
-    <atom:link href="https://asu1tty.github.io/archives/index.xml" rel="self" type="application/rss+xml" />
+    <language>en</language>
+    <atom:link href="https://asu1tty.github.io/en/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
