@@ -83,15 +83,14 @@ PKCS7是兼容PKCS5的，PKCS5相当于PKCS7的一个子集
 
 
 
-
 在此附上一张经典加密Linux吉祥物企鹅位图（bitmap）格式的图片
-![image.png](https://github.com/Asu1tty/blog_img/blob/main/picSource/image-20250424152317564.png?raw=true)
+![image.png](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/image-20250424152317564.png?raw=true)
 可以看出，因为同样的颜色编码序列被加密成相同的密文，所以生成的文件重现原图的大致模式，可以大致看出企鹅的轮廓。
 
 ## 4. 计算流程
-![image.png](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714394217281-9c474ec2-91c1-4ca8-b349-ccb7b6541661.png)
+![image.png](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/1714394217281-9c474ec2-91c1-4ca8-b349-ccb7b6541661.png)
 
-![image.png](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714394336630-bdece8b0-888b-45d0-b1c1-7214e58e7950.png)
+![image.png](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/1714394336630-bdece8b0-888b-45d0-b1c1-7214e58e7950.png)
 AES的整体图景可以分成左右两块，即明文的处理和密钥的编排
 
 明文的处理主体是一个初始化轮密钥加和十轮运算，在初始化轮密钥加十轮运算中都需要使用密钥编排的结果
@@ -101,24 +100,24 @@ AES的整体图景可以分成左右两块，即明文的处理和密钥的编�
 假设密钥Key为： **2b7e151628aed2a6abf7158809cf4f3c**。为了区分密钥和密钥编排后的轮密钥，我们将此时的密钥叫主密钥。
 在AES-128中，密钥扩展后得`16*11`共176字节，使用时**逐十六个字节**划分成K0,K1,...K10使用，但是在生成时，它是**逐四个字**节生成的，即`44*4`。我们不妨用数组来描述它，即一个包含了44个元素的数组,叫W
 这四十四个元素的生成规则有三种，如下图所示
-![](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714394679115-935cf8de-f210-41f9-bdfe-291064ac4623.png)
+![](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/1714394679115-935cf8de-f210-41f9-bdfe-291064ac4623.png)
 不同颜色代表了不同规则
 
 #### 4.1.1. 蓝色区域
-最上方蓝色区域的就是主密钥本身切成四段![](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714394811982-5f61936e-12d4-4761-8c32-91eeb366b9b1.png)
+最上方蓝色区域的就是主密钥本身切成四段![](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/1714394811982-5f61936e-12d4-4761-8c32-91eeb366b9b1.png)
 #### 4.1.2. 红色区域
 左侧的红色部分，W4，W8...W40 的生成复杂一点
 
-![](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714394914198-e4b275b3-8727-4566-93b1-6f5cf0edcb16.png)
+![](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/1714394914198-e4b275b3-8727-4566-93b1-6f5cf0edcb16.png)
 
 xor 是异或运算，关键点就是这个g函数了，函数一共三个步骤——**循环左移、S盒替换、字节异或**
 我们以运算W4中所需的W3为例
 
-![](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714395039925-e8dd3f8e-ba46-4563-af5d-dd7b31c32a87.png)
+![](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/1714395039925-e8dd3f8e-ba46-4563-af5d-dd7b31c32a87.png)
 
 第一步是循环左移，规则固定——将最左边的一个字节挪到右边即可
 
-![](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714395105629-7f04a502-8f4f-4693-9b8a-2f6cce3d6a7b.png)
+![](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/1714395105629-7f04a502-8f4f-4693-9b8a-2f6cce3d6a7b.png)
 
 第二步是S盒替换，S盒替换听着很高级，但操作上很简单——将数值本身作为索引取出S数组中对用的值，S 盒是固定的，在Findcrypt中，就会利用S盒来查找AES的存在
 ```python
@@ -161,15 +160,15 @@ SBox = [
 ```python
 rcon = [0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1B, 0x36]
 ```
-![](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714395571691-e6a61272-3fb9-4ab6-8e53-26835454635c.png)
+![](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/1714395571691-e6a61272-3fb9-4ab6-8e53-26835454635c.png)
 
 最终结果
 
-![](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714395608655-8716d83e-7d6c-4cff-b130-c68d87d8a524.png)
+![](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/1714395608655-8716d83e-7d6c-4cff-b130-c68d87d8a524.png)
 
 上图中蓝色和红色的部分我们都讲完了，那么橙色部分呢？相当的简单，和红色部分类似，去掉g函数即可
 
-![](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714395689385-bb301b33-428f-4e37-9f4e-13ea4e8081f9.png)
+![](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/1714395689385-bb301b33-428f-4e37-9f4e-13ea4e8081f9.png)
 
 打个比方， W5 = W4 ^ W1 = 0xa0fafe17 ^ 0x28aed2a6 = 0x88542cb1
 如下是完整的密钥编排部分的Python代码
@@ -306,11 +305,11 @@ K10:d014f9a8c9ee2589e13f0cc8b6630ca6
 
 在AES中，数据以State的形式计算、中间存储和传输，中文名即状态。从明文转到state形式很简单，以我们的明文00112233445566778899aabbccddeeff为例。从上到下，从左到右
 ![](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714396330904-f408437b-8456-4ed3-b404-75a5e7b91262.png)
-初始的轮密钥加使用K0 2b7e151628aed2a6abf7158809cf4f3c![image.png](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714396464338-b7bb7565-b73b-4147-8e95-a1c2b9de2847.png)
+初始的轮密钥加使用K0 2b7e151628aed2a6abf7158809cf4f3c![image.png](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/1714396464338-b7bb7565-b73b-4147-8e95-a1c2b9de2847.png)
 
 接下来就是十轮主运算，看如下的伪代码，我们可以清楚看到一轮运算中有什么，以及第十轮和前九轮有什么区别  
 
-![image.png](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714396609549-599374c9-2d16-4eef-a409-59ab2cb31235.png)
+![image.png](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/1714396609549-599374c9-2d16-4eef-a409-59ab2cb31235.png)
 
 初始的明文转和最后的转明文自不必说，然后是初始轮密钥，使用K0  
 前九轮运算中，包含四个步骤：**字节替换，循环左移，列混淆，轮密钥加**  
@@ -318,7 +317,7 @@ K10:d014f9a8c9ee2589e13f0cc8b6630ca6
 而字节替换步骤，和密钥编排中的S盒替换完全一致  
 循环左移，和密钥编排中的循环左移类似，但有差异。密钥编排中，函数中也需循环左移，但其中待处理的数据仅有一行，而明文编排中是四行，其循环左移规则如下：第一行不循环左移，第二行循环左移1字节，第三行循环左移2字节，第四行循环左移3字节  
 
-![image.png](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714396902808-c6c3bc24-82e1-4f07-ac7b-f618ec0647ca.png)
+![image.png](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/1714396902808-c6c3bc24-82e1-4f07-ac7b-f618ec0647ca.png)
 
 列混淆比较复杂  
 详见[白盒AES算法详解(一)](https://bbs.kanxue.com/thread-280335.htm)
@@ -327,7 +326,7 @@ K10:d014f9a8c9ee2589e13f0cc8b6630ca6
 AES白盒加密主流的方法就是通过将原本的字节替换，行移位，列混淆和轮密钥加等操作用查表的方法实现，轮密钥则被合并到这些表中。
 首先需要明确的是，可以通过轮密钥推出主密钥，这是解出白盒AES密钥的关键
 
-![image.png](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/1714396609549-599374c9-2d16-4eef-a409-59ab2cb31235.png)
+![image.png](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/1714396609549-599374c9-2d16-4eef-a409-59ab2cb31235.png)
 在倒数两次列混淆(mixColumns)之间的state随机修改一个字节.
 也就是第9轮的subbytes和shiftRows以及第8轮的addRoundKey中的任何一个时机修改即可,一般shiftRows是比较常见的,因为比较容易看出来
 
@@ -441,7 +440,7 @@ B693FA2844841538798A12D121B99632
 phoenixAES.crack_file('tracefile', [], True, False, 3)
 # 第3个参数传False代表解密
 ```
-![image-20241204230647639](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20241204230647639.png)
+![image-20241204230647639](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/image-20241204230647639.png)
 
 得到第10轮密钥可以利用aes_keyschedule还原出主密钥,即是最开始的密钥 [https://github.com/SideChannelMarvels/Stark](https://github.com/SideChannelMarvels/Stark)
-![image-20241204230721196](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20241204230721196.png)
+![image-20241204230721196](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/image-20241204230721196.png)

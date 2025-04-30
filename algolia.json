@@ -3,6 +3,18 @@
   
   
   {
+    "objectID": "1745983116",
+    "permalink": "/post/elfreader/",
+    "title": "ELF结构及加载流程分析",
+    
+    "content": " 目前，PC平台流行的 可执行文件格式（Executable） 主要包含如下两种：\nWindows下的 PE（Portable Executable） Linux下的 ELF（Executable Linkable Format） ELF（Executable and Linkable Format，可执行和可链接格式）是Linux系统中广泛使用的文件格式，用于存储可执行文件、目标代码、共享库和核心转储（core dump）。它是一种灵活、通用的格式，支持多种处理器架构和操作系统，具有跨平台特性。\n主要特点：\n跨平台支持：ELF支持多种处理器架构（如x86、x86_64、ARM、MIPS）和字节序（大端/小端）。 模块化设计：分为多个段（Section）和节（Segment），便于解析和操作。 支持动态链接：允许在运行时加载共享库，减少内存占用。 可扩展性：支持添加自定义段，适应不同需求。 ELF文件可以是以下几种类型：\n可执行文件（Executable File）：如编译后的程序，直接运行。 目标文件（Object File）：编译器生成的中间文件，通常用于链接生成可执行文件。 共享库（Shared Library）：动态链接库，运行时加载（如.so文件）。 核心转储（Core Dump）：程序崩溃时保存的内存快照，用于调试。 1. ELF主要结构 ELF 文件主要分为 3 个部分:\nELF Header ELF文件头，位于ELF文件的开头，描述文件的整体信息。它的大小通常为32位系统中的52字节或64位系统中的64字节。 Program Header Table 程序头表 ，描述了文件中的段（Segment），主要用于运行时加载和执行。 Section Header Table 节头表 ，描述了文件中的节（Section），主要用于链接和调试。每个节包含特定类型的数据（如代码、数据、符号表等）。节头表对于可执行文件是可选的，但在目标文件中通常存在。 1.1. ELF Header ELF文件头 //https://github.com/bminor/glibc/blob/glibc-2.27/elf/elf.h typedef struct { unsigned char\te_ident[EI_NIDENT];\t/* Magic number and other …",
+    
+    "date": "2025-04-30 11:18:36",
+    "updated": "2025-04-30 11:18:36"
+  }
+  
+  , 
+  {
     "objectID": "1745574516",
     "permalink": "/post/xhs_analysis/",
     "title": "某红薯shield参数分析",

@@ -28,6 +28,7 @@ MD5 的输入数据需要满足以下条件：
 ```
 首先需要填充到64字节
 第一位填充 0x80 剩下的填充 0 直到达到 56 个字节
+
 ```plaintext
 61 64 6D 69 6E 80 0(填充50次) 共 56 个字节
 ```
@@ -175,7 +176,7 @@ for chunk in chunks:
 ```
 
 下图为运算过程
-![img](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/330px-MD5.png)
+![img](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/330px-MD5.png)
 
 ### 2.5. 更新结果
 经过64轮计算后得到A B C D与最开始的 a0 b0 c0 d0 也就是iv相加,得到 a b c d,最后再以小端续输出结果,这就是一个分组的md5了。

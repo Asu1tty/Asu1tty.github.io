@@ -81,7 +81,7 @@ HMAC需要选择一个哈希函数作为实现的载体，这里以MD5为例
 ```plaintext
 83e029bbdf98117cafe2b973ab8a4a0f
 ```
-![image-20250424114828841](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250424114828841.png)
+![image-20250424114828841](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/image-20250424114828841.png)
 验证成功
 
 ## 2. 代码实现

@@ -167,7 +167,7 @@ icon_font: 4552607_0khxww3tj3q9
 
 # Custom Font
 custom_font:
-  enable: false
+  enable: true
   article:
     - css: https://fontsapi.zeoseven.com/448/main/result.css # font css
       name: Cascadia Mono # font name

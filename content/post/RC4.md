@@ -20,7 +20,7 @@ categories:
 `由于两个相同的数进行XOR运算的结果一定为0，因此如果将A⊕B的结果再与B进行XOR运算，则结果会变回A。也就是说，两个公式中的B会相互抵消。`
 - 将明文A用密钥B进行加密，得到密文A⊕B
 - 将密文A⊕B用密钥B进行解密，得到明文A
-![image-20250425172319106](https://raw.githubusercontent.com/Asu1tty/blog_img/main/picSource/image-20250425172319106.png)
+![image-20250425172319106](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/image-20250425172319106.png)
 图片摘自《图解密码技术 第三版》
 
 `从图中可以看出，执行一次蒙版操作后，原来的图像被隐藏（掩盖）了，而执行两次蒙版操作后，就又可以得到原来的图像了。`

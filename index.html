@@ -46,6 +46,17 @@
 
 
 
+  
+
+  <link
+    rel="preload"
+    as="style"
+    crossorigin
+    href="https://fontsapi.zeoseven.com/448/main/result.css"
+    onload="this.rel='stylesheet'"
+  />
+
+
 
 
   
@@ -130,8 +141,8 @@
     content="/"
   />
   <meta property="article:author" content="D-Sketon" />
-  <meta property="article:published_time" content="2025-04-25T17:48:36&#43;08:00" />
-  <meta property="article:modified_time" content="2025-04-25T17:48:36&#43;08:00" />
+  <meta property="article:published_time" content="2025-04-30T11:18:36&#43;08:00" />
+  <meta property="article:modified_time" content="2025-04-30T11:18:36&#43;08:00" />
   
   
   <meta name="twitter:card" content="summary" />
@@ -401,7 +412,7 @@
   <div class="sidebar-state-article">
     <div>Posts</div>
     
-    <div class="sidebar-state-number">9</div>
+    <div class="sidebar-state-number">10</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
@@ -411,7 +422,7 @@
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">11</div>
+    <div class="sidebar-state-number">12</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -588,6 +599,19 @@
             <li class="tag-item">
                 <a
                   class="tag-link"
+                  href="/tags/elf/"
+                  aria-label="Tag: ELF"
+                >
+                  ELF
+                </a>
+              </li>
+              
+            
+          
+            
+            <li class="tag-item">
+                <a
+                  class="tag-link"
                   href="/tags/hash/"
                   aria-label="Tag: Hash"
                 >
@@ -676,17 +700,6 @@
             
           
             
-            <li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/test/"
-                  aria-label="Tag: Test"
-                >
-                  Test
-                </a>
-              </li>
-              
-            
           
             
           
@@ -726,6 +739,17 @@
             href="/tags/app-reverse/"
             aria-label="Tag: App Reverse"
             >App Reverse</a
+          >
+          
+        
+      
+        
+          
+          <a
+            style="font-size:10px"
+            href="/tags/elf/"
+            aria-label="Tag: ELF"
+            >ELF</a
           >
           
         
@@ -846,6 +870,10 @@
         <ul>
           
             <li>
+              <a href="/post/elfreader/">ELF结构及加载流程分析</a>
+            </li>
+          
+            <li>
               <a href="/post/xhs_analysis/">某红薯shield参数分析</a>
             </li>
           
@@ -859,10 +887,6 @@
           
             <li>
               <a href="/post/mhac/">HMAC原理及代码实现</a>
-            </li>
-          
-            <li>
-              <a href="/post/sha-512/">SHA-512简介及代码实现</a>
             </li>
           
         </ul>
@@ -897,6 +921,73 @@
     
       <a
         class="post-link"
+        href="/post/elfreader/"
+        aria-label="ELF结构及加载流程分析"
+      >
+      </a>
+    
+    
+    <div
+      class="
+        post-cover-left
+      "
+    >
+      
+        
+        
+          <img
+            data-src="https://d-sketon.top/img/_backwebp/bg1.webp"
+            data-sizes="auto"
+            alt="ELF结构及加载流程分析"
+            class="lazyload"
+          />
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span
+          ><span class="icon-calendar"></span
+          >2025-04-30</span
+        >
+        <span
+          ><span class="icon-pencil"></span
+          >1773 words</span
+        >
+        <span
+          ><span class="icon-clock"></span
+          >9 mins</span
+        >
+      </div>
+      <h2 class="post-title">ELF结构及加载流程分析</h2>
+      <article class="post-article">
+        
+           目前，PC平台流行的 可执行文件格式（Executable） 主要包含如下两种：
+Windows下的 PE（Portable Executable） Linux下的 ELF（Executable Linkable Format） ELF（Executable and Linkable Format，可执行和可链接格式）是Linux系统中广泛使用的文件格式，用于存储可执行文件、目标代码、共享库和核心转储（core dump）。它是一种灵活、通用的格式，支持多种处理器架构和操作系统，具有跨平台特性。
+主要特点：
+跨平台支持：ELF支持多种处理器架构（如x86、x86_64、ARM、MIPS）和字 …
+        
+      </article>
+    </div>
+  </div>
+</div>
+
+  
+    
+
+
+
+
+<div class="post-wrapper">
+  <div
+    class="
+      post-wrap-right
+    "
+    data-aos="fade-up"
+  >
+    
+      <a
+        class="post-link"
         href="/post/xhs_analysis/"
         aria-label="某红薯shield参数分析"
       >
@@ -905,7 +996,7 @@
     
     <div
       class="
-        post-cover-left
+        post-cover-right
       "
     >
       
@@ -960,7 +1051,7 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
 <div class="post-wrapper">
   <div
     class="
-      post-wrap-right
+      post-wrap-left
     "
     data-aos="fade-up"
   >
@@ -975,7 +1066,7 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
     
     <div
       class="
-        post-cover-right
+        post-cover-left
       "
     >
       
@@ -1026,7 +1117,7 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
 <div class="post-wrapper">
   <div
     class="
-      post-wrap-left
+      post-wrap-right
     "
     data-aos="fade-up"
   >
@@ -1041,7 +1132,7 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
     
     <div
       class="
-        post-cover-left
+        post-cover-right
       "
     >
       
@@ -1091,7 +1182,7 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
 <div class="post-wrapper">
   <div
     class="
-      post-wrap-right
+      post-wrap-left
     "
     data-aos="fade-up"
   >
@@ -1106,7 +1197,7 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
     
     <div
       class="
-        post-cover-right
+        post-cover-left
       "
     >
       
@@ -1157,7 +1248,7 @@ H 为密码Hash函数（如MD5或SHA-2)，能够对明文进行分组 …
 <div class="post-wrapper">
   <div
     class="
-      post-wrap-left
+      post-wrap-right
     "
     data-aos="fade-up"
   >
@@ -1172,7 +1263,7 @@ H 为密码Hash函数（如MD5或SHA-2)，能够对明文进行分组 …
     
     <div
       class="
-        post-cover-left
+        post-cover-right
       "
     >
       
@@ -1223,7 +1314,7 @@ H 为密码Hash函数（如MD5或SHA-2)，能够对明文进行分组 …
 <div class="post-wrapper">
   <div
     class="
-      post-wrap-right
+      post-wrap-left
     "
     data-aos="fade-up"
   >
@@ -1238,7 +1329,7 @@ H 为密码Hash函数（如MD5或SHA-2)，能够对明文进行分组 …
     
     <div
       class="
-        post-cover-right
+        post-cover-left
       "
     >
       
@@ -1289,7 +1380,7 @@ H 为密码Hash函数（如MD5或SHA-2)，能够对明文进行分组 …
 <div class="post-wrapper">
   <div
     class="
-      post-wrap-left
+      post-wrap-right
     "
     data-aos="fade-up"
   >
@@ -1304,7 +1395,7 @@ H 为密码Hash函数（如MD5或SHA-2)，能够对明文进行分组 …
     
     <div
       class="
-        post-cover-left
+        post-cover-right
       "
     >
       
@@ -1358,7 +1449,7 @@ H 为密码Hash函数（如MD5或SHA-2)，能够对明文进行分组 …
 <div class="post-wrapper">
   <div
     class="
-      post-wrap-right
+      post-wrap-left
     "
     data-aos="fade-up"
   >
@@ -1373,7 +1464,7 @@ H 为密码Hash函数（如MD5或SHA-2)，能够对明文进行分组 …
     
     <div
       class="
-        post-cover-right
+        post-cover-left
       "
     >
       
@@ -1425,7 +1516,7 @@ H 为密码Hash函数（如MD5或SHA-2)，能够对明文进行分组 …
 <div class="post-wrapper">
   <div
     class="
-      post-wrap-left
+      post-wrap-right
     "
     data-aos="fade-up"
   >
@@ -1440,7 +1531,7 @@ H 为密码Hash函数（如MD5或SHA-2)，能够对明文进行分组 …
     
     <div
       class="
-        post-cover-left
+        post-cover-right
       "
     >
       
@@ -1541,6 +1632,9 @@ H 为密码Hash函数（如MD5或SHA-2)，能够对明文进行分组 …
   
   
 
+  
+  
+
 
 
 <footer id="footer">
@@ -1575,7 +1669,7 @@ H 为密码Hash函数（如MD5或SHA-2)，能够对明文进行分组 …
       <div>
         <span class="icon-brush"
           >&nbsp;
-            10.6k
+            12.3k
           </span
         >
         &nbsp;|&nbsp;
@@ -1583,7 +1677,7 @@ H 为密码Hash函数（如MD5或SHA-2)，能够对明文进行分组 …
           
           
 
-          00:54
+          01:03
         </span>
       </div>
     
@@ -1635,7 +1729,7 @@ H 为密码Hash函数（如MD5或SHA-2)，能够对明文进行分组 …
   <div class="sidebar-state-article">
     <div>Posts</div>
     
-    <div class="sidebar-state-number">9</div>
+    <div class="sidebar-state-number">10</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
@@ -1645,7 +1739,7 @@ H 为密码Hash函数（如MD5或SHA-2)，能够对明文进行分组 …
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">11</div>
+    <div class="sidebar-state-number">12</div>
   </div>
 </div>
 <div class="sidebar-social">
