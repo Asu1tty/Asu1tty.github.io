@@ -39,7 +39,7 @@
 
 
 <script>
-  window.siteConfig = JSON.parse("{\"anchor_icon\":null,\"clipboard\":{\"copyright\":{\"content\":\"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！\",\"count\":50,\"enable\":false},\"fail\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"success\":\"复制成功(*^▽^*)\"},\"code_block\":{\"expand\":true},\"icon_font\":\"4552607_0khxww3tj3q9\",\"outdate\":{\"daysago\":180,\"enable\":true,\"message\":\"本文最后更新于 {time}，请注意文中内容可能已经发生变化。\"}}");
+  window.siteConfig = JSON.parse("{\"anchor_icon\":null,\"clipboard\":{\"copyright\":{\"content\":\"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！\",\"count\":50,\"enable\":false},\"fail\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"success\":\"复制成功(*^▽^*)\"},\"code_block\":{\"expand\":99},\"icon_font\":\"4552607_0khxww3tj3q9\",\"outdate\":{\"daysago\":180,\"enable\":true,\"message\":\"本文最后更新于 {time}，请注意文中内容可能已经发生变化。\"}}");
 </script>
 
 
@@ -432,17 +432,17 @@
   <div class="sidebar-state-article">
     <div>文章</div>
     
-    <div class="sidebar-state-number">10</div>
+    <div class="sidebar-state-number">11</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
     <div class="sidebar-state-number">
-      3
+      4
     </div>
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">12</div>
+    <div class="sidebar-state-number">13</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -656,8 +656,8 @@ PKCS7（<strong>95%</strong> 都是PKCS7）填充字符串由一个1-255位的�
 <a class="header-anchor" href="#3-%e5%8a%a0%e5%af%86%e6%a8%a1%e5%bc%8f"></a>
 3. 加密模式
 </h2><p>常用加密模式分为<code>ECB</code>与<code>CBC</code>，<code>CBC</code>加密模式比<code>ECB</code>加密模式多一个IV
-在<code>ECB</code>模式下，将明文分成固定大小的块每个块独立加密，相同的明文块始终生成相同的密文块。
-<strong>优点</strong>：</p>
+在<code>ECB</code>模式下，将明文分成固定大小的块每个块独立加密，相同的明文块始终生成相同的密文块。</p>
+<p><strong>优点</strong>：</p>
 <ul>
 <li>简单，易于并行处理。</li>
 <li>加密和解密速度快。</li>
@@ -667,7 +667,7 @@ PKCS7（<strong>95%</strong> 都是PKCS7）填充字符串由一个1-255位的�
 <li>安全性较低，相同的明文块产生相同的密文块，容易受到模式分析攻击。</li>
 <li>不适合加密大数据或具有重复模式的明文（如图像）。</li>
 </ul>
-<p>在<code>CBC</code>模式下，每个明文块在加密前先与前一个密文块进行异或（XOR）操作，这时要求多一个IV的作用就来了，第一个块使用初始化向量（IV）。这使得相同的明文块在不同位置生成不同的密文。
+<p>在<code>CBC</code>模式下，每个明文块在加密前先与前一个密文块进行异或（<code>XOR</code>）操作，这时要求多一个IV的作用就来了，第一个块使用初始化向量（<code>IV</code>）。这使得相同的明文块在不同位置生成不同的密文。
 <strong>优点</strong>：</p>
 <ul>
 <li>安全性更高，相同的明文块不会产生相同的密文，抗模式分析能力强。</li>
@@ -676,7 +676,7 @@ PKCS7（<strong>95%</strong> 都是PKCS7）填充字符串由一个1-255位的�
 <p><strong>缺点</strong>：</p>
 <ul>
 <li>加密过程是串行的，无法并行化，速度稍慢。</li>
-<li>需要安全的初始化向量（IV），且IV必须在加密和解密时保持一致。</li>
+<li>需要安全的初始化向量（<code>IV</code>），且IV必须在加密和解密时保持一致。</li>
 </ul>
 <p>在此附上一张经典加密Linux吉祥物企鹅位图（bitmap）格式的图片
 <img src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/image-20250424152317564.png?raw=true" alt="image.png">
@@ -1164,6 +1164,9 @@ AES的整体图景可以分成左右两块，即明文的处理和密钥的编�
   
   
 
+  
+  
+
 
 
 <footer id="footer">
@@ -1198,7 +1201,7 @@ AES的整体图景可以分成左右两块，即明文的处理和密钥的编�
       <div>
         <span class="icon-brush"
           >&nbsp;
-            36.7k
+            50.6k
           </span
         >
         &nbsp;|&nbsp;
@@ -1206,7 +1209,7 @@ AES的整体图景可以分成左右两块，即明文的处理和密钥的编�
           
           
 
-          01:17
+          01:45
         </span>
       </div>
     
@@ -1281,17 +1284,17 @@ AES的整体图景可以分成左右两块，即明文的处理和密钥的编�
   <div class="sidebar-state-article">
     <div>文章</div>
     
-    <div class="sidebar-state-number">10</div>
+    <div class="sidebar-state-number">11</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
     <div class="sidebar-state-number">
-      3
+      4
     </div>
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">12</div>
+    <div class="sidebar-state-number">13</div>
   </div>
 </div>
 <div class="sidebar-social">

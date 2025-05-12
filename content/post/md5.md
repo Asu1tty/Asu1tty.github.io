@@ -58,10 +58,10 @@ MD5 的输入数据需要满足以下条件：
 ```plaintext
 M0: 61 64 6D 69
 M1: 6E 80 0 0
-M2: 0 0 0 0
+M2: 0  0  0 0
 ............
 M14: 40 0 0 0
-M15: 0 0 0 0
+M15: 0  0 0 0
 ```
 ### 2.3. 第三步：初始化常量
 ```plaintext
@@ -81,6 +81,18 @@ D=0x10325476
 第四个16次使用II
 函数定义如下
 ```python
+def F(x, y, z):
+    return (x & y) | (~x & z)
+
+def G(x, y, z):
+    return (x & z) | (y & ~z)
+
+def H(x, y, z):
+    return x ^ y ^ z
+
+def I(x, y, z):
+    return y ^ (x | ~z)
+
 def FF(a, b, c, d, x, s, ac):
 	a = (a + F(b, c, d) + x + ac) & 0xFFFFFFFF
 	return left_rotate(a, s) + b & 0xFFFFFFFF

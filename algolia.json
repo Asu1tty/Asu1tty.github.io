@@ -3,6 +3,18 @@
   
   
   {
+    "objectID": "1746069650",
+    "permalink": "/post/loading-so/",
+    "title": "Android so加载源码分析与加壳技术",
+    
+    "content": "本次分析AOSP 的源码的安卓版本为 android-12.0.0_r34\n1. java层调用 So在java层的加载方式有两种\nSystem.loadLibrary(String libName) 或\nSystem.load(String path) 1.1. System.load() 这里我们以System.load作为分析入口\n// libcore/ojluni/src/main/java/java/lang/System.java /** * Loads the native library specified by the filename argument. The filename * argument must be an absolute path name. * * If the filename argument, when stripped of any platform-specific library * prefix, path, and file extension, indicates a library whose name is, * for example, L, and a native library called L is statically linked * with the VM, then the JNI_OnLoad_L function exported by the library * is invoked rather than attempting to load a dynamic library. * A filename matching the argument does not have to exist in the * file system. * See the JNI Specification for more details. * * Otherwise, the filename argument is mapped to a native library image in * an implementation-dependent manner. * * \u0026amp;lt;p\u0026amp;gt; * The call …",
+    
+    "date": "2025-05-01 11:20:50",
+    "updated": "2025-05-01 11:20:50"
+  }
+  
+  , 
+  {
     "objectID": "1745983116",
     "permalink": "/post/elfreader/",
     "title": "ELF结构及加载流程分析",

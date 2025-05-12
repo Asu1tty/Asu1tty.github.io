@@ -39,7 +39,7 @@
 
 
 <script>
-  window.siteConfig = JSON.parse("{\"anchor_icon\":null,\"clipboard\":{\"copyright\":{\"content\":\"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！\",\"count\":50,\"enable\":false},\"fail\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"success\":\"复制成功(*^▽^*)\"},\"code_block\":{\"expand\":true},\"icon_font\":\"4552607_0khxww3tj3q9\",\"outdate\":{\"daysago\":180,\"enable\":true,\"message\":\"本文最后更新于 {time}，请注意文中内容可能已经发生变化。\"}}");
+  window.siteConfig = JSON.parse("{\"anchor_icon\":null,\"clipboard\":{\"copyright\":{\"content\":\"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！\",\"count\":50,\"enable\":false},\"fail\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"success\":\"复制成功(*^▽^*)\"},\"code_block\":{\"expand\":99},\"icon_font\":\"4552607_0khxww3tj3q9\",\"outdate\":{\"daysago\":180,\"enable\":true,\"message\":\"本文最后更新于 {time}，请注意文中内容可能已经发生变化。\"}}");
 </script>
 
 
@@ -407,17 +407,17 @@
   <div class="sidebar-state-article">
     <div>文章</div>
     
-    <div class="sidebar-state-number">10</div>
+    <div class="sidebar-state-number">11</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
     <div class="sidebar-state-number">
-      3
+      4
     </div>
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">12</div>
+    <div class="sidebar-state-number">13</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -516,6 +516,15 @@
           
             
               <li class="category-list-item">
+                <a class="category-list-link" href="/categories/aosp/"
+                  >AOSP</a
+                >
+              </li>
+              
+            
+          
+            
+              <li class="category-list-item">
                 <a class="category-list-link" href="/categories/crypto/"
                   >Crypto</a
                 >
@@ -572,6 +581,19 @@
                   aria-label="标签: AES"
                 >
                   AES
+                </a>
+              </li>
+              
+            
+          
+            
+            <li class="tag-item">
+                <a
+                  class="tag-link"
+                  href="/tags/android/"
+                  aria-label="标签: Android"
+                >
+                  Android
                 </a>
               </li>
               
@@ -682,17 +704,6 @@
             
           
             
-            <li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/sha-256/"
-                  aria-label="标签: SHA-256"
-                >
-                  SHA-256
-                </a>
-              </li>
-              
-            
           
             
           
@@ -723,6 +734,17 @@
             href="/tags/aes/"
             aria-label="标签: AES"
             >AES</a
+          >
+          
+        
+      
+        
+          
+          <a
+            style="font-size:10px"
+            href="/tags/android/"
+            aria-label="标签: Android"
+            >Android</a
           >
           
         
@@ -865,6 +887,10 @@
         <ul>
           
             <li>
+              <a href="/post/loading-so/">Android so加载源码分析与加壳技术</a>
+            </li>
+          
+            <li>
               <a href="/post/elfreader/">ELF结构及加载流程分析</a>
             </li>
           
@@ -878,10 +904,6 @@
           
             <li>
               <a href="/post/wb_aes/">AES原理及白盒AES的DFA攻击</a>
-            </li>
-          
-            <li>
-              <a href="/post/mhac/">HMAC原理及代码实现</a>
             </li>
           
         </ul>
@@ -909,6 +931,15 @@
     >
       <a class="archives-tag-list-link" href="/tags/aes/"
         >AES</a
+      >
+    </div>
+  
+    <div
+      class="archives-tag-list-item"
+      data-aos="zoom-in"
+    >
+      <a class="archives-tag-list-link" href="/tags/android/"
+        >Android</a
       >
     </div>
   
@@ -1018,6 +1049,15 @@
       class="archives-category-list-item"
       data-aos="zoom-in"
     >
+      <a class="archives-category-list-link" href="/categories/aosp/"
+        >AOSP</a
+      >
+    </div>
+  
+    <div
+      class="archives-category-list-item"
+      data-aos="zoom-in"
+    >
       <a class="archives-category-list-link" href="/categories/crypto/"
         >Crypto</a
       >
@@ -1051,6 +1091,24 @@
       <a href="" class="archive-year">2025</a>
     </div>
     <ul>
+      
+        <li class="archive-article">
+          <div class="archive-article-date-wrap">
+            <span>
+              <time
+                class="dt-published"
+                datetime="2025-05-01 11:20:50 &#43;0800 &#43;0800"
+                itemprop="datePublished"
+                >2025-05</time
+              >
+            </span>
+          </div>
+          
+            <a class="archive-article-title" href="/post/loading-so/"
+              >Android so加载源码分析与加壳技术</a
+            >
+          
+        </li>
       
         <li class="archive-article">
           <div class="archive-article-date-wrap">
@@ -1217,33 +1275,6 @@
     </ul>
   </section>
 
-  <section class="archives-wrap" data-aos="fade-up">
-    <div class="archive-year-wrap">
-      <a href="" class="archive-year">2022</a>
-    </div>
-    <ul>
-      
-        <li class="archive-article">
-          <div class="archive-article-date-wrap">
-            <span>
-              <time
-                class="dt-published"
-                datetime="2022-06-09 20:12:52 &#43;0800 &#43;0800"
-                itemprop="datePublished"
-                >2022-06</time
-              >
-            </span>
-          </div>
-          
-            <a class="archive-article-title" href="/post/main/"
-              >Markdown Basic Elements</a
-            >
-          
-        </li>
-      
-    </ul>
-  </section>
-
 
   </div>
   
@@ -1270,6 +1301,15 @@
       
     
   
+    
+      
+        <a class="page-number" href="/archives/page/2/">2</a>
+      
+    
+  
+  
+    <a class="extend next" rel="next" href="/archives/page/2/">下一页 &raquo;
+    </a>
   
 </nav>
 
@@ -1278,6 +1318,9 @@
         
 
 
+
+  
+  
 
   
   
@@ -1343,7 +1386,7 @@
       <div>
         <span class="icon-brush"
           >&nbsp;
-            36.7k
+            50.6k
           </span
         >
         &nbsp;|&nbsp;
@@ -1351,7 +1394,7 @@
           
           
 
-          01:17
+          01:45
         </span>
       </div>
     
@@ -1403,17 +1446,17 @@
   <div class="sidebar-state-article">
     <div>文章</div>
     
-    <div class="sidebar-state-number">10</div>
+    <div class="sidebar-state-number">11</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
     <div class="sidebar-state-number">
-      3
+      4
     </div>
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">12</div>
+    <div class="sidebar-state-number">13</div>
   </div>
 </div>
 <div class="sidebar-social">

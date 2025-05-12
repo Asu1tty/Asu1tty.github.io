@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>AOSP on Asu1tty&#39;s Blog</title>
+    <link>https://asu1tty.github.io/categories/aosp/</link>
+    <description>Recent content in AOSP on Asu1tty&#39;s Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 01 May 2025 11:20:50 +0800</lastBuildDate>
+    <atom:link href="https://asu1tty.github.io/categories/aosp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android so加载源码分析与加壳技术</title>
+      <link>https://asu1tty.github.io/post/loading-so/</link>
+      <pubDate>Thu, 01 May 2025 11:20:50 +0800</pubDate>
+      <guid>https://asu1tty.github.io/post/loading-so/</guid>
+      <description>&lt;p&gt;本次分析AOSP 的源码的安卓版本为 &lt;code&gt;android-12.0.0_r34&lt;/code&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;1-java层调用&#34;&gt;&#xA;&lt;a class=&#34;header-anchor&#34; href=&#34;#1-java%e5%b1%82%e8%b0%83%e7%94%a8&#34;&gt;&lt;/a&gt;&#xA;1. java层调用&#xA;&lt;/h2&gt;&lt;p&gt;So在java层的加载方式有两种&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;loadLibrary&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;libName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;或&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;load&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;11-systemload&#34;&gt;&#xA;&lt;a class=&#34;header-anchor&#34; href=&#34;#11-systemload&#34;&gt;&lt;/a&gt;&#xA;1.1. System.load()&#xA;&lt;/h3&gt;&lt;p&gt;这里我们以&lt;code&gt;System.load&lt;/code&gt;作为分析入口&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
