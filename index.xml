@@ -6,8 +6,15 @@
     <description>Recent content on Asu1tty&#39;s Blog</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 01 May 2025 11:20:50 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 17 May 2025 11:18:36 +0800</lastBuildDate>
     <atom:link href="https://asu1tty.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>浅析So加固的三种方式</title>
+      <link>https://asu1tty.github.io/post/so-harden/</link>
+      <pubDate>Sat, 17 May 2025 11:18:36 +0800</pubDate>
+      <guid>https://asu1tty.github.io/post/so-harden/</guid>
+      <description>&lt;p&gt;简单分享一下so加固的方案。本文章的代码基于&lt;a href=&#34;https://bbs.kanxue.com/thread-285650.htm&#34;&gt;关于SO加密对抗的两种实现方式&lt;/a&gt;&#xA;在看本篇文章之前，最好需要了解一下ELF文件格式，以及So的加载流程，这里推荐oacia大佬的两篇文章。&lt;a href=&#34;https://oacia.dev/ElfReader/&#34;&gt;ELF结构分析及ElfReader&lt;/a&gt;和&lt;a href=&#34;https://oacia.dev/android-load-so/&#34;&gt;安卓so加载流程源码分析&lt;/a&gt;。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Android so加载源码分析与加壳技术</title>
       <link>https://asu1tty.github.io/post/loading-so/</link>

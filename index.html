@@ -6,7 +6,7 @@
   
 >
   <head>
-	<meta name="generator" content="Hugo 0.147.2">
+	<meta name="generator" content="Hugo 0.147.3">
     
     <meta charset="utf-8" />
 <meta
@@ -141,8 +141,8 @@
     content="/"
   />
   <meta property="article:author" content="Asu1tty" />
-  <meta property="article:published_time" content="2025-05-01T11:20:50&#43;08:00" />
-  <meta property="article:modified_time" content="2025-05-01T11:20:50&#43;08:00" />
+  <meta property="article:published_time" content="2025-05-17T11:18:36&#43;08:00" />
+  <meta property="article:modified_time" content="2025-05-17T11:18:36&#43;08:00" />
   
   
   <meta name="twitter:card" content="summary" />
@@ -412,7 +412,7 @@
   <div class="sidebar-state-article">
     <div>文章</div>
     
-    <div class="sidebar-state-number">11</div>
+    <div class="sidebar-state-number">12</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -892,6 +892,10 @@
         <ul>
           
             <li>
+              <a href="/post/so-harden/">浅析So加固的三种方式</a>
+            </li>
+          
+            <li>
               <a href="/post/loading-so/">Android so加载源码分析与加壳技术</a>
             </li>
           
@@ -905,10 +909,6 @@
           
             <li>
               <a href="/post/rc4/">RC4原理及代码实现</a>
-            </li>
-          
-            <li>
-              <a href="/post/wb_aes/">AES原理及白盒AES的DFA攻击</a>
             </li>
           
         </ul>
@@ -943,6 +943,71 @@
     
       <a
         class="post-link"
+        href="/post/so-harden/"
+        aria-label="浅析So加固的三种方式"
+      >
+      </a>
+    
+    
+    <div
+      class="
+        post-cover-left
+      "
+    >
+      
+        
+        
+          <img
+            data-src="https://d-sketon.top/img/_backwebp/bg1.webp"
+            data-sizes="auto"
+            alt="浅析So加固的三种方式"
+            class="lazyload"
+          />
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span
+          ><span class="icon-calendar"></span
+          >2025-05-17</span
+        >
+        <span
+          ><span class="icon-pencil"></span
+          >8109 字</span
+        >
+        <span
+          ><span class="icon-clock"></span
+          >17 分钟</span
+        >
+      </div>
+      <h2 class="post-title">浅析So加固的三种方式</h2>
+      <article class="post-article">
+        
+          简单分享一下so加固的方案。本文章的代码基于关于SO加密对抗的两种实现方式 在看本篇文章之前，最好需要了解一下ELF文件格式，以及So的加载流程，这里推荐oacia大佬的两篇文章。ELF结构分析及ElfReader和安卓so加载流程源码分析。
+
+        
+      </article>
+    </div>
+  </div>
+</div>
+
+  
+    
+
+
+
+
+<div class="post-wrapper">
+  <div
+    class="
+      post-wrap-right
+    "
+    data-aos="fade-up"
+  >
+    
+      <a
+        class="post-link"
         href="/post/loading-so/"
         aria-label="Android so加载源码分析与加壳技术"
       >
@@ -951,7 +1016,7 @@
     
     <div
       class="
-        post-cover-left
+        post-cover-right
       "
     >
       
@@ -1004,7 +1069,7 @@ System.load(String path) 1.1. System.load() 这里我们以System.load作为分�
 <div class="post-wrapper">
   <div
     class="
-      post-wrap-right
+      post-wrap-left
     "
     data-aos="fade-up"
   >
@@ -1019,7 +1084,7 @@ System.load(String path) 1.1. System.load() 这里我们以System.load作为分�
     
     <div
       class="
-        post-cover-right
+        post-cover-left
       "
     >
       
@@ -1070,7 +1135,7 @@ Windows下的 PE（Portable Executable） Linux下的 ELF（Executable Linkable 
 <div class="post-wrapper">
   <div
     class="
-      post-wrap-left
+      post-wrap-right
     "
     data-aos="fade-up"
   >
@@ -1085,7 +1150,7 @@ Windows下的 PE（Portable Executable） Linux下的 ELF（Executable Linkable 
     
     <div
       class="
-        post-cover-left
+        post-cover-right
       "
     >
       
@@ -1137,7 +1202,7 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
 <div class="post-wrapper">
   <div
     class="
-      post-wrap-right
+      post-wrap-left
     "
     data-aos="fade-up"
   >
@@ -1152,7 +1217,7 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
     
     <div
       class="
-        post-cover-right
+        post-cover-left
       "
     >
       
@@ -1202,7 +1267,7 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
 <div class="post-wrapper">
   <div
     class="
-      post-wrap-left
+      post-wrap-right
     "
     data-aos="fade-up"
   >
@@ -1217,7 +1282,7 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
     
     <div
       class="
-        post-cover-left
+        post-cover-right
       "
     >
       
@@ -1267,7 +1332,7 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
 <div class="post-wrapper">
   <div
     class="
-      post-wrap-right
+      post-wrap-left
     "
     data-aos="fade-up"
   >
@@ -1282,7 +1347,7 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
     
     <div
       class="
-        post-cover-right
+        post-cover-left
       "
     >
       
@@ -1332,7 +1397,7 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
 <div class="post-wrapper">
   <div
     class="
-      post-wrap-left
+      post-wrap-right
     "
     data-aos="fade-up"
   >
@@ -1347,7 +1412,7 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
     
     <div
       class="
-        post-cover-left
+        post-cover-right
       "
     >
       
@@ -1398,7 +1463,7 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
 <div class="post-wrapper">
   <div
     class="
-      post-wrap-right
+      post-wrap-left
     "
     data-aos="fade-up"
   >
@@ -1413,7 +1478,7 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
     
     <div
       class="
-        post-cover-right
+        post-cover-left
       "
     >
       
@@ -1463,7 +1528,7 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
 <div class="post-wrapper">
   <div
     class="
-      post-wrap-left
+      post-wrap-right
     "
     data-aos="fade-up"
   >
@@ -1478,7 +1543,7 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
     
     <div
       class="
-        post-cover-left
+        post-cover-right
       "
     >
       
@@ -1514,72 +1579,6 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
           SHA-1（英語：Secure Hash Algorithm 1，中文名：安全散列算法1）是一种密码散列函数，美国国家安全局设计。SHA-1可以生成一个被称为消息摘要的160位（20字节）散列值，散列值通常的呈现形式为40个十六进制数。
 1. 算法实现过程 1.1. 第一步：填充 以字符串admin为例，十六进制如下
 61 64 6D 69 6E 需要让它填充到64个字节长度
-
-        
-      </article>
-    </div>
-  </div>
-</div>
-
-  
-    
-
-
-
-
-<div class="post-wrapper">
-  <div
-    class="
-      post-wrap-right
-    "
-    data-aos="fade-up"
-  >
-    
-      <a
-        class="post-link"
-        href="/post/md5/"
-        aria-label="MD5原理及代码实现"
-      >
-      </a>
-    
-    
-    <div
-      class="
-        post-cover-right
-      "
-    >
-      
-        
-        
-          <img
-            data-src="https://d-sketon.top/img/_backwebp/bg1.webp"
-            data-sizes="auto"
-            alt="MD5原理及代码实现"
-            class="lazyload"
-          />
-        
-      
-    </div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span
-          ><span class="icon-calendar"></span
-          >2025-04-23</span
-        >
-        <span
-          ><span class="icon-pencil"></span
-          >4798 字</span
-        >
-        <span
-          ><span class="icon-clock"></span
-          >10 分钟</span
-        >
-      </div>
-      <h2 class="post-title">MD5原理及代码实现</h2>
-      <article class="post-article">
-        
-          MD5消息摘要算法（英语：MD5 Message-Digest Algorithm），一种被广泛使用的密码散列函数，可以产生出一个128位（16个字节）的散列值（hash value），用于确保资讯传输完整一致。 将数据（如一段文字）运算变为另一固定长度值，是散列算法的基础原理。
-1. 算法 MD5是输入不定长度，输出固定长度128-bits的算法。经过程序流程，生成四个32位数据，最后联合起来成为一个128-bits（16字节，通常消息传输中更常见表示为32 个十六进制字符）散列。
 
         
       </article>
@@ -1663,6 +1662,9 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
   
   
 
+  
+  
+
 
 
 <footer id="footer">
@@ -1697,7 +1699,7 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
       <div>
         <span class="icon-brush"
           >&nbsp;
-            50.6k
+            58.7k
           </span
         >
         &nbsp;|&nbsp;
@@ -1705,7 +1707,7 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
           
           
 
-          01:45
+          02:02
         </span>
       </div>
     
@@ -1757,7 +1759,7 @@ jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器
   <div class="sidebar-state-article">
     <div>文章</div>
     
-    <div class="sidebar-state-number">11</div>
+    <div class="sidebar-state-number">12</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
