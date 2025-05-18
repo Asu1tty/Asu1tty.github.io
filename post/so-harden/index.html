@@ -421,13 +421,7 @@
         <li><a href="#31-加密效果">3.1. 加密效果</a></li>
         <li><a href="#32-实现代码">3.2. 实现代码</a></li>
         <li><a href="#33-实现原理">3.3. 实现原理</a></li>
-        <li><a href="#34-读取so文件头">3.4. 读取so文件头</a></li>
-        <li><a href="#35-校验so文件头">3.5. 校验so文件头</a></li>
-        <li><a href="#36-读取程序头">3.6. 读取程序头</a></li>
-        <li><a href="#37-读取节头">3.7. 读取节头</a></li>
-        <li><a href="#38-接下来进入so的加载">3.8. 接下来进入so的加载</a></li>
-        <li><a href="#39-借鸡生蛋">3.9. 借鸡生蛋</a></li>
-        <li><a href="#310-看一下soinfolist">3.10. 看一下soinfolist</a></li>
+        <li><a href="#34-看一下soinfolist">3.4. 看一下soinfolist</a></li>
       </ul>
     </li>
     <li><a href="#4-总结">4. 总结</a></li>
@@ -1642,10 +1636,10 @@
 </span></span><span class="line"><span class="cl">  
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">did_read_</span><span class="p">;</span>  
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h3 id="34-读取so文件头">
-<a class="header-anchor" href="#34-%e8%af%bb%e5%8f%96so%e6%96%87%e4%bb%b6%e5%a4%b4"></a>
-3.4. 读取so文件头
-</h3><p>在这里就可以把刚才保存的<code>origin_file_size_</code>使用起来，使得能够正确的读到so文件头。</p>
+</span></span></code></pre></div><h4 id="333-读取so文件头">
+<a class="header-anchor" href="#333-%e8%af%bb%e5%8f%96so%e6%96%87%e4%bb%b6%e5%a4%b4"></a>
+3.3.3. 读取so文件头
+</h4><p>在这里就可以把刚才保存的<code>origin_file_size_</code>使用起来，使得能够正确的读到so文件头。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">ElfReader</span><span class="o">::</span><span class="n">DIY_ReadElfHeader</span><span class="p">()</span> <span class="p">{</span>  
 </span></span><span class="line"><span class="cl">    <span class="n">LOGI</span><span class="p">(</span><span class="s">&#34;enter DIY_ReadElfHeader&#34;</span><span class="p">);</span>  
 </span></span><span class="line"><span class="cl">    <span class="n">ssize_t</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">TEMP_FAILURE_RETRY</span><span class="p">(</span><span class="n">pread64</span><span class="p">(</span><span class="n">fd_</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">header_</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">header_</span><span class="p">),</span> <span class="n">origin_file_size_</span><span class="p">));</span>  
@@ -1660,14 +1654,14 @@
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>  
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>  
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h3 id="35-校验so文件头">
-<a class="header-anchor" href="#35-%e6%a0%a1%e9%aa%8cso%e6%96%87%e4%bb%b6%e5%a4%b4"></a>
-3.5. 校验so文件头
-</h3><p>跟源码差不多，只是ELF的魔数头需要替换为我们自定义的<code>.csf</code>，并且这个校验步骤完全可以省略掉。</p>
-<h3 id="36-读取程序头">
-<a class="header-anchor" href="#36-%e8%af%bb%e5%8f%96%e7%a8%8b%e5%ba%8f%e5%a4%b4"></a>
-3.6. 读取程序头
-</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">ElfReader</span><span class="o">::</span><span class="n">ReadProgramHeaders</span><span class="p">()</span> <span class="p">{</span>  
+</span></span></code></pre></div><h4 id="334-校验so文件头">
+<a class="header-anchor" href="#334-%e6%a0%a1%e9%aa%8cso%e6%96%87%e4%bb%b6%e5%a4%b4"></a>
+3.3.4. 校验so文件头
+</h4><p>跟源码差不多，只是ELF的魔数头需要替换为我们自定义的<code>.csf</code>，并且这个校验步骤完全可以省略掉。</p>
+<h4 id="335-读取程序头">
+<a class="header-anchor" href="#335-%e8%af%bb%e5%8f%96%e7%a8%8b%e5%ba%8f%e5%a4%b4"></a>
+3.3.5. 读取程序头
+</h4><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">ElfReader</span><span class="o">::</span><span class="n">ReadProgramHeaders</span><span class="p">()</span> <span class="p">{</span>  
 </span></span><span class="line"><span class="cl">    <span class="n">phdr_num_</span> <span class="o">=</span> <span class="n">header_</span><span class="p">.</span><span class="n">e_phnum</span><span class="p">;</span>  
 </span></span><span class="line"><span class="cl">  
 </span></span><span class="line"><span class="cl">    <span class="c1">// Like the kernel, we only accept program header tables that  
@@ -1694,10 +1688,10 @@
 </span></span><span class="line"><span class="cl">    <span class="n">phdr_table_</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="n">ElfW</span><span class="p">(</span><span class="n">Phdr</span><span class="p">)</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">phdr_fragment_</span><span class="p">.</span><span class="n">data</span><span class="p">());</span>  
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>  
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h3 id="37-读取节头">
-<a class="header-anchor" href="#37-%e8%af%bb%e5%8f%96%e8%8a%82%e5%a4%b4"></a>
-3.7. 读取节头
-</h3><p>代码部分跟源码一样</p>
+</span></span></code></pre></div><h4 id="336-读取节头">
+<a class="header-anchor" href="#336-%e8%af%bb%e5%8f%96%e8%8a%82%e5%a4%b4"></a>
+3.3.6. 读取节头
+</h4><p>代码部分跟源码一样</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">ElfReader</span><span class="o">::</span><span class="n">ReadSectionHeaders</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="n">shdr_num_</span> <span class="o">=</span> <span class="n">header_</span><span class="p">.</span><span class="n">e_shnum</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
@@ -1723,10 +1717,10 @@
 </span></span><span class="line"><span class="cl">  <span class="n">shdr_table_</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">ElfW</span><span class="p">(</span><span class="n">Shdr</span><span class="p">)</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">shdr_fragment_</span><span class="p">.</span><span class="n">data</span><span class="p">());</span>
 </span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h3 id="38-接下来进入so的加载">
-<a class="header-anchor" href="#38-%e6%8e%a5%e4%b8%8b%e6%9d%a5%e8%bf%9b%e5%85%a5so%e7%9a%84%e5%8a%a0%e8%bd%bd"></a>
-3.8. 接下来进入so的加载
-</h3><p>其中主要说一下<code>FindPhdr()</code>,在这个程序中有一个很坑的点在于后面的一步<code>si_-&gt;phdr = elfreader-&gt;loaded_phdr();</code>。在<code>Program Header Table</code>中如果有<code>p_type == PT_PHDR</code>的段，那么<strong>该段类型的数组元素如果存在的话，则给出了程序头部表自身的大小和位置，既包括在文件中也包括在内存中的信息</strong>。也就是说段中的<code>p_vaddr</code>和<code>p_offset</code>的值是原来<code>Program Header Table</code>的偏移值，这就会导致<code>si_-&gt;phdr = elfreader-&gt;loaded_phdr();</code>指向的是错误的内存。这里我的解决办法是直接判断是不是自定义格式的ELF文件，如果是则让<code>loaded_phdr_ = phdr_table_</code>。</p>
+</span></span></code></pre></div><h4 id="337-接下来进入so的加载">
+<a class="header-anchor" href="#337-%e6%8e%a5%e4%b8%8b%e6%9d%a5%e8%bf%9b%e5%85%a5so%e7%9a%84%e5%8a%a0%e8%bd%bd"></a>
+3.3.7. 接下来进入so的加载
+</h4><p>其中主要说一下<code>FindPhdr()</code>,在这个程序中有一个很坑的点在于后面的一步<code>si_-&gt;phdr = elfreader-&gt;loaded_phdr();</code>。在<code>Program Header Table</code>中如果有<code>p_type == PT_PHDR</code>的段，那么<strong>该段类型的数组元素如果存在的话，则给出了程序头部表自身的大小和位置，既包括在文件中也包括在内存中的信息</strong>。也就是说段中的<code>p_vaddr</code>和<code>p_offset</code>的值是原来<code>Program Header Table</code>的偏移值，这就会导致<code>si_-&gt;phdr = elfreader-&gt;loaded_phdr();</code>指向的是错误的内存。这里我的解决办法是直接判断是不是自定义格式的ELF文件，如果是则让<code>loaded_phdr_ = phdr_table_</code>。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">ElfReader</span><span class="o">::</span><span class="n">Load</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">CHECK</span><span class="p">(</span><span class="n">did_read_</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">did_load_</span><span class="p">)</span> <span class="p">{</span>
@@ -1774,10 +1768,10 @@
 </span></span><span class="line"><span class="cl">  <span class="n">DL_ERR</span><span class="p">(</span><span class="s">&#34;can&#39;t find loaded phdr for </span><span class="se">\&#34;</span><span class="s">%s</span><span class="se">\&#34;</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">name_</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
 </span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h3 id="39-借鸡生蛋">
-<a class="header-anchor" href="#39-%e5%80%9f%e9%b8%a1%e7%94%9f%e8%9b%8b"></a>
-3.9. 借鸡生蛋
-</h3><p>我们用dlopen打开一个空壳so，然后填入我们自己so的信息，达到替换的操作。这里的关键点在于实现<code>soinfo_from_handle</code>函数，这个函数由于并没有导出，所以需要自己实现。</p>
+</span></span></code></pre></div><h4 id="338-借鸡生蛋">
+<a class="header-anchor" href="#338-%e5%80%9f%e9%b8%a1%e7%94%9f%e8%9b%8b"></a>
+3.3.8. 借鸡生蛋
+</h4><p>我们用dlopen打开一个空壳so，然后填入我们自己so的信息，达到替换的操作。这里的关键点在于实现<code>soinfo_from_handle</code>函数，这个函数由于并没有导出，所以需要自己实现。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">FILE</span> <span class="o">*</span><span class="n">fp</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="s">&#34;/proc/self/maps&#34;</span><span class="p">,</span> <span class="s">&#34;r&#34;</span><span class="p">);</span>  
 </span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">fp</span><span class="p">)</span> <span class="p">{</span>  
 </span></span><span class="line"><span class="cl">    <span class="n">LOGI</span><span class="p">(</span><span class="s">&#34;Failed to open /proc/self/maps&#34;</span><span class="p">);</span>  
@@ -1917,9 +1911,9 @@
 调用日志
 <img src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/20250518150042821.png" alt="">
 <img src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/call_func.jpg" alt=""></p>
-<h3 id="310-看一下soinfolist">
-<a class="header-anchor" href="#310-%e7%9c%8b%e4%b8%80%e4%b8%8bsoinfolist"></a>
-3.10. 看一下soinfolist
+<h3 id="34-看一下soinfolist">
+<a class="header-anchor" href="#34-%e7%9c%8b%e4%b8%80%e4%b8%8bsoinfolist"></a>
+3.4. 看一下soinfolist
 </h3><p>我们使用<code>libjoke.so</code>作为我们的壳，所以我们自然要在soinfolist中找的是libjoke.so，使用frida打印一下。红线上面部分是soinfolist遍历的结构，下面部分是打印的是ELF文件的前64字节数据，正是我们之前<code>3.1节</code>图中使用RC4解密后传入的数据。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/20250518160000252.png" alt=""></p>
 <h2 id="4-总结">
@@ -2170,13 +2164,7 @@
         <li><a href="#31-加密效果">3.1. 加密效果</a></li>
         <li><a href="#32-实现代码">3.2. 实现代码</a></li>
         <li><a href="#33-实现原理">3.3. 实现原理</a></li>
-        <li><a href="#34-读取so文件头">3.4. 读取so文件头</a></li>
-        <li><a href="#35-校验so文件头">3.5. 校验so文件头</a></li>
-        <li><a href="#36-读取程序头">3.6. 读取程序头</a></li>
-        <li><a href="#37-读取节头">3.7. 读取节头</a></li>
-        <li><a href="#38-接下来进入so的加载">3.8. 接下来进入so的加载</a></li>
-        <li><a href="#39-借鸡生蛋">3.9. 借鸡生蛋</a></li>
-        <li><a href="#310-看一下soinfolist">3.10. 看一下soinfolist</a></li>
+        <li><a href="#34-看一下soinfolist">3.4. 看一下soinfolist</a></li>
       </ul>
     </li>
     <li><a href="#4-总结">4. 总结</a></li>

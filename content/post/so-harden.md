@@ -1072,7 +1072,7 @@ bool ElfReader::DIY_Read(const char* name, int fd, off64_t file_offset, off64_t 
     return did_read_;  
 }
 ```
-### 3.4. 读取so文件头
+#### 3.3.3. 读取so文件头
 在这里就可以把刚才保存的`origin_file_size_`使用起来，使得能够正确的读到so文件头。
 ```cpp
 bool ElfReader::DIY_ReadElfHeader() {  
@@ -1090,10 +1090,10 @@ bool ElfReader::DIY_ReadElfHeader() {
     return true;  
 }
 ```
-### 3.5. 校验so文件头
+#### 3.3.4. 校验so文件头
 跟源码差不多，只是ELF的魔数头需要替换为我们自定义的`.csf`，并且这个校验步骤完全可以省略掉。
 
-### 3.6. 读取程序头
+#### 3.3.5. 读取程序头
 ```cpp
 bool ElfReader::ReadProgramHeaders() {  
     phdr_num_ = header_.e_phnum;  
@@ -1124,7 +1124,7 @@ bool ElfReader::ReadProgramHeaders() {
 }
 ```
 
-### 3.7. 读取节头
+#### 3.3.6. 读取节头
 代码部分跟源码一样
 ```cpp
 bool ElfReader::ReadSectionHeaders() {
@@ -1153,7 +1153,7 @@ bool ElfReader::ReadSectionHeaders() {
   return true;
 }
 ```
-### 3.8. 接下来进入so的加载
+#### 3.3.7. 接下来进入so的加载
 其中主要说一下`FindPhdr()`,在这个程序中有一个很坑的点在于后面的一步`si_->phdr = elfreader->loaded_phdr();`。在`Program Header Table`中如果有`p_type == PT_PHDR`的段，那么**该段类型的数组元素如果存在的话，则给出了程序头部表自身的大小和位置，既包括在文件中也包括在内存中的信息**。也就是说段中的`p_vaddr`和`p_offset`的值是原来`Program Header Table`的偏移值，这就会导致`si_->phdr = elfreader->loaded_phdr();`指向的是错误的内存。这里我的解决办法是直接判断是不是自定义格式的ELF文件，如果是则让`loaded_phdr_ = phdr_table_`。
 ```cpp
 bool ElfReader::Load() {
@@ -1210,7 +1210,7 @@ bool ElfReader::FindPhdr() {
 }
 
 ```
-### 3.9. 借鸡生蛋
+#### 3.3.8. 借鸡生蛋
 我们用dlopen打开一个空壳so，然后填入我们自己so的信息，达到替换的操作。这里的关键点在于实现`soinfo_from_handle`函数，这个函数由于并没有导出，所以需要自己实现。
 ```cpp
 FILE *fp = fopen("/proc/self/maps", "r");  
@@ -1361,7 +1361,7 @@ uintptr_t get_soinfo_handles_map_offset(uint64_t start, uint64_t end) {
 ![](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/20250518150042821.png)
 ![](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/call_func.jpg)
 
-### 3.10. 看一下soinfolist
+### 3.4. 看一下soinfolist
 我们使用`libjoke.so`作为我们的壳，所以我们自然要在soinfolist中找的是libjoke.so，使用frida打印一下。红线上面部分是soinfolist遍历的结构，下面部分是打印的是ELF文件的前64字节数据，正是我们之前`3.1节`图中使用RC4解密后传入的数据。
 
 ![](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/20250518160000252.png)
