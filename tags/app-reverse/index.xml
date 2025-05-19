@@ -13,7 +13,7 @@
       <link>https://asu1tty.github.io/post/xhs_analysis/</link>
       <pubDate>Fri, 25 Apr 2025 17:48:36 +0800</pubDate>
       <guid>https://asu1tty.github.io/post/xhs_analysis/</guid>
-      <description>&lt;p&gt;版本：8.70.0&lt;/p&gt;&#xA;&lt;h2 id=&#34;1-加密入口&#34;&gt;&#xA;&lt;a class=&#34;header-anchor&#34; href=&#34;#1-%e5%8a%a0%e5%af%86%e5%85%a5%e5%8f%a3&#34;&gt;&lt;/a&gt;&#xA;1. 加密入口&#xA;&lt;/h2&gt;&lt;p&gt;加密入口在&lt;code&gt;com.xingin.shield.http.XhsHttpInterceptor&lt;/code&gt;&lt;/p&gt;&#xA;&lt;p&gt;jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器，并且打印&lt;code&gt;chain.request()&lt;/code&gt;中的参数会发现传入前没有&lt;code&gt;shield&lt;/code&gt;参数，执行完后有&lt;code&gt;shield&lt;/code&gt;参数，正是在此Native层拦截器完成加密，并且通过函数名称也能猜测到so层有初始化操作&lt;/p&gt;</description>
+      <description>&lt;p&gt;&lt;strong&gt;该文章主要提供交流学习使用， 请勿利用进行不当行为&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;如本篇文章侵犯了贵公司的隐私，请联系我立刻删除！&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;如因滥用解密技术而产生的风险与本人无关&lt;/strong&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
