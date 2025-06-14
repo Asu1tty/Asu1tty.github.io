@@ -135,6 +135,18 @@
   
   , 
   {
+    "objectID": "1743477650",
+    "permalink": "/post/install-scoop/",
+    "title": "scoop命令合集",
+    
+    "content": " 1. 激活Windows irm https://massgrave.dev/get | iex 选择1\n2. 安装禁止更新的Chrome浏览器 链接：https://pan.baidu.com/s/1Z4ZYuzWKuCoiInW9aVzszg 提取码：dg0w 打开chrome所在位置，新建一个Update文件夹，并拒绝所有权限 ![[Pasted image 20240222214033.png]] 3. 安装最新版powershell [Powershell releases](https://github.com/PowerShell/PowerShell/releases\n3.1. 关闭更新提示 POWERSHELL_UPDATECHECK ![[Pasted image 20240223095124.png]]\n4. 安装Windows Terminal 直接打开 Microsaft Store 搜索 Windows Terminal 下载即可 5. 安装scoop及插件[[SCOOP命令]] [Environment]::SetEnvironmentVariable(\u0026amp;#39;SCOOP\u0026amp;#39;, \u0026amp;#39;D:\\Scoop\u0026amp;#39;, \u0026amp;#39;User\u0026amp;#39;); [Environment]::SetEnvironmentVariable(\u0026amp;#39;SCOOP_GLOBAL\u0026amp;#39;, \u0026amp;#39;D:\\Scoop-Global\u0026amp;#39;, \u0026amp;#39;Machine\u0026amp;#39;); Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser; irm get.scoop.sh | iex 如果最后一句不行则替换为\niex \u0026amp;#34;\u0026amp;amp; {$(irm get.scoop.sh)} -RunAsAdmin\u0026amp;#34; 5.1. 安装git scoop install git 5.2. 安装gsudo scoop install gsudo 5.3. 使用scoop安装oh-my-posh scoop install …",
+    
+    "date": "2025-04-01 11:20:50",
+    "updated": "2025-04-01 11:20:50"
+  }
+  
+  , 
+  {
     "objectID": "1654776772",
     "permalink": "/post/main/",
     "title": "Markdown Basic Elements",
