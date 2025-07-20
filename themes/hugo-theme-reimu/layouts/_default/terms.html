@@ -1,4 +1,4 @@
-{{ define "main" }}
+{{- define "main" -}}
   <div
     class="archives-outer-wrap"
     data-aos="{{ .Site.Params.animation.options.archive.whole }}"
@@ -10,7 +10,7 @@
         category-wrap
       {{ end }}"
     >
-      {{ range .Pages }}
+      {{- range .Pages -}}
         <div
           class="{{ if eq $.Name "Tags" }}
             archives-tag-list-item
@@ -29,7 +29,7 @@
             >{{ .LinkTitle }}</a
           >
         </div>
-      {{ end }}
+      {{- end -}}
     </div>
   </div>
-{{ end }}
+{{- end -}}

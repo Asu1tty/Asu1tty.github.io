@@ -19,7 +19,7 @@
 
 [data-theme="dark"] .post-wrap-left,
 [data-theme="dark"] .post-wrap-right {
-  box-shadow: 0 0 10px 3px var(--color-hover-shadow);
+  box-shadow: var(--shadow-card);
 }
 
 .post-wrapper {
@@ -31,7 +31,7 @@
 
     @media #{$mq-normal} {
       &:hover {
-        box-shadow: 0 0 10px 3px var(--color-hover-shadow);
+        box-shadow: var(--shadow-card-hover);
       }
     }
   }

@@ -1,4 +1,4 @@
-{{ if len .Site.Taxonomies.tags }}
+{{- if len .Site.Taxonomies.tags -}}
   <div class="widget-wrapper">
     <div
       class="widget-wrap"
@@ -6,15 +6,15 @@
     >
       <div style="display: flex; justify-content: space-between;">
         <h3 class="widget-title">{{ i18n "tags" }}</h3>
-        {{ if gt (len .Site.Taxonomies.tags) .Site.Params.tag_limits }}
-          <a class="widget-link" href="{{ "tags/" | relURL }}">{{ i18n "more" }}</a>
-        {{ end }}
+        {{- if gt (len .Site.Taxonomies.tags) .Site.Params.tag_limits -}}
+          <a class="widget-link" href="{{ "tags/" | relLangURL }}">{{ i18n "more" }}</a>
+        {{- end -}}
       </div>
       <div class="widget">
         <ul class="tag-list" itemprop="keywords">
-          {{ $counter := 0 }}
-          {{ range .Site.Taxonomies.tags }}
-            {{ if lt $counter $.Site.Params.tag_limits }}
+          {{- $counter := 0 -}}
+          {{- range .Site.Taxonomies.tags -}}
+            {{- if lt $counter $.Site.Params.tag_limits -}}
             <li class="tag-item">
                 <a
                   class="tag-link"
@@ -24,11 +24,11 @@
                   {{ .Page.Title }}
                 </a>
               </li>
-              {{ $counter = add $counter 1 }}
-            {{ end }}
-          {{ end }}
+              {{- $counter = add $counter 1 -}}
+            {{- end -}}
+          {{- end -}}
         </ul>
       </div>
     </div>
   </div>
-{{ end }}
+{{- end -}}

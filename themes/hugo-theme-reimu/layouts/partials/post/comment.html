@@ -1,23 +1,23 @@
-{{ $site := .Site }}
-{{ $params := .Site.Params }}
-{{ $js := .Site.Data.vendor.js }}
+{{- $site := .Site -}}
+{{- $params := .Site.Params -}}
+{{- $js := .Site.Data.vendor.js -}}
 
-{{ $commentSystems := dict 
+{{- $commentSystems := dict 
   "valine" (cond (and $params.valine.enable $params.valine.appId $params.valine.appKey) true false)
   "waline" (cond (and $params.waline.enable $params.waline.serverURL) true false)
   "twikoo" (cond (and $params.twikoo.enable $params.twikoo.envId) true false)
   "gitalk" (cond (and $params.gitalk.enable $params.gitalk.clientID $params.gitalk.clientSecret) true false)
   "giscus" (cond $params.giscus.enable true false)
-}}
+-}}
 
-{{ $activeSystems := slice }}
-{{ range $key, $value := $commentSystems }}
-  {{ if $value }}
-    {{ $activeSystems = $activeSystems | append $key }}
-  {{ end }}
-{{ end }}
+{{- $activeSystems := slice -}}
+{{- range $key, $value := $commentSystems -}}
+  {{- if $value -}}
+    {{- $activeSystems = $activeSystems | append $key -}}
+  {{- end -}}
+{{- end -}}
 
-{{ if and (not (eq .Params.comments false)) (len $activeSystems) }}
+{{- if and (not (eq .Params.comments false)) (len $activeSystems) -}}
 <script data-pjax>
   var loadScript = (src, integrity) => {
     const script = document.createElement('script');
@@ -47,6 +47,7 @@
           const recordIP = JSON.parse('{{ $params.valine.recordIP }}');
           const highlight = JSON.parse('{{ $params.valine.highlight }}');
           const visitor = JSON.parse('{{ $params.valine.visitor }}');
+          const serverURLs = {{ if $params.valine.serverURLs }}'{{ $params.valine.serverURLs }}'{{ else }}undefined{{ end }};
 
           new Valine({
             el: '.valine-comment',
@@ -55,12 +56,13 @@
             placeholder: "{{ $params.valine.placeholder }}",
             pageSize: '{{ $params.valine.pageSize }}',
             avatar: '{{ $params.valine.avatar }}',
-            lang: '{{ $params.valine.lang }}',
+            lang: document.documentElement.lang || 'en',
             recordIP: recordIP,
             highlight: highlight,
             visitor: visitor,
             requiredFields: guest_info,
-            path: window.location.pathname
+            path: window.location.pathname,
+            serverURLs,
           });
         };
         document.head.appendChild(script);
@@ -92,7 +94,7 @@
         window.walineInstance = walineInit({
           el: '.waline-comment',
           serverURL: '{{ $params.waline.serverURL }}',
-          lang: '{{ $params.waline.lang }}',
+          lang: document.documentElement.lang || 'en',
           locale: JSON.parse({{ $params.waline.locale | jsonify }}),
           emoji: JSON.parse({{ $params.waline.emoji | jsonify}}),
           meta: JSON.parse({{ $params.waline.meta | jsonify }}),
@@ -122,6 +124,19 @@
             envId: '{{ $params.twikoo.envId }}',
             el: '.twikoo-comment',
             region: '{{ $params.twikoo.region }}',
+            lang: document.documentElement.lang || 'en',
+          });
+          twikoo.getCommentsCount({
+            envId: '{{ .Site.Params.twikoo.envId }}',
+            region: '{{ .Site.Params.twikoo.region }}',
+            urls: [
+              '{{ .Permalink | urlize }}'
+            ],
+            includeReply: false
+          }).then((res) => {
+            document.querySelector('.twikoo-comment-count').innerText = res[0].count;
+          }).catch((err) => {
+            console.error(err);
           });
         };
         document.head.appendChild(script);
@@ -161,8 +176,9 @@
             repo: '{{ $params.gitalk.repo }}',
             owner: '{{ $params.gitalk.owner }}',
             admin: JSON.parse({{ $params.gitalk.admin | jsonify }}),
-            id: {{ if $params.gitalk.md5 }}'window.md5 ? window.md5(location.pathname) : location.pathname'{{ else }}'location.pathname'{{ end }},
-            distractionFreeMode: false
+            id: {{ if $params.gitalk.md5 }}window.md5 ? window.md5(location.pathname) : location.pathname{{ else }}location.pathname{{ end }},
+            distractionFreeMode: false,
+            language: document.documentElement.lang || 'en',
           });
           gitalk.render('gitalk-comment');
         }
@@ -184,6 +200,14 @@
         // 加载 Giscus 脚本
         const giscusScript = document.createElement('script');
         const domMode = document.documentElement.getAttribute("data-theme");
+
+        const docLang = document.documentElement.lang || 'en';
+        const langBase = docLang.split('-')[0];
+        const supportedLangs = ['ar', 'be', 'bg', 'ca', 'cs', 'da', 'de', 'en', 
+        'eo', 'es', 'eu', 'fa', 'fr', 'gr', 'hbs', 'he', 'hu', 'id', 'it', 'ja', 
+        'kh', 'ko', 'nl', 'pl', 'pt', 'ro', 'ru', 'th', 'tr', 'uk', 'uz', 'vi', 'zh-CN', 'zh-HK', 'zh-TW'];
+        const giscusLang = supportedLangs.includes(docLang) ? docLang : supportedLangs.includes(langBase) ? langBase : 'en';
+
         giscusScript.src = 'https://giscus.app/client.js';
         giscusScript.setAttribute('data-repo', '{{ $params.giscus.repo }}');
         giscusScript.setAttribute('data-repo-id', '{{ $params.giscus.repoId }}');
@@ -195,7 +219,7 @@
         giscusScript.setAttribute('data-emit-metadata', '{{ $params.giscus.emitMetadata }}');
         giscusScript.setAttribute('data-input-position', '{{ $params.giscus.inputPosition }}');
         giscusScript.setAttribute('data-theme', domMode === 'dark' ? 'dark' : 'light');
-        giscusScript.setAttribute('data-lang', '{{ $params.giscus.lang }}');
+        giscusScript.setAttribute('data-lang', giscusLang);
         giscusScript.setAttribute('crossorigin', 'anonymous');
         giscusScript.async = true;
         container.appendChild(giscusScript);
@@ -321,4 +345,4 @@
   };
   loadComments();
 </script>
-{{ end }}
+{{- end -}}

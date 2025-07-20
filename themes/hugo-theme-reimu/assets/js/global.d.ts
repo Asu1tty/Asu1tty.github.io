@@ -134,7 +134,7 @@ declare global {
     };
     swPath?: string;
     outdate?: string;
-    anchor_icon?: string;
+    anchor_icon?: string | boolean;
     code_block?: {
       expand?: boolean;
     }

@@ -1,32 +1,31 @@
-{{ $totalWordCount := 0 }}
-{{ $totalReadingTime := 0 }}
-{{ $posts := (where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections) }}
-{{ range $posts }}
-  {{ $totalWordCount = add $totalWordCount .WordCount }}
-  {{ $totalReadingTime = add $totalReadingTime .ReadingTime }}
-{{ end }}
-
+{{- $totalWordCount := 0 -}}
+{{- $totalReadingTime := 0 -}}
+{{- $posts := (where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections) -}}
+{{- range $posts -}}
+  {{- $totalWordCount = add $totalWordCount .WordCount -}}
+  {{- $totalReadingTime = add $totalReadingTime .ReadingTime -}}
+{{- end -}}
 
 <footer id="footer">
   <div style="width: 100%; overflow: hidden">
     <div class="footer-line"></div>
   </div>
   <div id="footer-info">
-    {{ if .Site.Params.copyright }}
-      {{ .Site.Params.copyright | safeHTML }}
-    {{ end }}
+    {{- if .Site.Params.copyright -}}
+      {{- .Site.Params.copyright | safeHTML -}}
+    {{- end -}}
     <div>
       <span class="icon-copyright"></span>
-      {{ if eq (string .Site.Params.footer.since) (now.Format .Site.Params.yearFormat) }}
-        {{ now.Format .Site.Params.yearFormat }}
-      {{ else }}
-        {{ .Site.Params.footer.since }} -
-        {{ now.Format .Site.Params.yearFormat }}
-      {{ end }}
+      {{- if eq (string .Site.Params.footer.since) (now.Format .Site.Params.yearFormat) -}}
+        {{- now.Format .Site.Params.yearFormat -}}
+      {{- else -}}
+        {{- .Site.Params.footer.since -}} -
+        {{- now.Format .Site.Params.yearFormat -}}
+      {{- end -}}
       <span class="footer-info-sep {{ if .Site.Params.footer.icon.rotate }}rotate{{ end }}"></span>
       {{ .Site.Params.author | default .Site.Title }}
     </div>
-    {{ if .Site.Params.footer.powered }}
+    {{- if .Site.Params.footer.powered -}}
       <div>
         {{ i18n "powered_by" }}&nbsp;<a
           href="https://gohugo.io/"
@@ -38,33 +37,33 @@
           >Reimu</a
         >
       </div>
-    {{ end }}
-    {{ if .Site.Params.footer.count }}
+    {{- end -}}
+    {{- if .Site.Params.footer.count -}}
       <div>
         <span class="icon-brush"
-          >&nbsp;{{ if gt $totalWordCount 1000 }}
-            {{ printf "%.1fk" (div $totalWordCount 1000.0) }}
-          {{ else }}
-            {{ $totalWordCount }}
-          {{ end }}</span
+          >&nbsp;{{- if gt $totalWordCount 1000 -}}
+            {{- printf "%.1fk" (div $totalWordCount 1000.0) -}}
+          {{- else -}}
+            {{- $totalWordCount -}}
+          {{- end -}}</span
         >
         &nbsp;|&nbsp;
         <span class="icon-coffee">&nbsp;
-          {{ $hours := div $totalReadingTime 60 }}
-          {{ $minutes := mod $totalReadingTime 60 }}
+          {{- $hours := div $totalReadingTime 60 -}}
+          {{- $minutes := mod $totalReadingTime 60 -}}
 
-          {{ printf "%02d:%02d" $hours $minutes }}
+          {{- printf "%02d:%02d" $hours $minutes -}}
         </span>
       </div>
-    {{ end }}
-    {{ if .Site.Params.icp.icpnumber }}
+    {{- end -}}
+    {{- if .Site.Params.icp.icpnumber -}}
       <div class="footer-beian">
         <a target="_blank" rel="noopener" href="https://beian.miit.gov.cn"
           >{{ .Site.Params.icp.icpnumber }}</a
         >
       </div>
-    {{ end }}
-    {{ if and .Site.Params.icp.beian .Site.Params.icp.recordcode }}
+    {{- end -}}
+    {{- if and .Site.Params.icp.beian .Site.Params.icp.recordcode -}}
       <div class="footer-beian">
         <img
           style="object-fit: contain;margin-right: 2px;"
@@ -77,8 +76,8 @@
           >{{ .Site.Params.icp.beian }}</a
         >
       </div>
-    {{ end }}
-    {{ if .Site.Params.footer.busuanzi }}
+    {{- end -}}
+    {{- if .Site.Params.footer.busuanzi -}}
       <div>
         <span class="icon-eye"></span>
         <span id="busuanzi_container_site_pv"
@@ -94,6 +93,6 @@
           ></span
         ></span>
       </div>
-    {{ end }}
+    {{- end -}}
   </div>
 </footer>

@@ -1,3 +1,292 @@
+## v0.12.0
+
+**2025-07-06**
+
+### 修复
+
+- 修复标签云权重计算逻辑，确保在没有文章时构建不报错
+- 修复 giscus 多语言兜底逻辑
+
+### 特性
+
+- 统一 css 阴影样式，新增以下 token:
+  - `--shadow-meta`
+  - `--shadow-meta-hover`
+  - `--shadow-card`
+  - `--shadow-card-hover`
+  - `--shadow-red-6-shadow`
+- Algolia 使用 SHA1 哈希作为 objectID
+- 侧边栏支持 tag 和 category 的页面跳转
+- 实验性新增 `sort_order` 配置，用于控制分类、标签、归档和首页的排序方式，未来可能会有重大变化
+  - 支持的排序方式：`default`、`date`、`date-reverse`、`weight`、`weight-reverse`
+  - `default` 为 hugo 默认排序方式，详见 [Hugo 文档](https://gohugo.io/quick-reference/page-collections/#sort)
+  - `date` 为按日期排序，`date-reverse` 为按日期倒序排序
+  - `weight` 为按权重排序，`weight-reverse` 为按权重倒序排序
+  - 默认情况下，`home` 使用 `default` 排序，`archive` 使用 `date-reverse` 排序，`taxonomy` 使用 `date-reverse` 排序
+  - 可以通过 `categories_weight` 和 `tags_weight` 配置来控制分类页和标签页的文章权重
+  - 可以通过 `weight` 配置来控制归档和首页的文章权重
+  ```yaml
+  sort_order:
+    taxonomy:
+      category: date-reverse # controlled by categories_weight
+      tag: date-reverse # controlled by tags_weight
+    archive: date-reverse # controlled by weight
+    home: default # controlled by weight
+  ```
+- `heatMapCard` 热力图新增自定义 tooltip 内容，支持点击显示文章列表
+- 新增 `tagRoulette` shortcode 用于展示标签轮盘，提供随机标签展示功能，点击按钮后会从预定义的标签池中随机抽取并展示一个标签。
+  ```yaml
+  {{< tagRoulette tags="?" icon="?" >}}
+  ```
+  - tags：可选参数，指定标签池，多个标签用英文逗号(,)分隔；未提供时默认使用几个示例标签，例如：tags="记忆衰退,表达欲丧失,更加怠惰,无感,好想睡觉"  
+  - icon：可选参数，自定义触发按钮的图标，默认使用 🕹️（游戏手柄emoji），可替换为任何emoji或文字，如 🎲、🎯、🔄 等
+
+### 性能
+
+- CSS 持续性 tree-shaking，现在评论相关样式会按需打包
+- `instantsearch.js` 替换为 `@reimujs/instantsearch.js`，以减少包体积
+
+---
+
+### Fixes
+
+- Fixed the tag cloud weight calculation logic to ensure no errors occur when building without articles  
+- Improved the giscus multilingual fallback logic  
+
+### Features  
+
+- Unified CSS shadow styles and added the following tokens:  
+  - `--shadow-meta`  
+  - `--shadow-meta-hover`  
+  - `--shadow-card`  
+  - `--shadow-card-hover`  
+  - `--shadow-red-6-shadow`  
+- Algolia now uses SHA1 hash as objectID  
+- Sidebar now supports page navigation for tags and categories  
+- Added `sort_order` configuration to control the sorting method for categories, tags, archives, and the homepage (Experimental Feature, may be majorly changed in the future):  
+  - Supported sorting methods: `default`, `date`, `date-reverse`, `weight`, `weight-reverse`  
+  - `default` follows Hugo's default sorting method. Refer to the [Hugo documentation](https://gohugo.io/quick-reference/page-collections/#sort) for details.  
+  - `date` sorts by date, while `date-reverse` sorts by date in reverse order.  
+  - `weight` sorts by weight, while `weight-reverse` sorts by weight in reverse order.  
+  - By default, `home` uses `default` sorting, `archive` uses `date-reverse`, and `taxonomy` uses `date-reverse`.  
+  - The `categories_weight` and `tags_weight` configurations can be used to control article weights for category and tag pages.  
+  - The `weight` configuration can be used to control article weights for archives and the homepage.  
+  ```yaml  
+  sort_order:  
+    taxonomy:  
+      category: date-reverse # controlled by categories_weight  
+      tag: date-reverse # controlled by tags_weight  
+    archive: date-reverse # controlled by weight  
+    home: default # controlled by weight  
+  ```  
+- Added custom tooltip content for the `heatMapCard` heatmap, supporting click-to-show article lists.  
+- Added the `tagRoulette` shortcode to display a tag roulette, providing a random tag display feature. Clicking the button randomly selects and displays a tag from a predefined tag pool.  
+  ```yaml  
+  {{< tagRoulette tags="?" icon="?" >}}  
+  ```  
+  - `tags`: Optional parameter specifying the tag pool, with multiple tags separated by commas (`,`). If not provided, default example tags are used, e.g., `tags="memory decline,lost desire to express,more lazy,indifferent,want to sleep"`.  
+  - `icon`: Optional parameter for customizing the trigger button icon. Defaults to 🕹️ (gamepad emoji), which can be replaced with any emoji or text, such as 🎲, 🎯, 🔄, etc.  
+
+### Performance  
+
+- Continuous CSS tree-shaking; comment-related styles are now bundled on-demand.  
+- Replaced `instantsearch.js` with `@reimujs/instantsearch.js` to reduce bundle size.
+
+## v0.11.0
+
+**2025-05-31**
+
+### 重大修改
+
+- Hugo 最低版本要求升级至 v0.124.0 及以上
+
+### 修复
+
+- 修复 twikoo 评论系统无法正常使用的问题
+
+### 特性
+
+- `anchor_icon` 支持传递 `false` 以隐藏锚点图标
+
+### 杂项
+
+- 更新 mermaid 至 v11.6.0
+- 更新 katex 至 v0.16.22
+- 更新 twikoo 至 v1.6.44
+
+---
+
+### Major Changes
+
+- Minimum Hugo version requirement upgraded to v0.124.0 or higher
+
+### Fixes
+
+- Fixed an issue where the Twikoo comment system could not be used properly
+
+### Features
+
+- `anchor_icon` now supports passing `false` to hide the anchor icon
+
+### Miscellaneous
+
+- Updated Mermaid to v11.6.0
+- Updated KaTeX to v0.16.22
+- Updated Twikoo to v1.6.44
+
+## v0.10.2
+
+**2025-05-11**
+
+### 特性
+
+- `menu.icon` 支持图片路径，如 `/avatar/avatar.webp`
+  ```yaml
+  menu:
+    - name: home
+      url: /
+      icon: /avatar/avatar.webp
+  ```
+- vendor 中的 css 支持 SRI
+
+---
+
+### Features
+
+- Added `menu.icon` configuration to support image paths, such as `/avatar/avatar.webp`
+  ```yaml
+  menu:
+    - name: home
+      url: /
+      icon: /avatar/avatar.webp
+  ```
+- Vendor CSS now supports SRI
+
+## v0.10.1
+
+**2025-05-02**
+
+### 修复
+
+- 修复了当开启 `expand` 配置时，AOS 运行异常导致部分元素无法正常显示的问题
+- 优化 Aplayer 样式
+
+---
+
+### Fixes
+
+- Fixed the issue where AOS was running abnormally when the `expand` configuration was enabled, causing some elements to not display properly
+- Optimized Aplayer styles
+
+## v0.10.0
+
+**2025-04-28**
+
+### 修复
+
+- 修复移动端导航栏溢出时无法滚动的问题
+- 修复 gitalk id 错误的问题
+- 修复 `only_show_capsule_in_index` 展示逻辑
+- 修复 `home_categories` 展示和跳转逻辑
+
+### 特性
+
+- 新增 `email` 配置用于 RSS 支持
+  ```yaml
+  email: xxx@example.com
+  ```
+- RSS 支持更多配置
+  ```yml
+  rss:
+    limit: 10             # The number of recent articles to be output, write -1 to output all
+    showFullContent: false # output full content or description
+    showCopyright: false   # If true, add copyright to the end of article.
+  ```
+- 适配和优化 valine / waline / gitalk 样式
+- valine 新增 `serverURLs` 配置用于指定服务器地址
+  ```yaml
+  valine:
+    serverURLs: # valine server url
+  ```
+- 多语言模式下支持切换语言
+- valine / waline / twikoo / gitalk /giscus 支持多语言，且 `valine.lang`、`waline.lang`、`giscus.lang` **配置废弃**
+- `comment.title`、`preloader.text`、`clipboard.success`、`clipboard.fail`、`outdate.message` 支持多语言，且同时兼容旧有字符串写法
+  ```yaml
+  # Example
+  comment:
+    # comment system title
+    title:
+      en: Leave a comment
+      zh-CN: 说些什么吧！
+      zh-TW: 說些什麼吧！
+      ja: コメントを残す
+  ```
+- `algolia_search.label` 和 `clipboard.copyright.license` **配置废弃**，转而使用 i18n 支持多语言
+- `clipboard.copyright` 和 `article_copyright.content` 新增 `license_type` 配置用于配置版权类型，详情见 [creativecommons](https://creativecommons.org/licenses)，默认为 `by-nc-sa`
+  ```yaml
+  article_copyright:
+    content: 
+      license_type: by-nc-sa
+  clipboard:
+    copyright:
+      license_type: by-nc-sa
+  ```
+
+---
+
+### Fixes  
+- Fixed the issue where the mobile navigation bar couldn't scroll when overflowing  
+- Fixed the incorrect Gitalk ID issue  
+- Fixed the display logic for `only_show_capsule_in_index`  
+- Fixed the display and navigation logic for `home_categories`  
+
+### Features  
+
+- Added `email` configuration for RSS support  
+
+  ```yaml  
+  email: xxx@example.com  
+  ```  
+- Enhanced RSS configuration options  
+
+  ```yaml  
+  rss:  
+    limit: 10             # The number of recent articles to be output, write -1 to output all  
+    showFullContent: false # Output full content or description  
+    showCopyright: false   # If true, add copyright to the end of the article  
+  ```  
+- Improved styling compatibility for Valine, Waline, and Gitalk  
+- Added `serverURLs` configuration for Valine to specify server addresses  
+
+  ```yaml  
+  valine:  
+    serverURLs: # Valine server URL  
+  ```  
+- Added language-switching support for multilingual modes  
+- Added multilingual support for Valine, Waline, Twikoo, Gitalk, and Giscus. **Deprecated** `valine.lang`, `waline.lang`, and `giscus.lang` configurations  
+- Added multilingual support for `comment.title`, `preloader.text`, `clipboard.success`, `clipboard.fail`, and `outdate.message`, while maintaining backward compatibility with string-based configurations  
+  ```yaml  
+  # Example:  
+  comment:  
+    # Comment system title  
+    title:  
+      en: Leave a comment  
+      zh-CN: 说些什么吧！  
+      zh-TW: 說些什麼吧！  
+      ja: コメントを残す  
+  ```  
+- **Deprecated** `algolia_search.label` and `clipboard.copyright.license` configurations in favor of i18n support  
+- Added `license_type` configuration for `clipboard.copyright` and `article_copyright.content` to specify license types (default: `by-nc-sa`). Refer to [Creative Commons](https://creativecommons.org/licenses) for details.  
+
+  ```yaml  
+  article_copyright:  
+    content:  
+      license_type: by-nc-sa  
+  clipboard:  
+    copyright:  
+      license_type: by-nc-sa  
+  ```
+
 ## v0.9.0
 
 **2025-04-13**

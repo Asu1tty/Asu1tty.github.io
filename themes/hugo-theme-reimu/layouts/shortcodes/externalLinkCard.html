@@ -1,20 +1,19 @@
-{{ $title := .Get "title" }}
-{{ $link := .Get "link" }}
-{{ $cover := .Get "cover" }}
+{{- $title := .Get "title" -}}
+{{- $link := .Get "link" -}}
+{{- $cover := .Get "cover" -}}
 
-{{ if or (not $title) (not $link) }}
-  {{ errorf "externalLinkCard shortcode: title and link are required" }}
-{{ end }}
-
+{{- if or (not $title) (not $link) -}}
+  {{- errorf "externalLinkCard shortcode: title and link are required" -}}
+{{- end -}}
 
 <div class="post-link-card-wrap">
   <div class="post-link-card">
     <a href="{{ $link }}" title="{{ $title }}" rel="noopener external nofollow noreferrer" target="_blank"></a>
-    {{ if eq $cover "auto" }}
+    {{- if eq $cover "auto" -}}
       <div class="post-link-card-cover-wrap auto">
         <div class="icon-globe"></div>
       </div>
-    {{ else if $cover }}
+    {{- else if $cover -}}
       <div class="post-link-card-cover-wrap">
         <img
           src="{{ $cover | relURL }}"
@@ -23,7 +22,7 @@
           alt="{{ $title }}"
         />
       </div>
-    {{ end }}
+    {{- end -}}
     <div class="post-link-card-item-wrap">
       <div class="post-link-card-title">{{ $title }}</div>
       <div class="post-link-card-excerpt">

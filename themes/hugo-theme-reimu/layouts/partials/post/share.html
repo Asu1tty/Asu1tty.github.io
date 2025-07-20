@@ -1,10 +1,10 @@
-{{ $shareMap := partial "helpers/shareLink.html" . }}
+{{- $shareMap := partial "helpers/shareLink.html" . -}}
 
 <div class="share-wrapper">
-  {{ range $share := .Site.Params.share }}
+  {{- range $share := .Site.Params.share -}}
     <a href="{{ index $shareMap $share }}" {{ if not (eq $share "weixin") }}target="_blank" rel="noopener noreferrer"{{ end }} title="{{ $.Title }}">
       <div class="share-icon icon icon-{{ $share }}">
-        {{  if eq $share "weixin" }}
+        {{- if eq $share "weixin" -}}
           <div id="share-weixin">
             <div class="share-weixin-dom">
               <div class="share-weixin-content">
@@ -22,8 +22,8 @@
             </div>
             <div class="share-weixin-canvas"></div>
           </div>
-        {{ end }}
+        {{- end -}}
       </div>
     </a>
-  {{ end }}
+  {{- end -}}
 </div>

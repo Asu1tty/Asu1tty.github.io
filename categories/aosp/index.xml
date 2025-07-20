@@ -1,19 +1,96 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>AOSP on Asu1tty&#39;s Blog</title>
-    <link>https://asu1tty.github.io/categories/aosp/</link>
-    <description>Recent content in AOSP on Asu1tty&#39;s Blog</description>
+    <title>AOSP on My New Hugo Site</title>
+    <link>https://example.org/categories/aosp/</link>
+    <description>Recent content from My New Hugo Site</description>
     <generator>Hugo</generator>
-    <language>zh-cn</language>
+    <language>en</language>
+    
+    <managingEditor>unknow (Asu1tty)</managingEditor>
+    <webMaster>unknow (Asu1tty)</webMaster>
+    
+    <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
+    
     <lastBuildDate>Thu, 01 May 2025 11:20:50 +0800</lastBuildDate>
-    <atom:link href="https://asu1tty.github.io/categories/aosp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <atom:link href="https://example.org/categories/aosp/index.xml" rel="self" type="application/rss&#43;xml" />
+    
+
+    
+    
+
     <item>
       <title>Android so加载源码分析与加壳技术</title>
-      <link>https://asu1tty.github.io/post/loading-so/</link>
-      <pubDate>Thu, 01 May 2025 11:20:50 +0800</pubDate>
-      <guid>https://asu1tty.github.io/post/loading-so/</guid>
-      <description>&lt;p&gt;本次分析AOSP 的源码的安卓版本为 &lt;code&gt;android-12.0.0_r34&lt;/code&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;1-java层调用&#34;&gt;&#xA;&lt;a class=&#34;header-anchor&#34; href=&#34;#1-java%e5%b1%82%e8%b0%83%e7%94%a8&#34;&gt;&lt;/a&gt;&#xA;1. java层调用&#xA;&lt;/h2&gt;&lt;p&gt;So在java层的加载方式有两种&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;loadLibrary&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;libName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;或&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;load&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;11-systemload&#34;&gt;&#xA;&lt;a class=&#34;header-anchor&#34; href=&#34;#11-systemload&#34;&gt;&lt;/a&gt;&#xA;1.1. System.load()&#xA;&lt;/h3&gt;&lt;p&gt;这里我们以&lt;code&gt;System.load&lt;/code&gt;作为分析入口&lt;/p&gt;</description>
+      <link>https://example.org/post/loading-so/</link>
+      <pubDate>Thu, 01 May 2025 11:20:50 &#43;0800</pubDate>
+      <author>unknow (Asu1tty)</author>
+      <guid>https://example.org/post/loading-so/</guid>
+      <description>
+        <![CDATA[<h1>Android so加载源码分析与加壳技术</h1><p>Author: Asu1tty(unknow)</p>
+        
+          <p>本次分析AOSP 的源码的安卓版本为 <code>android-12.0.0_r34</code></p>
+<h2 id="1-java层调用">
+<a class="header-anchor" href="#1-java%e5%b1%82%e8%b0%83%e7%94%a8"></a>
+1. java层调用
+</h2><p>So在java层的加载方式有两种</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">System</span><span class="p">.</span><span class="na">loadLibrary</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">libName</span><span class="p">)</span><span class="w">
+</span></span></span></code></pre></div><p>或</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">System</span><span class="p">.</span><span class="na">load</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">path</span><span class="p">)</span><span class="w">
+</span></span></span></code></pre></div><h3 id="11-systemload">
+<a class="header-anchor" href="#11-systemload"></a>
+1.1. System.load()
+</h3><p>这里我们以<code>System.load</code>作为分析入口</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// libcore/ojluni/src/main/java/java/lang/System.java</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * Loads the native library specified by the filename argument.  The filename
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * argument must be an absolute path name.
+</span></span></span><span class="line"><span class="cl"><span class="cm">     *
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * If the filename argument, when stripped of any platform-specific library
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * prefix, path, and file extension, indicates a library whose name is,
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * for example, L, and a native library called L is statically linked
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * with the VM, then the JNI_OnLoad_L function exported by the library
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * is invoked rather than attempting to load a dynamic library.
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * A filename matching the argument does not have to exist in the
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * file system.
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * See the JNI Specification for more details.
+</span></span></span><span class="line"><span class="cl"><span class="cm">     *
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * Otherwise, the filename argument is mapped to a native library image in
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * an implementation-dependent manner.
+</span></span></span><span class="line"><span class="cl"><span class="cm">     *
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * &lt;p&gt;
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * The call &lt;code&gt;System.load(name)&lt;/code&gt; is effectively equivalent
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * to the call:
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * &lt;blockquote&gt;&lt;pre&gt;
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * Runtime.getRuntime().load(name)
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * &lt;/pre&gt;&lt;/blockquote&gt;
+</span></span></span><span class="line"><span class="cl"><span class="cm">     *
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @param      filename   the file to load.
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @exception  SecurityException  if a security manager exists and its
+</span></span></span><span class="line"><span class="cl"><span class="cm">     *             &lt;code&gt;checkLink&lt;/code&gt; method doesn&#39;t allow
+</span></span></span><span class="line"><span class="cl"><span class="cm">     *             loading of the specified dynamic library
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @exception  UnsatisfiedLinkError  if either the filename is not an
+</span></span></span><span class="line"><span class="cl"><span class="cm">     *             absolute path name, the native library is not statically
+</span></span></span><span class="line"><span class="cl"><span class="cm">     *             linked with the VM, or the library cannot be mapped to
+</span></span></span><span class="line"><span class="cl"><span class="cm">     *             a native library image by the host system.
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @exception  NullPointerException if &lt;code&gt;filename&lt;/code&gt; is
+</span></span></span><span class="line"><span class="cl"><span class="cm">     *             &lt;code&gt;null&lt;/code&gt;
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @see        java.lang.Runtime#load(java.lang.String)
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @see        java.lang.SecurityManager#checkLink(java.lang.String)
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@CallerSensitive</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">filename</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Runtime</span><span class="p">.</span><span class="na">getRuntime</span><span class="p">().</span><span class="na">load0</span><span class="p">(</span><span class="n">Reflection</span><span class="p">.</span><span class="na">getCallerClass</span><span class="p">(),</span><span class="w"> </span><span class="n">filename</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>其中，<code>Reflection.getCallerClass()</code> 是一个内部方法，定义在 <code>sun.reflect.Reflection</code> 类中（属于 JDK/ART 的私有 API）。它的作用是<strong>返回调用当前方法的类的 <code>Class</code> 对象</strong>，即调用栈中调用者的类。</p>
+        
+        <hr><p>Published on 2025-05-01 at <a href='https://example.org/'>My New Hugo Site</a>, last modified on 2025-05-01</p>]]>
+      </description>
+      
+        <category>AOSP</category>
+      
     </item>
+    
   </channel>
 </rss>

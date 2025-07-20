@@ -33,11 +33,11 @@ _$$(
   if (window.siteConfig.icon_font) {
     element.innerHTML = window.siteConfig.anchor_icon
       ? `&#x${window.siteConfig.anchor_icon};`
-      : "&#xe635;";
+      : window.siteConfig.anchor_icon === false ? "" : "&#xe635;";
   } else {
     element.innerHTML = window.siteConfig.anchor_icon
       ? `&#x${window.siteConfig.anchor_icon};`
-      : "&#xf292;";
+      : window.siteConfig.anchor_icon === false ? "" : "&#xf292;";
   }
 });
 

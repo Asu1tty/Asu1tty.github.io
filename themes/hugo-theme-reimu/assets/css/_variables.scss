@@ -45,6 +45,15 @@
   --highlight-aqua: #{$light-highlight-aqua};
   --highlight-blue: #{$light-highlight-blue};
   --highlight-purple: #{$light-highlight-purple};
+
+    
+  --shadow-meta: 0 0 5px 2px var(--color-meta-shadow);
+  --shadow-meta-hover: 0 0 6px 4px var(--color-meta-shadow);
+
+  --shadow-card: 0 0 10px 2px var(--color-hover-shadow);
+  --shadow-card-hover: 0 0 10px 4px var(--color-hover-shadow);
+
+  --shadow-red-6-shadow: 0 0 8px var(--color-red-6-shadow);
 }
 
 [data-theme="dark"] {

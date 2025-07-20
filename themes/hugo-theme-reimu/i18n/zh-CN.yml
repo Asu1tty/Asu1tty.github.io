@@ -70,3 +70,20 @@ article_copyright:
   updated: 本文更新时间：
   license: 本文版权：
   license_content: 本博客所有文章除特别声明外，均采用 {{ . }} 许可协议。转载请注明出处！
+
+multi_language:
+  not_found: 本文章没有找到对应的语言版本
+
+rss:
+  author: 作者：{{ .name }}（{{ .email }}）
+  date: 本文{{ .pubDate }}首发于{{ .content }}，最后修改于{{ .lastmod }}
+
+algolia:
+  input_placeholder: "搜索....."
+  hits_empty: "未发现与 「${query}」相关内容"
+  hits_stats: "找到${hits}条结果（用时 ${time} ms）"
+
+heat_map_card:
+  no_articles: 没有文章
+  words: 字
+  total_articles: 共 $1 篇文章，$2 字

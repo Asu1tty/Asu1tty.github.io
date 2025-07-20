@@ -19,7 +19,7 @@
 }
 
 [data-theme="dark"] .sidebar-wrap {
-  box-shadow: 0 0 10px 3px var(--color-hover-shadow);
+  box-shadow: var(--shadow-card);
 }
 
 [data-theme="dark"] #mobile-nav .sidebar-wrap {
@@ -33,7 +33,7 @@
     transition-property: initial !important;
 
     &:hover {
-      box-shadow: 0 0 10px 3px var(--color-hover-shadow);
+      box-shadow: var(--shadow-card-hover);
     }
   }
 
@@ -130,25 +130,30 @@
   &:hover {
     opacity: 1;
   }
+}
 
-  .sidebar-state-article {
-    @include sidebar-state-content;
-    border-right: 1px solid var(--red-1);
-  }
+.sidebar-state a {
+  text-decoration: none;
+  color: inherit;
+}
 
-  .sidebar-state-category {
-    @include sidebar-state-content;
-  }
+.sidebar-state-article {
+  @include sidebar-state-content;
+  border-right: 1px solid var(--red-1);
+}
 
-  .sidebar-state-tag {
-    @include sidebar-state-content;
-    border-left: 1px solid var(--red-1);
-  }
+.sidebar-state-category {
+  @include sidebar-state-content;
+}
 
-  .sidebar-state-number {
-    font-weight: bold;
-    font-size: 20px;
-  }
+.sidebar-state-tag {
+  @include sidebar-state-content;
+  border-left: 1px solid var(--red-1);
+}
+
+.sidebar-state-number {
+  font-weight: bold;
+  font-size: 20px;
 }
 
 .sidebar-social {
@@ -435,7 +440,7 @@
 .link-active {
   background: var(--red-0);
   border: 10px var(--color-wrap) double;
-  box-shadow: 0 0 10px 3px var(--color-red-6-shadow);
+  box-shadow: var(--shadow-red-6-shadow);
   opacity: 0.8;
 
   &:hover {
@@ -498,7 +503,7 @@
       display: inline-block;
       vertical-align: middle;
       margin-right: 11px;
-      box-shadow: 0 2px 12px var(--color-red-6-shadow);
+      box-shadow: var(--shadow-red-6-shadow);
       opacity: 0.5;
       transition: 0.3s;
     }
@@ -564,7 +569,7 @@
   background: var(--red-3);
   color: white;
   font-weight: bold;
-  box-shadow: 0 0 10px var(--color-red-6-shadow);
+  box-shadow: var(--shadow-red-6-shadow);
   border-radius: $post-radius;
   margin: 20px;
   transition: 0.3s;

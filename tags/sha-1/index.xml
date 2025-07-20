@@ -1,26 +1,117 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>SHA-1 on Asu1tty&#39;s Blog</title>
-    <link>https://asu1tty.github.io/tags/sha-1/</link>
-    <description>Recent content in SHA-1 on Asu1tty&#39;s Blog</description>
+    <title>SHA-1 on My New Hugo Site</title>
+    <link>https://example.org/tags/sha-1/</link>
+    <description>Recent content from My New Hugo Site</description>
     <generator>Hugo</generator>
-    <language>zh-cn</language>
+    <language>en</language>
+    
+    <managingEditor>unknow (Asu1tty)</managingEditor>
+    <webMaster>unknow (Asu1tty)</webMaster>
+    
+    <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
+    
     <lastBuildDate>Wed, 23 Apr 2025 21:10:36 +0800</lastBuildDate>
-    <atom:link href="https://asu1tty.github.io/tags/sha-1/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <atom:link href="https://example.org/tags/sha-1/index.xml" rel="self" type="application/rss&#43;xml" />
+    
+
+    
+    
+
     <item>
       <title>SHA-512简介及代码实现</title>
-      <link>https://asu1tty.github.io/post/sha-512/</link>
-      <pubDate>Wed, 23 Apr 2025 21:10:36 +0800</pubDate>
-      <guid>https://asu1tty.github.io/post/sha-512/</guid>
-      <description>&lt;h2 id=&#34;1-算法&#34;&gt;&#xA;&lt;a class=&#34;header-anchor&#34; href=&#34;#1-%e7%ae%97%e6%b3%95&#34;&gt;&lt;/a&gt;&#xA;1. 算法&#xA;&lt;/h2&gt;&lt;p&gt;&lt;code&gt;SHA-512&lt;/code&gt;在app逆向中遇到得很少，所以只作简单介绍&#xA;SHA-1可以生成一个被称为消息摘要的512&lt;a href=&#34;https://zh.wikipedia.org/wiki/%E4%BD%8D&#34; title=&#34;位&#34;&gt;位&lt;/a&gt;（64&lt;a href=&#34;https://zh.wikipedia.org/wiki/%E5%AD%97%E8%8A%82&#34; title=&#34;字节&#34;&gt;字节&lt;/a&gt;）散列值，散列值通常的呈现形式为128个&lt;a href=&#34;https://zh.wikipedia.org/wiki/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6&#34; title=&#34;十六进制&#34;&gt;十六进制&lt;/a&gt;数。与MD5，SHA1，SHA256不同的是，分组长度为1024位。表示消息长度为128位&lt;/p&gt;&#xA;&lt;h2 id=&#34;2-算法实现过程&#34;&gt;&#xA;&lt;a class=&#34;header-anchor&#34; href=&#34;#2-%e7%ae%97%e6%b3%95%e5%ae%9e%e7%8e%b0%e8%bf%87%e7%a8%8b&#34;&gt;&lt;/a&gt;&#xA;2. 算法实现过程&#xA;&lt;/h2&gt;&lt;h3 id=&#34;21-填充&#34;&gt;&#xA;&lt;a class=&#34;header-anchor&#34; href=&#34;#21-%e5%a1%ab%e5%85%85&#34;&gt;&lt;/a&gt;&#xA;2.1. 填充&#xA;&lt;/h3&gt;&lt;p&gt;以字符串&lt;code&gt;admin&lt;/code&gt;为例，十六进制如下&lt;/p&gt;</description>
+      <link>https://example.org/post/sha-512/</link>
+      <pubDate>Wed, 23 Apr 2025 21:10:36 &#43;0800</pubDate>
+      <author>unknow (Asu1tty)</author>
+      <guid>https://example.org/post/sha-512/</guid>
+      <description>
+        <![CDATA[<h1>SHA-512简介及代码实现</h1><p>Author: Asu1tty(unknow)</p>
+        
+          <h2 id="1-算法">
+<a class="header-anchor" href="#1-%e7%ae%97%e6%b3%95"></a>
+1. 算法
+</h2><p><code>SHA-512</code>在app逆向中遇到得很少，所以只作简单介绍
+SHA-1可以生成一个被称为消息摘要的512<a href="https://zh.wikipedia.org/wiki/%E4%BD%8D" title="位">位</a>（64<a href="https://zh.wikipedia.org/wiki/%E5%AD%97%E8%8A%82" title="字节">字节</a>）散列值，散列值通常的呈现形式为128个<a href="https://zh.wikipedia.org/wiki/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6" title="十六进制">十六进制</a>数。与MD5，SHA1，SHA256不同的是，分组长度为1024位。表示消息长度为128位</p>
+<h2 id="2-算法实现过程">
+<a class="header-anchor" href="#2-%e7%ae%97%e6%b3%95%e5%ae%9e%e7%8e%b0%e8%bf%87%e7%a8%8b"></a>
+2. 算法实现过程
+</h2><h3 id="21-填充">
+<a class="header-anchor" href="#21-%e5%a1%ab%e5%85%85"></a>
+2.1. 填充
+</h3><p>以字符串<code>admin</code>为例，十六进制如下</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E
+</span></span></code></pre></div><p>首先需要填充到128字节，即先添加一个“1”，再后跟多个“0”，然后再追加一个128位的消息长度信息
+第一位填充 0x80 剩下的填充 0 直到达到 112 个字节
+填充K个“0”，所不同的是消息分组的长度是1024位，所以K的取值必须是满足下述表达式的最小非负整数值。
+<code>( L + 1 + K ) mod 1024 = 896</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E 80 0(填充106次) 共 112 个字节
+</span></span></code></pre></div><p>对比md5,sha1,sha256填充都是64字节分组,sha512是128字节分组,原因就在于无论是iv还是k都是8字节的,所以数据块也是8字节的</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">sha512
+</span></span><span class="line"><span class="cl">H = [
+</span></span><span class="line"><span class="cl">    0x6a09e667f3bcc908, 0xbb67ae8584caa73b,
+</span></span><span class="line"><span class="cl">    0x3c6ef372fe94f82b, 0xa54ff53a5f1d36f1,
+</span></span><span class="line"><span class="cl">    0x510e527fade682d1, 0x9b05688c2b3e6c1f,
+</span></span><span class="line"><span class="cl">    0x1f83d9abfb41bd6b, 0x5be0cd19137e2179
+</span></span><span class="line"><span class="cl">]
+</span></span><span class="line"><span class="cl">sha256
+</span></span><span class="line"><span class="cl">H = [
+</span></span><span class="line"><span class="cl">    0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
+</span></span><span class="line"><span class="cl">    0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
+</span></span><span class="line"><span class="cl">]
+</span></span></code></pre></div><p>sha512的高4字节是sha256的4字节,同理k表也是这样</p>
+        
+        <hr><p>Published on 2025-04-23 at <a href='https://example.org/'>My New Hugo Site</a>, last modified on 2025-04-23</p>]]>
+      </description>
+      
+        <category>Crypto</category>
+      
     </item>
+    
+    
+
     <item>
       <title>SHA-1原理及代码实现</title>
-      <link>https://asu1tty.github.io/post/sha-1/</link>
-      <pubDate>Wed, 23 Apr 2025 13:28:36 +0800</pubDate>
-      <guid>https://asu1tty.github.io/post/sha-1/</guid>
-      <description>&lt;p&gt;&lt;strong&gt;SHA-1&lt;/strong&gt;（英語：Secure Hash Algorithm 1，中文名：安全散列算法1）是一种&lt;a href=&#34;https://zh.wikipedia.org/wiki/%E5%AF%86%E7%A0%81%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0&#34; title=&#34;密码散列函数&#34;&gt;密码散列函数&lt;/a&gt;，&lt;a href=&#34;https://zh.wikipedia.org/wiki/%E7%BE%8E%E5%9B%BD%E5%9B%BD%E5%AE%B6%E5%AE%89%E5%85%A8%E5%B1%80&#34; title=&#34;美国国家安全局&#34;&gt;美国国家安全局&lt;/a&gt;设计。SHA-1可以生成一个被称为消息摘要的160&lt;a href=&#34;https://zh.wikipedia.org/wiki/%E4%BD%8D&#34; title=&#34;位&#34;&gt;位&lt;/a&gt;（20&lt;a href=&#34;https://zh.wikipedia.org/wiki/%E5%AD%97%E8%8A%82&#34; title=&#34;字节&#34;&gt;字节&lt;/a&gt;）散列值，散列值通常的呈现形式为40个&lt;a href=&#34;https://zh.wikipedia.org/wiki/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6&#34; title=&#34;十六进制&#34;&gt;十六进制&lt;/a&gt;数。&lt;/p&gt;&#xA;&lt;h2 id=&#34;1-算法实现过程&#34;&gt;&#xA;&lt;a class=&#34;header-anchor&#34; href=&#34;#1-%e7%ae%97%e6%b3%95%e5%ae%9e%e7%8e%b0%e8%bf%87%e7%a8%8b&#34;&gt;&lt;/a&gt;&#xA;1. 算法实现过程&#xA;&lt;/h2&gt;&lt;h3 id=&#34;11-第一步填充&#34;&gt;&#xA;&lt;a class=&#34;header-anchor&#34; href=&#34;#11-%e7%ac%ac%e4%b8%80%e6%ad%a5%e5%a1%ab%e5%85%85&#34;&gt;&lt;/a&gt;&#xA;1.1. 第一步：填充&#xA;&lt;/h3&gt;&lt;p&gt;以字符串&lt;code&gt;admin&lt;/code&gt;为例，十六进制如下&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-plaintext&#34; data-lang=&#34;plaintext&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;61 64 6D 69 6E&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;需要让它填充到64个字节长度&lt;/p&gt;</description>
+      <link>https://example.org/post/sha-1/</link>
+      <pubDate>Wed, 23 Apr 2025 13:28:36 &#43;0800</pubDate>
+      <author>unknow (Asu1tty)</author>
+      <guid>https://example.org/post/sha-1/</guid>
+      <description>
+        <![CDATA[<h1>SHA-1原理及代码实现</h1><p>Author: Asu1tty(unknow)</p>
+        
+          <p><strong>SHA-1</strong>（英語：Secure Hash Algorithm 1，中文名：安全散列算法1）是一种<a href="https://zh.wikipedia.org/wiki/%E5%AF%86%E7%A0%81%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0" title="密码散列函数">密码散列函数</a>，<a href="https://zh.wikipedia.org/wiki/%E7%BE%8E%E5%9B%BD%E5%9B%BD%E5%AE%B6%E5%AE%89%E5%85%A8%E5%B1%80" title="美国国家安全局">美国国家安全局</a>设计。SHA-1可以生成一个被称为消息摘要的160<a href="https://zh.wikipedia.org/wiki/%E4%BD%8D" title="位">位</a>（20<a href="https://zh.wikipedia.org/wiki/%E5%AD%97%E8%8A%82" title="字节">字节</a>）散列值，散列值通常的呈现形式为40个<a href="https://zh.wikipedia.org/wiki/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6" title="十六进制">十六进制</a>数。</p>
+<h2 id="1-算法实现过程">
+<a class="header-anchor" href="#1-%e7%ae%97%e6%b3%95%e5%ae%9e%e7%8e%b0%e8%bf%87%e7%a8%8b"></a>
+1. 算法实现过程
+</h2><h3 id="11-第一步填充">
+<a class="header-anchor" href="#11-%e7%ac%ac%e4%b8%80%e6%ad%a5%e5%a1%ab%e5%85%85"></a>
+1.1. 第一步：填充
+</h3><p>以字符串<code>admin</code>为例，十六进制如下</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E
+</span></span></code></pre></div><p>需要让它填充到64个字节长度</p>
+<p>第一位填充 0x80 剩下的填充 0 直到达到 56 个字节</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E 80 0(填充50次) 共 56 个字节
+</span></span></code></pre></div><p>接下来 8 个字节
+消息长度 * 8，也就是5 * 8 = 40 = 0x28</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E 80 0(填充50次) 0(填充7次) 0x28 共 64 个字节
+</span></span></code></pre></div><p>填充这块唯一和md5有区别的就是,最后的附加消息长度是大端续,也就是正常的顺序
+64字节的分组长度,md5,sha1,sha256都是, sha512是128字节分组。</p>
+<h3 id="12-第二步扩充">
+<a class="header-anchor" href="#12-%e7%ac%ac%e4%ba%8c%e6%ad%a5%e6%89%a9%e5%85%85"></a>
+1.2. 第二步：扩充
+</h3><p>sha1有80轮循环,每一轮要用不同的数据,而填充后的最多只有16个4字节数据,所以需要进行扩展</p>
+<p>前16个四字节复制填充后的16个四字节
+后64个四字节使用扩充算法进行扩充
+当前位置值 =（ 前面第3个四字节 ^ 前面第8个四字节 ^ 前面第14个四字节 ^ 前面第16个四字节 ）&laquo; 1</p>
+        
+        <hr><p>Published on 2025-04-23 at <a href='https://example.org/'>My New Hugo Site</a>, last modified on 2025-04-23</p>]]>
+      </description>
+      
+        <category>Crypto</category>
+      
     </item>
+    
   </channel>
 </rss>

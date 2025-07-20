@@ -1,5 +1,5 @@
-{{ $custom_basic_font := .Site.Params.custom_font.article }}
-{{ range $custom_basic_font }}
+{{- $custom_basic_font := .Site.Params.custom_font.article -}}
+{{- range $custom_basic_font -}}
   <link
     rel="preload"
     as="style"
@@ -7,10 +7,10 @@
     href="{{ .css }}"
     onload="this.rel='stylesheet'"
   />
-{{ end }}
+{{- end -}}
 
 {{- $custom_code_font := .Site.Params.custom_font.code -}}
-{{ range $custom_code_font }}
+{{- range $custom_code_font -}}
   <link
     rel="preload"
     as="style"
@@ -18,4 +18,4 @@
     href="{{ .css }}"
     onload="this.rel='stylesheet'"
   />
-{{ end }}
+{{- end -}}

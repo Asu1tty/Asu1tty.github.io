@@ -8,12 +8,12 @@ $icon-url: "//at.alicdn.com/t/c/font_#{$icon_font}.woff2";
   font-display: swap;
 }
 
-.tag-wrap .archives-tag-list-link:before {
+.archives-tag-list-link:before {
   font-family: $font-icon;
   content: "\e622";
 }
 
-.category-wrap .archives-category-list-link:before {
+.archives-category-list-link:before {
   font-family: $font-icon;
   content: "\e604";
 }
@@ -93,6 +93,11 @@ $icon-url: "//at.alicdn.com/t/c/font_#{$icon_font}.woff2";
   content: "\e641";
 }
 
+#nav-language-btn:before {
+  font-family: $font-icon;
+  content: "\e642";
+}
+
 .icon-copy:before {
   font-family: $font-icon;
   content: "\e60c";
@@ -133,7 +138,7 @@ $icon-url: "//at.alicdn.com/t/c/font_#{$icon_font}.woff2";
   content: "\e627";
 }
 
-.reimu-popup .popup-btn-close:before {
+.popup-btn-close:before {
   font-family: $font-icon;
   content: "\e626";
 }

@@ -13,6 +13,10 @@
       }
     }
   }
+
+  .aplayer-miniswitcher {
+    background: var(--red-5-5) !important;
+  }
 }
 
 .aplayer.aplayer-fixed {
@@ -78,6 +82,7 @@ body .aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap,
 .aplayer .aplayer-list-index,
 .aplayer .aplayer-list-author,
 body .aplayer .aplayer-info .aplayer-controller .aplayer-volume-wrap,
+.aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap .aplayer-bar .aplayer-played .aplayer-thumb,
 .aplayer .aplayer-icon {
   cursor: var(--cursor-pointer) !important;
 }

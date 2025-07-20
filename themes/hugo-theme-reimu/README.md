@@ -18,28 +18,32 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
 
 ---
 
-|framework|repository|version|stars|
-|-|-|-|-|
-|[Hexo](https://hexo.io/)|[hexo-theme-reimu](https://github.com/D-Sketon/hexo-theme-reimu)|<img alt="version" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2FD-Sketon%2Fhexo-theme-reimu%2Fraw%2Fmain%2Fpackage.json&query=%24.version&label=version">|<img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/D-Sketon/hexo-theme-reimu">|
-|[Astro](https://astro.build)|[astro-theme-reimu](https://github.com/D-Sketon/astro-theme-reimu)|<img alt="version" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2FD-Sketon%2Fastro-theme-reimu%2Fraw%2Fmain%2Fpackage.json&query=%24.version&label=version">|<img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/D-Sketon/astro-theme-reimu">|
-|[Hugo](https://gohugo.io)|[hugo-theme-reimu](https://github.com/D-Sketon/hugo-theme-reimu)|<img alt="version" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2FD-Sketon%2Fhugo-theme-reimu%2Fraw%2Fmain%2Fpackage.json&query=%24.version&label=version">|<img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/D-Sketon/hugo-theme-reimu">|
+| framework                    | repository                                                         | version                                                                                                                                                                                     | stars                                                                                              |
+| ---------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| [Hexo](https://hexo.io/)     | [hexo-theme-reimu](https://github.com/D-Sketon/hexo-theme-reimu)   | <img alt="version" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2FD-Sketon%2Fhexo-theme-reimu%2Fraw%2Fmain%2Fpackage.json&query=%24.version&label=version">  | <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/D-Sketon/hexo-theme-reimu">  |
+| [Astro](https://astro.build) | [astro-theme-reimu](https://github.com/D-Sketon/astro-theme-reimu) | <img alt="version" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2FD-Sketon%2Fastro-theme-reimu%2Fraw%2Fmain%2Fpackage.json&query=%24.version&label=version"> | <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/D-Sketon/astro-theme-reimu"> |
+| [Hugo](https://gohugo.io)    | [hugo-theme-reimu](https://github.com/D-Sketon/hugo-theme-reimu)   | <img alt="version" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2FD-Sketon%2Fhugo-theme-reimu%2Fraw%2Fmain%2Fpackage.json&query=%24.version&label=version">  | <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/D-Sketon/hugo-theme-reimu">  |
 
 **项目刚刚开始，欢迎提出 Issue 和 PR！**
 
 ## 特性
 
 ### 基础功能
+
 - ✨ 完整的博客功能
-- 🔄 兼容 Hugo 0.116.0 及以上版本
+- 🔄 兼容 Hugo 0.124.0 及以上版本
 - 📱 响应式布局
 - 🌙 暗黑模式支持
+- 🅰️ i18n 支持
 
 ### 代码与数学
+
 - 🖥️ 代码高亮与复制
 - ➗ KaTeX / MathJax3 数学公式支持
 - 📊 Mermaid 流程图支持
 
 ### 搜索与评论
+
 - 🔍 Algolia 搜索集成
 - 💬 多评论系统支持：
   - Valine
@@ -49,10 +53,12 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
   - Giscus
 
 ### 统计与分析
+
 - 📊 文章阅读统计（Valine / Waline）
 - 👥 访客统计（不蒜子）
 
 ### 媒体与交互功能
+
 - 🎵 音乐播放器支持：
   - Aplayer
   - Meting
@@ -64,12 +70,14 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
 - 👾 Live2D / Live2D-widgets 集成
 
 ### 导航与结构
+
 - 📑 目录导航（TOC）
 - 🔄 PJAX 支持
 - 🔧 ServiceWorker 实现
 - 📰 RSS 订阅
 
 ### 设计与自定义
+
 - 🎨 图标支持：
   - Iconfont
   - FontAwesome
@@ -78,6 +86,7 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
   - 外部链接
   - 友情链接
   - 热力图
+  - 标签轮盘
 - 🎨 动态适配主题色
 - ©️ 文章版权声明
 - 🌐 自定义 CDN 源 / 本地配置
@@ -263,16 +272,24 @@ noClasses = false
 ```
 
 代码块同时提供了代码粘贴功能，点击代码块右上角的复制按钮即可复制代码。在 `params.yml` 中可以对复制功能进行配置。  
-`success` 为复制成功时的提示，`fail` 为复制失败时的提示。此外，可以配置版权声明，当复制的字符数大于 `count` 时会在复制的内容后面添加 `content` 版权声明。
+`success` 为复制成功时的提示，`fail` 为复制失败时的提示。此外，可以配置版权声明，当复制的字符数大于 `count` 时会在复制的内容后面添加版权声明。
 
 ```yaml
 clipboard:
-  success: 复制成功(*^▽^*)
-  fail: 复制失败 (ﾟ⊿ﾟ)ﾂ
+  success:
+    en: Copy successfully (*^▽^*)
+    zh-CN: 复制成功 (*^▽^*)
+    zh-TW: 複製成功 (*^▽^*)
+    ja: コピー成功 (*^▽^*)
+  fail:
+    en: Copy failed (ﾟ⊿ﾟ)ﾂ
+    zh-CN: 复制失败 (ﾟ⊿ﾟ)ﾂ
+    zh-TW: 複製失敗 (ﾟ⊿ﾟ)ﾂ
+    ja: コピー失敗 (ﾟ⊿ﾟ)ﾂ
   copyright:
     enable: false
     count: 50 # 大于多少字符添加版权声明
-    content: 本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！
+    license_type: by-nc-sa # https://creativecommons.org/licenses
 ```
 
 v0.2.0 添加了配置用于控制代码块的默认展开状态，`expand` 可以设置为 `true`、`false` 或数字，数字表示当代码块的行数大于该数字时默认收缩。
@@ -297,7 +314,11 @@ code_block:
 
 ```yaml
 comment:
-  title: 说些什么吧！ # 评论框标题
+  title: # 评论框标题
+    en: Leave a comment
+    zh-CN: 说些什么吧！
+    zh-TW: 說些什麼吧！
+    ja: コメントを残す
   default: waline # 多评论下，默认使用的评论系统
 ```
 
@@ -318,7 +339,6 @@ valine:
 waline:
   enable: true
   serverURL: "your server url"
-  lang: zh-CN
   locale: {} # https://waline.js.org/guide/features/i18n.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%AF%AD%E8%A8%80
   emoji:
     - https://unpkg.com/@waline/emojis@1.2.0/weibo
@@ -364,8 +384,6 @@ giscus:
   reactionsEnabled: 1
   emitMetadata: 0
   inputPosition: bottom
-  # commentTheme: preferred_color_scheme invalid
-  lang: zh-CN
 ```
 
 若基于 [gitalk](https://gitalk.github.io/)  
@@ -477,7 +495,14 @@ mermaid: true
 
 ### RSS
 
-RSS 自带，无需额外配置
+RSS 可以在 `params.yml` 中配置
+
+```yaml
+rss:
+  limit: 10 # 输出最近的文章数量，写 -1 输出全部
+  showFullContent: false # 是否输出文章的完整内容
+  showCopyright: false # 是否输出版权声明
+```
 
 </details>
 
@@ -497,12 +522,17 @@ icon_font: 4552607_0khxww3tj3q9
 ```yml
 fontawesome:
   high_priority:
-    - webcache|@fortawesome/fontawesome-free@6.5.1/css/regular.min.css
-    - webcache|@fortawesome/fontawesome-free@6.5.1/css/solid.min.css
+    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/regular.min.css
+      integrity: sha384-k5640LgghgAohDLPwSqVWa96yQwWouT6wsAL+J1g0CFJVITNKYkIh1XpPLYKQe7Y
+    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/solid.min.css
+      integrity: sha384-8yO/A/BtltnG0hDxdwmmkza8UAleyDoAD1FhXiH6rsOQQsCho1P6WZP9TpBBH3YP
   low_priority:
-    - webcache|@fortawesome/fontawesome-free@6.5.1/css/brands.min.css
-    - webcache|@fortawesome/fontawesome-free@6.5.1/css/v5-font-face.min.css
-    - webcache|@fortawesome/fontawesome-free@6.5.1/css/v4-font-face.min.css
+    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/brands.min.css
+      integrity: sha384-/BRyRRN0wxxRgh/DAXU621go9pdoMHl6LFPiX5Pp8PZYZlKBQCDXj9X9DHx6LOud
+    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/v5-font-face.min.css
+      integrity: sha384-/mBKnLlGtog8q2qQrgugURRDV+iHWHAPvM5KulYXT1C2ErKOKkBI0vbff8ZPq7rL
+    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/v4-font-face.min.css
+      integrity: sha384-d2Yn1/9Iw78r3oqwk5B+EcpRcmepXR5LyhmRF2a+WoSe9mpRGvVk0ZviFwDGDOTO
 ```
 
 </details>
@@ -626,14 +656,15 @@ quicklink:
 
 ```yml
 article_copyright:
-enable: false # 是否展示版权卡片？
-content:
-  author: # true | false 版权卡片展示作者？
-  link: # true | false 版权卡片展示链接？
-  title: # true | false 版权卡片展示标题？
-  date: # true | false 版权卡片展示创建日期？
-  updated: # true | false 版权卡片展示更新日期？
-  license: # true | false 版权卡片展示协议？
+  enable: false # 是否展示版权卡片？
+  content:
+    author: # true | false 版权卡片展示作者？
+    link: # true | false 版权卡片展示链接？
+    title: # true | false 版权卡片展示标题？
+    date: # true | false 版权卡片展示创建日期？
+    updated: # true | false 版权卡片展示更新日期？
+    license: # true | false 版权卡片展示协议？
+    license_type: by-nc-sa # https://creativecommons.org/licenses
 ```
 
 此外，也可以通过文章的 front-matter 控制，其优先级高于全局配置
@@ -652,7 +683,11 @@ copyright: true # 是否展示版权卡片？
 outdate:
   enable: false
   daysAgo: 180 # 多少天前的文章算过期
-  message: 本文最后更新于 {time}，请注意文中内容可能已经发生变化。
+  message:
+    en: This article was last updated on {time}. Please note that the content may no longer be applicable.
+    zh-CN: 本文最后更新于 {time}，请注意文中内容可能已不适用。
+    zh-TW: 本文最後更新於 {time}，請注意文中內容可能已不適用。
+    ja: この記事は最終更新日：{time}。記載内容が現在有効でない可能性がありますのでご注意ください。
 ```
 
 #### 赞助
@@ -662,7 +697,11 @@ outdate:
 ```yml
 sponsor:
   enable: false # 是否展示赞助二维码？
-  tip: 请作者喝杯咖啡吧！ # 赞助提示
+  tip: # 赞助提示
+    zh-CN: 请作者喝杯咖啡吧
+    zh-TW: 請作者喝杯咖啡吧
+    en: Buy me a coffee
+    ja: コーヒーを買ってください
   icon:
     url: "../images/taichi.png" # 赞助图标，相对于 css/main.css 的路径，所以需要向上一级才能找到 images 文件夹
     rotate: true # 是否旋转图标
@@ -700,7 +739,7 @@ player:
       autoplay:
       loop:
       order:
-      preload: 
+      preload:
       volume:
       mutex:
       listFolded:
@@ -721,7 +760,7 @@ player:
       autoplay:
       loop:
       order:
-      preload: 
+      preload:
       volume:
       mutex:
       listFolded:
@@ -730,18 +769,19 @@ player:
     enable: true
     meting_api: # custom api
     options:
-      id: 
-      server: 
-      type: 
+      id:
+      server:
+      type:
       auto:
 ```
 
 #### Pangu 自动分割
+
 默认关闭，自动替你在文章中所有的中文字和半形的英文、数字、符号之间插入空白。
 
 ```yml
 pangu:
-  enable: false 
+  enable: false
 ```
 
 #### 分享链接/卡片（v0.5.0+）
@@ -764,6 +804,7 @@ share:
 #### 首页目录卡片（v0.6.0+）
 
 默认关闭，打开后可以在首页展示目录卡片，用于代替 widget 中的目录
+
 ```yml
 home_categories:
   enable: false # 是否展示首页目录卡片？
@@ -813,6 +854,16 @@ home_categories:
 
 其中第一个参数为热力图的等级标准（按照文章字数分级），默认为 `"1000,5000,10000"`
 
+#### tagRoulette 标签轮盘 (v0.12.0+ 实验性功能)
+
+```yaml
+{{< tagRoulette tags="?" icon="?" >}}
+```
+
+tagRoulette 是一个互动元素，提供随机标签展示功能，点击按钮后会从预定义的标签池中随机抽取并展示一个标签。
+
+- tags：可选参数，指定标签池，多个标签用英文逗号(,)分隔；未提供时默认使用几个示例标签，例如：tags="记忆衰退,表达欲丧失,更加怠惰,无感,好想睡觉"  
+- icon：可选参数，自定义触发按钮的图标，默认使用：🕹️（游戏手柄emoji），可替换为任何emoji或文字，如 🎲、🎯、🔄 等
 </details>
 
 <details>
@@ -840,51 +891,51 @@ v0.9.0 对外暴露了 `internal_theme` 配置用于定制主题颜色 token
 ```yaml
 internal_theme:
   light:
-    --red-0: '#ff0000'
-    --red-1: '#ff5252'
-    --red-2: '#ff7c7c'
-    --red-3: '#ffafaf'
-    --red-4: '#ffd0d0'
-    --red-5: '#ffecec'
-    --red-5-5: '#fff3f3'
-    --red-6: '#fff7f7'
-    --color-red-6-shadow: 'rgba(255, 78, 78, 0.6)'
-    --color-red-3-shadow: 'rgba(255, 78, 78, 0.3)'
+    --red-0: "#ff0000"
+    --red-1: "#ff5252"
+    --red-2: "#ff7c7c"
+    --red-3: "#ffafaf"
+    --red-4: "#ffd0d0"
+    --red-5: "#ffecec"
+    --red-5-5: "#fff3f3"
+    --red-6: "#fff7f7"
+    --color-red-6-shadow: "rgba(255, 78, 78, 0.6)"
+    --color-red-3-shadow: "rgba(255, 78, 78, 0.3)"
 
-    --highlight-nav: '#e6e6e6'
-    --highlight-scrollbar: '#d6d6d6'
-    --highlight-background: '#f7f7f7'
-    --highlight-current-line: '#dadada'
-    --highlight-selection: '#e9e9e9'
-    --highlight-foreground: '#4d4d4d'
-    --highlight-comment: '#7d7d7d'
-    --highlight-red: '#c8362b'
-    --highlight-orange: '#b66014'
-    --highlight-yellow: '#cb911d'
-    --highlight-green: '#2ea52e'
-    --highlight-aqua: '#479d9d'
-    --highlight-blue: '#1973b8'
-    --highlight-purple: '#7135ac'
+    --highlight-nav: "#e6e6e6"
+    --highlight-scrollbar: "#d6d6d6"
+    --highlight-background: "#f7f7f7"
+    --highlight-current-line: "#dadada"
+    --highlight-selection: "#e9e9e9"
+    --highlight-foreground: "#4d4d4d"
+    --highlight-comment: "#7d7d7d"
+    --highlight-red: "#c8362b"
+    --highlight-orange: "#b66014"
+    --highlight-yellow: "#cb911d"
+    --highlight-green: "#2ea52e"
+    --highlight-aqua: "#479d9d"
+    --highlight-blue: "#1973b8"
+    --highlight-purple: "#7135ac"
   dark:
-    --red-4: 'rgba(255, 208, 208, 0.5)'
-    --red-5: 'rgba(255,228,228,0.15)'
-    --red-5-5: 'rgba(255,236,236,0.05)'
-    --red-6: 'rgba(255, 243, 243, 0.2)'
+    --red-4: "rgba(255, 208, 208, 0.5)"
+    --red-5: "rgba(255,228,228,0.15)"
+    --red-5-5: "rgba(255,236,236,0.05)"
+    --red-6: "rgba(255, 243, 243, 0.2)"
 
-    --highlight-nav: '#2e353f'
-    --highlight-scrollbar: '#454d59'
-    --highlight-background: '#22272e'
-    --highlight-current-line: '#393939'
-    --highlight-selection: '#515151'
-    --highlight-foreground: '#cccccc'
-    --highlight-comment: '#999999'
-    --highlight-red: '#f47067'
-    --highlight-orange: '#f69d50'
-    --highlight-yellow: '#ffcc66'
-    --highlight-green: '#99cc99'
-    --highlight-aqua: '#66cccc'
-    --highlight-blue: '#54b6ff'
-    --highlight-purple: '#dcbdfb'
+    --highlight-nav: "#2e353f"
+    --highlight-scrollbar: "#454d59"
+    --highlight-background: "#22272e"
+    --highlight-current-line: "#393939"
+    --highlight-selection: "#515151"
+    --highlight-foreground: "#cccccc"
+    --highlight-comment: "#999999"
+    --highlight-red: "#f47067"
+    --highlight-orange: "#f69d50"
+    --highlight-yellow: "#ffcc66"
+    --highlight-green: "#99cc99"
+    --highlight-aqua: "#66cccc"
+    --highlight-blue: "#54b6ff"
+    --highlight-purple: "#dcbdfb"
 ```
 
 #### 自定义字体
@@ -936,6 +987,8 @@ custom_font:
 ##### 头部 / 侧边栏图标
 
 v0.1.0 的 `menu` 配置的结构发生了变化，允许用户自定义 icon。icon 为空时默认使用太极图标，你可以填写一个十六进制的数字来自定义 icon，同时支持 fontawesome 和 icon font。
+
+v0.10.2 icon 支持图片路径，如 `/avatar/avatar.webp`。
 
 ```yaml
 menu:
@@ -990,7 +1043,11 @@ v0.1.0 的 `preloader` 配置增加了 `icon` 配置用于自定义图标。icon
 ```yaml
 preloader:
   enable: true
-  text: 少女祈祷中...
+  text:
+    zh-CN: 少女祈祷中...
+    zh-TW: 少女祈禱中...
+    en: Loading...
+    ja: 少女祈祷中...
   icon: # 不填默认使用内链的svg（保证首屏加载速度），你可以填入一个链接来自定义加载图标，如 '/images/taichi.png'
   rotate: true
 ```
@@ -1002,6 +1059,8 @@ v0.1.0 增加了 `anchor_icon` 配置用于自定义锚点图标，默认使用 
 ```yaml
 anchor_icon: # 不填默认使用 # 图标
 ```
+
+v0.11.0 `anchor_icon` 支持传递 `false` 以隐藏锚点图标
 
 ##### 鼠标图标（v0.5.0+）
 
@@ -1038,7 +1097,7 @@ hugo-theme-reimu 的 `vendor` 结构非常灵活，其支持以下几种形式�
   local: /resources/ # 本地资源
   ```
   用户可根据网络状况自行切换 CDN 源。
-- `https://:path` 开头：直接使用绝对链接，如 `https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css` 
+- `https://:path` 开头：直接使用绝对链接，如 `https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css`
 - `:path` 开头：本地资源，你可以把资源放在 `static` 文件夹下，然后使用诸如 `katex.min.css` 的路径引用
 
 此外，`vendor` 还支持 SRI 校验，你可以在 `vendor` 中使用 `SHA-384` 用于校验资源的完整性，如：
@@ -1052,11 +1111,16 @@ js:
 ```
 
 以上两种形式均支持，建议对外部 CDN 资源使用 SRI 校验，以确保资源的完整性。
+
 </details>
 
 ## 贡献者
 
 [![](https://contributors-img.web.app/image?repo=D-Sketon/hugo-theme-reimu)](https://github.com/D-Sketon/hugo-theme-reimu/graphs/contributors)
+
+## 赞助 💘
+
+[爱发电-afdian](https://afdian.tv/a/dsketon)
 
 ## 许可
 
