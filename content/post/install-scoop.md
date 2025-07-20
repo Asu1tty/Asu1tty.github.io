@@ -8,21 +8,22 @@ categories:
   - softwares
 ---
 
-## 1. 激活Windows
+## 1. 激活 Windows
 
 
 ```powershell
 irm https://massgrave.dev/get | iex
 ```
 
-选择1
-## 2. 安装禁止更新的Chrome浏览器
+选择 1
+
+## 2. 安装禁止更新的 Chrome 浏览器
 
 + 链接：[https://pan.baidu.com/s/1Z4ZYuzWKuCoiInW9aVzszg](https://pan.baidu.com/s/1Z4ZYuzWKuCoiInW9aVzszg)  提取码：`dg0w`
-+ 打开chrome所在位置，新建一个`Update`文件夹，并拒绝所有权限
++ 打开 chrome 所在位置，新建一个 `Update` 文件夹，并拒绝所有权限
   ![[Pasted image 20240222214033.png]]
 
-## 3. 安装最新版powershell
+## 3. 安装最新版 powershell
 
 [Powershell releases](https://github.com/PowerShell/PowerShell/releases)
 
@@ -34,10 +35,11 @@ POWERSHELL_UPDATECHECK
 
 ![Pasted image 20240223095124](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/picSource/Powershell_dis_update.png)
 
-## 4. 安装Windows Terminal 
+## 4. 安装 Windows Terminal 
 
 + 直接打开 Microsaft Store 搜索 `Windows Terminal` 下载即可
-## 5. 安装scoop及插件[[SCOOP命令]]
+
+## 5. 安装 scoop 及插件 [[SCOOP命令]]
 
 ```powershell
 [Environment]::SetEnvironmentVariable('SCOOP', 'D:\Scoop', 'User');
@@ -47,48 +49,55 @@ irm get.scoop.sh | iex
 ```
 
 如果最后一句不行则替换为
+
 ```powershell
 iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
 ```
 
-### 5.1. 安装git
+### 5.1. 安装 git
+
 ```powershell
 scoop install git
 ```
 
-### 5.2. 安装gsudo
+### 5.2. 安装 gsudo
 
 ```powershell
 scoop install gsudo
 ```
-添加`bucket`
+
+添加 `bucket`
+
 ```powershell
 scoop bucket add version
 scoop bucket add extras
 ```
 
-### 5.3. 使用scoop安装oh-my-posh
+### 5.3. 使用 scoop 安装 oh-my-posh
 
 ```powershell
 scoop install oh-my-posh
 ```
 
-#### 5.3.1. 安装oh-my-posh字体
+#### 5.3.1. 安装 oh-my-posh 字体
+
 ```powershell
 oh-my-posh font install
 ```
 
-**选择Meslo**
+**选择 Meslo**
 
 ![Pasted image 20240222192123](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/picSource/Select_meslo_font.png)
 
-选择cascadia mono
+选择 cascadia mono
 
 ![Pasted image 20240222192218](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/picSource/Select_cas_font.png)
 
 
-#### 5.3.2. 配置终端的settings.json文件
-在`Windows Terminal`使用`CTRL + SHIFT + ,`打开settings.json文件，并且找到profiles,配置如下
+#### 5.3.2. 配置终端的 settings. Json 文件
+
+在 `Windows Terminal` 使用 `CTRL + SHIFT + ,` 打开 settings. Json 文件，并且找到 profiles, 配置如下
+
 ```
 {
     "profiles":
@@ -104,7 +113,7 @@ oh-my-posh font install
 }
 ```
 
-下面是整个settings.json文件
+下面是整个 settings. Json 文件
 
 ```json
 {
@@ -229,26 +238,33 @@ oh-my-posh font install
 
 
 
-### 5.4. 配置oh-my-posh主题
-#### 5.4.1. 下载json主题
+### 5.4. 配置 oh-my-posh 主题
+
+#### 5.4.1. 下载 json 主题
 
 [下载Json主题](https://github.com/JanDeDobbeleer/oh-my-posh/blob/main/themes/json.omp.json)
 
-保存到`D:\Scoop\theme\json.omp.json`
+保存到 `D:\Scoop\theme\json.omp.json`
+
 #### 5.4.2. 设置配置文件
+
 ```
 notepad $PROFILE
 ```
+
 **如果打开文件无法保存则先使用下面的命令**
+
 ```
 New-Item -Path $PROFILE -Type File -Force
 ```
+
 **在配置文件中加入下面一行**
+
 ```
 oh-my-posh init pwsh --config 'D:\Scoop\theme\json.omp.json' | Invoke-Expression
 ```
 
-下面是整个$PROFILE文件
+下面是整个$PROFILE 文件
 
 ```$PROFILE
 #------------------------------- Import Modules BEGIN -------------------------------
@@ -309,19 +325,71 @@ Set-Alias grep findstr
 
 
 #### 5.4.3. 完成配置
+
 ```powershell
 . $PROFILE
 ```
 
-### 5.5. 配置vscode终端的字体
+
+
+#### 5.4.4. 加快 powershell 启动速度（可选）
+
+在安装 `miniconda` 后，会因为 `conda init` 导致启动速度降低，所以可以使用下面代码加快速度
+
+先使用命令查看路径
+
+```powershell
+$PROFILE
+```
+
+然后具体替换 `profile.ps1` 或者 `Microsoft.PowerShell_profile.ps1` 中的内容，一般是 `profile.ps1`
+
+
+
+```ps1
+#region conda initialize
+# !! Contents within this block are managed by 'conda init' !!
+#region conda initialize
+$global:CondaInitialized = $false
+
+# 保证powershell加载速度
+function Initialize-Conda {
+    if (-not $global:CondaInitialized) {
+        if (Test-Path "D:\Scoop\apps\miniconda3\current\Scripts\conda.exe") {
+            $condaHook = & "D:\Scoop\apps\miniconda3\current\Scripts\conda.exe" "shell.powershell" "hook"
+            $condaHook | Out-String | Invoke-Expression
+            $global:CondaInitialized = $true
+            Write-Host "Conda initialized" -ForegroundColor Green
+        }
+    }
+}
+
+# 修复vscode虚拟环境无法conda init
+function activate { 
+    param([string]$env)
+    Initialize-Conda
+    if ($env) { 
+        conda activate $env 
+    } else {
+        Write-Host "Usage: activate <environment_name>"
+    }
+}
+#endregion
+```
+
+
+
+### 5.5. 配置 vscode 终端的字体
+
 #### 5.5.1. 
+
 ```
 "terminal.integrated.fontFamily": "CaskaydiaMono Nerd Font",
 ```
 
-#### 5.5.2
+#### 5.5.2. 
 
-完整vscode配置
+完整 vscode 配置
 
 ```json
 {
@@ -362,7 +430,7 @@ Set-Alias grep findstr
 
 
 
-## 6. 修改vscode默认字体
+## 6. 修改 vscode 默认字体
 
 ### 6.1. 下载字体
 
@@ -376,26 +444,27 @@ Set-Alias grep findstr
 
 ### 6.2. 安装字体
 
-**全选ttf后缀文件安装**
+**全选 ttf 后缀文件安装**
 ![Pasted image 20240222201514](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/picSource/install_ttf.png)
 
-## 7. 安装WLS2
+## 7. 安装 WLS 2
 
 [微软官方安装](https://learn.microsoft.com/zh-cn/windows/wsl/install-manual)
+
 ### 7.1. 启用适用于 Linux 的 Windows 子系统
 
 ```PowerShell
-dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+Dism. Exe /online /enable-feature /featurename: Microsoft-Windows-Subsystem-Linux /all /norestart
 ```
 
 ### 7.2. 检查运行 WSL 2 的要求
 
-对于win10，版本 1903 或更高版本
+对于 win 10，版本 1903 或更高版本
 
 ### 7.3. 启用虚拟机功能
 
 ```powershell
-dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+Dism. Exe /online /enable-feature /featurename: VirtualMachinePlatform /all /norestart
 ```
 
 ### 7.4. 下载 Linux 内核更新包
@@ -405,33 +474,38 @@ dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /nores
 ### 7.5. 将 WSL 2 设置为默认版本
 
 ```powershell
-wsl --set-default-version 2
+Wsl --set-default-version 2
 ```
 
 ### 7.6. 安装所选的 Linux 分发
 
-打开Windows Store 安装Ubuntu22.04或其他版本
+打开 Windows Store 安装 Ubuntu 22.04 或其他版本
 
 ## 8. 安装百度网盘
+
 ### 8.1. 下载百度网盘
 
-已知百度云PC客户端的官网下载链接是：https://issuepcdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_X.X.X.X.exe；
+已知百度云 PC 客户端的官网下载链接是：https://issuepcdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_X.X.X.X.exe；
 
 然后使用百度云官网的历史版本页面：
 https://pan.baidu.com/disk/version
 
 在里面找到需要的版本号后，按上面链接的格式将官网下载链接补充完整，即可下载。
 
-也可以使用其他网站总结的历史版本号，补全后下载。如最后一个未添加工作空间的、大小“仅”66mb的7.2.8.9版本，就可以将X.X.X.X替换为7.2.8.9后回车，即可下载。
+也可以使用其他网站总结的历史版本号，补全后下载。如最后一个未添加工作空间的、大小“仅”66 mb 的 7.2.8.9 版本，就可以将X.X.X.X 替换为 7.2.8.9 后回车，即可下载。
 [点击下载7.27.1.5版本](https://issuepcdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_7.27.1.5.exe)
+
 ### 8.2. 防止百度网盘更新
+
 #### 8.2.1. 找到百度网盘安装目录
 
 在电脑桌面百度网盘快捷方式上点 “右键”，点`打开文件所在的位置`。
+
 #### 8.2.2. 找到自动升级组件
-+ 找到文件夹 `AutoUpdate`,删除内容并在安全中修改访问权限为拒绝。
-+ 找到`autoDiagnoseUpdate.exe`删除并创建空txt命名为`autoDiagnoseUpdate.exe`,修改读取写入权限为拒绝。
-+ 找到`kernelUpdate.exe`删除并创建空txt命名为`kernelUpdate.exe`,修改读取写入权限为拒绝。
+
++ 找到文件夹 `AutoUpdate`, 删除内容并在安全中修改访问权限为拒绝。
++ 找到`autoDiagnoseUpdate. Exe`删除并创建空 txt 命名为`autoDiagnoseUpdate. Exe`, 修改读取写入权限为拒绝。
++ 找到`kernelUpdate. Exe`删除并创建空 txt 命名为`kernelUpdate. Exe`, 修改读取写入权限为拒绝。
 
 
 
