@@ -24,7 +24,7 @@ irm https://massgrave.dev/get | iex
 
 ## 3. 安装最新版powershell
 
-[Powershell releases](https://github.com/PowerShell/PowerShell/releases
+[Powershell releases](https://github.com/PowerShell/PowerShell/releases)
 
 ### 3.1. 关闭更新提示
 
@@ -32,7 +32,7 @@ irm https://massgrave.dev/get | iex
 POWERSHELL_UPDATECHECK
 ```
 
-![[Pasted image 20240223095124.png]]
+![Pasted image 20240223095124](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/picSource/Powershell_dis_update.png)
 
 ## 4. 安装Windows Terminal 
 
@@ -61,9 +61,16 @@ scoop install git
 ```powershell
 scoop install gsudo
 ```
-### 5.3. 使用scoop安装oh-my-posh
+添加`bucket`
 ```powershell
-scoop install https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json
+scoop bucket add version
+scoop bucket add extras
+```
+
+### 5.3. 使用scoop安装oh-my-posh
+
+```powershell
+scoop install oh-my-posh
 ```
 
 #### 5.3.1. 安装oh-my-posh字体
@@ -73,11 +80,11 @@ oh-my-posh font install
 
 **选择Meslo**
 
-![[Pasted image 20240222192123.png]]
+![Pasted image 20240222192123](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/picSource/Select_meslo_font.png)
 
 选择cascadia mono
 
-![[Pasted image 20240222192218.png]]
+![Pasted image 20240222192218](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/picSource/Select_cas_font.png)
 
 
 #### 5.3.2. 配置终端的settings.json文件
@@ -90,7 +97,7 @@ oh-my-posh font install
         {
             "font":
             {
-                "face": "MesloLGM Nerd Font"
+                "face": "Cascadia Mono NF"
             }
         }
     }
@@ -99,7 +106,129 @@ oh-my-posh font install
 
 下面是整个settings.json文件
 
-[[Windows Terminal settings.json]]
+```json
+{
+    "$help": "https://aka.ms/terminal-documentation",
+    "$schema": "https://aka.ms/terminal-profiles-schema",
+    "actions": [],
+    "copyFormatting": "none",
+    "copyOnSelect": false,
+    "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+    "initialCols": 65,
+    "initialPosition": "40,50",
+    "initialRows": 27,
+    "keybindings": 
+    [
+        {
+            "id": "Terminal.CopyToClipboard",
+            "keys": "ctrl+c"
+        },
+        {
+            "id": "Terminal.FindText",
+            "keys": "ctrl+shift+f"
+        },
+        {
+            "id": "Terminal.PasteFromClipboard",
+            "keys": "ctrl+v"
+        },
+        {
+            "id": "Terminal.DuplicatePaneAuto",
+            "keys": "alt+shift+d"
+        }
+    ],
+    "newTabMenu": 
+    [
+        {
+            "type": "remainingProfiles"
+        }
+    ],
+    "profiles": 
+    {
+        "defaults": 
+        {
+            "colorScheme": "OneHalfDark modded",
+            "font": 
+            {
+                "face": "Cascadia Mono NF"
+            },
+            "opacity": 45,
+            "useAcrylic": true
+        },
+        "list": 
+        [
+            {
+                "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+                "hidden": false,
+                "name": "Windows PowerShell"
+            },
+            {
+                "commandline": "%SystemRoot%\\System32\\cmd.exe",
+                "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+                "hidden": false,
+                "name": "\u547d\u4ee4\u63d0\u793a\u7b26"
+            },
+            {
+                "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
+                "hidden": false,
+                "name": "Azure Cloud Shell",
+                "source": "Windows.Terminal.Azure"
+            },
+            {
+                "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+                "hidden": false,
+                "name": "PowerShell",
+                "source": "Windows.Terminal.PowershellCore"
+            },
+            {
+                "commandline": "%WINDIR%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -ExecutionPolicy ByPass -NoExit -Command \"& 'D:\\Scoop\\apps\\miniconda3\\25.5.1-1\\shell\\condabin\\conda-hook.ps1' ; conda activate 'D:\\Scoop\\apps\\miniconda3\\25.5.1-1' \"",
+                "guid": "{439f9f7a-c0f9-5788-9a1d-3aae5085aeda}",
+                "icon": "D:\\Scoop\\apps\\miniconda3\\25.5.1-1\\Menu\\anaconda_powershell_prompt.ico",
+                "name": "Anaconda PowerShell Prompt (25.5.1-1)",
+                "startingDirectory": "C:\\Users\\wiegc"
+            },
+            {
+                "commandline": "%WINDIR%\\System32\\cmd.exe \"/K\" D:\\Scoop\\apps\\miniconda3\\25.5.1-1\\Scripts\\activate.bat D:\\Scoop\\apps\\miniconda3\\25.5.1-1",
+                "guid": "{6d8965e3-9f63-523d-a1a8-b62076fc0e09}",
+                "icon": "D:\\Scoop\\apps\\miniconda3\\25.5.1-1\\Menu\\anaconda_prompt.ico",
+                "name": "Anaconda Prompt (25.5.1-1)",
+                "startingDirectory": "C:\\Users\\wiegc"
+            }
+        ]
+    },
+    "schemes": 
+    [
+        {
+        "name": "OneHalfDark modded",
+        "black": "#282c34",
+        "red": "#e06c75",
+        "green": "#98c379",
+        "yellow": "#e5c07b",
+        "blue": "#61afef",
+        "purple": "#c678dd",
+        "cyan": "#56b6c2",
+        "white": "#dcdfe4",
+        "brightBlack": "#282c34",
+        "brightRed": "#e06c75",
+        "brightGreen": "#98c379",
+        "brightYellow": "#e5c07b",
+        "brightBlue": "#61afef",
+        "brightPurple": "#c678dd",
+        "brightCyan": "#56b6c2",
+        "brightWhite": "#dcdfe4",
+        "background": "#001B26",
+        "foreground": "#dcdfe4",
+        "selectionBackground": "#474e5d",
+        "cursorColor": "#a3b3cc"
+        }
+    ],
+    "themes": [],
+    "useAcrylicInTabRow": true
+}
+```
+
+
+
 ### 5.4. 配置oh-my-posh主题
 #### 5.4.1. 下载json主题
 
@@ -121,7 +250,64 @@ oh-my-posh init pwsh --config 'D:\Scoop\theme\json.omp.json' | Invoke-Expression
 
 下面是整个$PROFILE文件
 
-[[$PROFILE]]
+```$PROFILE
+#------------------------------- Import Modules BEGIN -------------------------------
+
+Import-Module 'gsudoModule'
+Invoke-Expression (&scoop-search --hook)
+#StarShip配置
+Invoke-Expression (&starship init powershell)
+#Oh-My-Posh配置
+#oh-my-posh init pwsh --config 'D:\Scoop\theme\json.omp.json' | Invoke-Expression
+
+#------------------------------- Import Modules END   --------------------------------
+
+#-------------------------------  Set Hot-keys BEGIN  ---------------------------------
+
+# 设置预测文本来源为历史记录
+Set-PSReadLineOption -PredictionSource History
+
+# 每次回溯输入历史，光标定位于输入内容末尾
+Set-PSReadLineOption -HistorySearchCursorMovesToEnd
+
+# 设置 Tab 为菜单补全和 Intellisense
+Set-PSReadLineKeyHandler -Key "Tab" -Function MenuComplete
+
+# 设置 Ctrl+d 为退出 PowerShell
+Set-PSReadlineKeyHandler -Key "Ctrl+d" -Function ViExit
+
+# 设置 Ctrl+z 为撤销
+Set-PSReadLineKeyHandler -Key "Ctrl+z" -Function Undo
+
+# 设置向上键为后向搜索历史记录
+Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
+
+# 设置向下键为前向搜索历史纪录
+Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+
+# 启用预测性 IntelliSense
+# Set-PSReadLineOption -PredictionSource History
+Set-PSReadLineOption -PredictionViewStyle ListView
+
+#-------------------------------  Set Hot-keys END    -------------------------------
+
+
+#-------------------------------   Set Alias BEGIN    -------------------------------
+
+# 3. 查看目录 ls & ll
+function ListDirectory {
+	(Get-ChildItem).Name
+	Write-Host("")
+}
+Set-Alias -Name ls -Value ListDirectory
+Set-Alias -Name ll -Value Get-ChildItem
+Set-Alias grep findstr
+
+#-------------------------------    Set Alias END     -------------------------------
+```
+
+
+
 #### 5.4.3. 完成配置
 ```powershell
 . $PROFILE
@@ -133,21 +319,65 @@ oh-my-posh init pwsh --config 'D:\Scoop\theme\json.omp.json' | Invoke-Expression
 "terminal.integrated.fontFamily": "CaskaydiaMono Nerd Font",
 ```
 
+#### 5.5.2
+
+完整vscode配置
+
+```json
+{
+    "editor.fontSize": 19,
+    "[javascript]": {
+        "editor.maxTokenizationLineLength": 2500
+    },
+    "workbench.colorTheme": "GitHub Clean White",
+    "files.autoGuessEncoding": true,
+    "editor.tabCompletion": "on",
+    "security.workspace.trust.enabled": false,
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": true,
+    "terminal.integrated.fontFamily": "Cascadia Mono NF",
+    "editor.fontFamily": "Cascadia Mono NF, '微软雅黑', monospace",
+    "files.autoSave": "afterDelay",
+    "workbench.list.smoothScrolling": true,
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.smoothScrolling": true,
+    "editor.cursorBlinking": "smooth",
+    "editor.mouseWheelZoom": true, //滚轮调节字体大小
+    "editor.wordWrap": "on",
+    "editor.acceptSuggestionOnEnter": "smart",
+    "editor.suggestSelection": "recentlyUsed",
+    "window.dialogStyle": "custom",
+    "debug.showBreakpointsInOverviewRuler": true,
+    "editor.acceptSuggestionOnCommitCharacter": false,
+
+    "code-runner.runInTerminal": true,
+    "code-runner.saveAllFilesBeforeRun": true,
+    "code-runner.saveFileBeforeRun": true
+    
+}
+```
+
+
+
+
+
 ## 6. 修改vscode默认字体
+
 ### 6.1. 下载字体
 
 [字体大全](https://github.com/ryanoasis/nerd-fonts)
 
 [Cascadia Code](https://github.com/microsoft/cascadia-code/releases/tag/v2111.01)
 
-[[FiraCode](https://github.com/tonsky/FiraCode)](https://github.com/tonsky/FiraCode/releases/tag/6.2)
+[FiraCode](https://github.com/tonsky/FiraCode/releases/tag/6.2)
 
-[[Meslo-Font](https://github.com/andreberg/Meslo-Font)](https://github.com/andreberg/Meslo-Font)
+[Meslo-Font](https://github.com/andreberg/Meslo-Font)
 
 ### 6.2. 安装字体
 
 **全选ttf后缀文件安装**
-![[Pasted image 20240222201514.png]]
+![Pasted image 20240222201514](https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/picSource/install_ttf.png)
 
 ## 7. 安装WLS2
 
@@ -202,9 +432,6 @@ https://pan.baidu.com/disk/version
 + 找到文件夹 `AutoUpdate`,删除内容并在安全中修改访问权限为拒绝。
 + 找到`autoDiagnoseUpdate.exe`删除并创建空txt命名为`autoDiagnoseUpdate.exe`,修改读取写入权限为拒绝。
 + 找到`kernelUpdate.exe`删除并创建空txt命名为`kernelUpdate.exe`,修改读取写入权限为拒绝。
-### 8.3. 下载Cheat Engine
-
-
 
 
 
@@ -212,5 +439,5 @@ https://pan.baidu.com/disk/version
 
 # 参考
 
-[# Windows Terminal 完美配置 PowerShell 7.1](https://zhuanlan.zhihu.com/p/137595941)
+[Windows Terminal 完美配置 PowerShell 7.1](https://zhuanlan.zhihu.com/p/137595941)
 [oh-my-posh](https://ohmyposh.dev/docs/installation/windows)
