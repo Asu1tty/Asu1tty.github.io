@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Asu1tty&#39;s Blog</title>
-    <link>https://asu1tty.github.io/ja/categories/</link>
+    <link>https://asu1tty.github.io/en/categories/</link>
     <description>Recent content from Asu1tty&#39;s Blog</description>
     <generator>Hugo</generator>
-    <language>ja</language>
+    <language>en</language>
     
     <managingEditor>unknow (Asu1tty)</managingEditor>
     <webMaster>unknow (Asu1tty)</webMaster>
     
-    <copyright>本ブログのすべての文書は、特に指定されていない限り、BY-NC-SAライセンスに従っています。引用の際は出典を明記してください！</copyright>
+    <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
     
     
-    <atom:link href="https://asu1tty.github.io/ja/categories/index.xml" rel="self" type="application/rss&#43;xml" />
+    <atom:link href="https://asu1tty.github.io/en/categories/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
     

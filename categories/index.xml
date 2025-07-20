@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Categories on My New Hugo Site</title>
-    <link>https://example.org/categories/</link>
-    <description>Recent content from My New Hugo Site</description>
+    <title>Categories on Asu1tty&#39;s Blog</title>
+    <link>https://asu1tty.github.io/categories/</link>
+    <description>Recent content from Asu1tty&#39;s Blog</description>
     <generator>Hugo</generator>
-    <language>en</language>
+    <language>zh-cn</language>
     
     <managingEditor>unknow (Asu1tty)</managingEditor>
     <webMaster>unknow (Asu1tty)</webMaster>
     
-    <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
+    <copyright>本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！</copyright>
     
     <lastBuildDate></lastBuildDate>
     
     
-    <atom:link href="https://example.org/categories/index.xml" rel="self" type="application/rss&#43;xml" />
+    <atom:link href="https://asu1tty.github.io/categories/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
     

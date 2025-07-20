@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>App Reverse on My New Hugo Site</title>
-    <link>https://example.org/tags/app-reverse/</link>
-    <description>Recent content from My New Hugo Site</description>
+    <title>App Reverse on Asu1tty&#39;s Blog</title>
+    <link>https://asu1tty.github.io/tags/app-reverse/</link>
+    <description>Recent content from Asu1tty&#39;s Blog</description>
     <generator>Hugo</generator>
-    <language>en</language>
+    <language>zh-cn</language>
     
     <managingEditor>unknow (Asu1tty)</managingEditor>
     <webMaster>unknow (Asu1tty)</webMaster>
     
-    <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
+    <copyright>本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！</copyright>
     
     <lastBuildDate>Fri, 25 Apr 2025 17:48:36 +0800</lastBuildDate>
     
     
-    <atom:link href="https://example.org/tags/app-reverse/index.xml" rel="self" type="application/rss&#43;xml" />
+    <atom:link href="https://asu1tty.github.io/tags/app-reverse/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
     
@@ -23,188 +23,18 @@
 
     <item>
       <title>某红薯shield参数分析</title>
-      <link>https://example.org/post/xhs_analysis/</link>
+      <link>https://asu1tty.github.io/post/xhs_analysis/</link>
       <pubDate>Fri, 25 Apr 2025 17:48:36 &#43;0800</pubDate>
       <author>unknow (Asu1tty)</author>
-      <guid>https://example.org/post/xhs_analysis/</guid>
+      <guid>https://asu1tty.github.io/post/xhs_analysis/</guid>
       <description>
-        <![CDATA[<h1>某红薯shield参数分析</h1><p>Author: Asu1tty(unknow)</p>
+        <![CDATA[<h1>某红薯shield参数分析</h1><p>作者：Asu1tty（unknow）</p>
         
           <p><strong>该文章主要提供交流学习使用， 请勿利用进行不当行为</strong></p>
 <p><strong>如本篇文章侵犯了贵公司的隐私，请联系我立刻删除！</strong></p>
 <p><strong>如因滥用解密技术而产生的风险与本人无关</strong></p>
-<p>本人微信：<strong>huigeqifei</strong></p>
-<p>版本：8.70.0</p>
-<h2 id="1-加密入口">
-<a class="header-anchor" href="#1-%e5%8a%a0%e5%af%86%e5%85%a5%e5%8f%a3"></a>
-1. 加密入口
-</h2><p>加密入口在<code>com.xingin.shield.http.XhsHttpInterceptor</code></p>
-<p>jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器，并且打印<code>chain.request()</code>中的参数会发现传入前没有<code>shield</code>参数，执行完后有<code>shield</code>参数，正是在此Native层拦截器完成加密，并且通过函数名称也能猜测到so层有初始化操作</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/image-20250425175501568.png" alt="image-20250425175501568"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/image-20250425175516047.png" alt="image-20250425175516047"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/image-20250425175533360.png" alt="image-20250425175533360"></p>
-<p>在jadx反编译中并没有看到加载so的字样，所以通过hook<code>registerNatives</code>查找动态注册地址</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/image-20250425180205084.png" alt="image-20250425180205084"></p>
-<h2 id="确认初始化操作">
-<a class="header-anchor" href="#%e7%a1%ae%e8%ae%a4%e5%88%9d%e5%a7%8b%e5%8c%96%e6%93%8d%e4%bd%9c"></a>
-确认初始化操作
-</h2><p>对上面三个Native层函数进行hook</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/image-20250425180700015.png" alt="image-20250425180700015"></p>
-<p>可以发现：</p>
-<ul>
-<li>首先调用<code>initializeNative</code></li>
-<li>然后调用<code>initialize</code>,传入字符串<code>main</code>，得到long类型返回值</li>
-<li>后面的拦截器都传入了初始化后得到的long类型返回值</li>
-</ul>
-<h2 id="上unidbg">
-<a class="header-anchor" href="#%e4%b8%8aunidbg"></a>
-上Unidbg
-</h2><p>unidbg补环境模板</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.AndroidEmulator</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.Emulator</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.Module</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.arm.backend.Unicorn2Factory</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.file.FileResult</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.file.IOResolver</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.linux.android.AndroidEmulatorBuilder</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.linux.android.AndroidResolver</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.linux.android.dvm.*</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.linux.android.dvm.array.ArrayObject</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.memory.Memory</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.virtualmodule.android.AndroidModule</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.virtualmodule.android.JniGraphics</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.virtualmodule.android.MediaNdkModule</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.virtualmodule.android.SystemProperties</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.File</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.ArrayList</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.List</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">tmp</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">AbstractJni</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">IOResolver</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">AndroidEmulator</span><span class="w"> </span><span class="n">emulator</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">VM</span><span class="w"> </span><span class="n">vm</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Module</span><span class="w"> </span><span class="n">module</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">FileResult</span><span class="w"> </span><span class="nf">resolve</span><span class="p">(</span><span class="n">Emulator</span><span class="w"> </span><span class="n">emulator</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">pathname</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">oflags</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">	    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;==================open file=========================&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;open file:&#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">pathname</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">tmp</span><span class="p">(){</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 创建模拟器实例</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emulator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AndroidEmulatorBuilder</span><span class="p">.</span><span class="na">for64Bit</span><span class="p">().</span><span class="na">setProcessName</span><span class="p">(</span><span class="s">&#34;com.xxx&#34;</span><span class="p">).</span><span class="na">addBackendFactory</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Unicorn2Factory</span><span class="p">(</span><span class="kc">false</span><span class="p">)).</span><span class="na">build</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 添加IO接口要加这句</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emulator</span><span class="p">.</span><span class="na">getSyscallHandler</span><span class="p">().</span><span class="na">addIOResolver</span><span class="p">(</span><span class="k">this</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 获取模拟器的内存操作接口</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">final</span><span class="w"> </span><span class="n">Memory</span><span class="w"> </span><span class="n">memory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">emulator</span><span class="p">.</span><span class="na">getMemory</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 设置系统类库解析</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">memory</span><span class="p">.</span><span class="na">setLibraryResolver</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">AndroidResolver</span><span class="p">(</span><span class="n">23</span><span class="p">));</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 创建Android虚拟机,传入APK，Unidbg可以替我们做部分签名校验的工作</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">vm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">emulator</span><span class="p">.</span><span class="na">createDalvikVM</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">File</span><span class="p">(</span><span class="s">&#34;unidbg-android/src/test/java/com//files/.apk&#34;</span><span class="p">));</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 4个虚拟模块</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">AndroidModule</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span><span class="n">vm</span><span class="p">).</span><span class="na">register</span><span class="p">(</span><span class="n">memory</span><span class="p">);</span><span class="w"> </span><span class="c1">//libandroid.so</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">MediaNdkModule</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span><span class="n">vm</span><span class="p">).</span><span class="na">register</span><span class="p">(</span><span class="n">memory</span><span class="p">);</span><span class="w"> </span><span class="c1">// libmediandk.so</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">JniGraphics</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span><span class="n">vm</span><span class="p">).</span><span class="na">register</span><span class="p">(</span><span class="n">memory</span><span class="p">);</span><span class="w"> </span><span class="c1">// libjnigraphics.so</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">SystemProperties</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span><span class="kc">null</span><span class="p">).</span><span class="na">register</span><span class="p">(</span><span class="n">memory</span><span class="p">);</span><span class="w"> </span><span class="c1">// libsystemproperties.so</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 设置JNI</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">vm</span><span class="p">.</span><span class="na">setJni</span><span class="p">(</span><span class="k">this</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 打印日志</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">vm</span><span class="p">.</span><span class="na">setVerbose</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 加载目标SO</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">DalvikModule</span><span class="w"> </span><span class="n">dm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vm</span><span class="p">.</span><span class="na">loadLibrary</span><span class="p">(</span><span class="s">&#34;soname&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// DalvikModule dm = vm.loadLibrary(new File(&#34;unidbg-android/apks/xx/lib.so&#34;), true);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//获取本SO模块的句柄,后续需要用它</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dm</span><span class="p">.</span><span class="na">getModule</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 调用JNI OnLoad</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">dm</span><span class="p">.</span><span class="na">callJNI_OnLoad</span><span class="p">(</span><span class="n">emulator</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">};</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">callByAddress</span><span class="p">(){</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// args list</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">10</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// jnienv</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">vm</span><span class="p">.</span><span class="na">getJNIEnv</span><span class="p">());</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// jclazz</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">0</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// str1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">vm</span><span class="p">.</span><span class="na">addLocalObject</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">StringObject</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;str1&#34;</span><span class="p">)));</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// strArr 假设字符串包含两个字符串</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// str6_1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">StringObject</span><span class="w"> </span><span class="n">str6_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringObject</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;str6_1&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">vm</span><span class="p">.</span><span class="na">addLocalObject</span><span class="p">(</span><span class="n">str6_1</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// str6_2</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">StringObject</span><span class="w"> </span><span class="n">str6_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringObject</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;str6_2&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">vm</span><span class="p">.</span><span class="na">addLocalObject</span><span class="p">(</span><span class="n">str6_2</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ArrayObject</span><span class="w"> </span><span class="n">arrayObject</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayObject</span><span class="p">(</span><span class="n">str6_1</span><span class="p">,</span><span class="n">str6_2</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">vm</span><span class="p">.</span><span class="na">addLocalObject</span><span class="p">(</span><span class="n">arrayObject</span><span class="p">));</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 最后的int</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">1</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Number</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">module</span><span class="p">.</span><span class="na">callFunction</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span><span class="w"> </span><span class="n">0x2301</span><span class="p">,</span><span class="w"> </span><span class="n">list</span><span class="p">.</span><span class="na">toArray</span><span class="p">());</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ArrayObject</span><span class="w"> </span><span class="n">resultArr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vm</span><span class="p">.</span><span class="na">getObject</span><span class="p">(</span><span class="n">number</span><span class="p">.</span><span class="na">intValue</span><span class="p">());</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;result:&#34;</span><span class="o">+</span><span class="n">resultArr</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">};</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">callByAPI</span><span class="p">(){</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">DvmClass</span><span class="w"> </span><span class="n">RequestCryptUtils</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vm</span><span class="p">.</span><span class="na">resolveClass</span><span class="p">(</span><span class="s">&#34;com/meituan/android/payguard/RequestCryptUtils&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">StringObject</span><span class="w"> </span><span class="n">str6_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringObject</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;str6_1&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">vm</span><span class="p">.</span><span class="na">addLocalObject</span><span class="p">(</span><span class="n">str6_1</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">StringObject</span><span class="w"> </span><span class="n">str6_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringObject</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;str6_2&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">vm</span><span class="p">.</span><span class="na">addLocalObject</span><span class="p">(</span><span class="n">str6_2</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ArrayObject</span><span class="w"> </span><span class="n">arrayObject</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayObject</span><span class="p">(</span><span class="n">str6_1</span><span class="p">,</span><span class="n">str6_2</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ArrayObject</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RequestCryptUtils</span><span class="p">.</span><span class="na">callStaticJniMethodObject</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;encryptRequestWithRandom()&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;str1&#34;</span><span class="p">,</span><span class="s">&#34;str2&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;str3&#34;</span><span class="p">,</span><span class="s">&#34;str4&#34;</span><span class="p">,</span><span class="s">&#34;str5&#34;</span><span class="p">,</span><span class="n">arrayObject</span><span class="p">,</span><span class="n">1</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">result</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">};</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">trace</span><span class="p">(){</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">traceFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;unidbg-android/src/test/java/com/xx/trace.txt&#34;</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">PrintStream</span><span class="w"> </span><span class="n">traceStream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">try</span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">traceStream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">PrintStream</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">FileOutputStream</span><span class="p">(</span><span class="n">traceFile</span><span class="p">),</span><span class="w"> </span><span class="kc">true</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">FileNotFoundException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">//核心 trace 开启代码，也可以自己指定函数地址和偏移量</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">	    </span><span class="n">emulator</span><span class="p">.</span><span class="na">traceCode</span><span class="p">(</span><span class="n">module</span><span class="p">.</span><span class="na">base</span><span class="p">,</span><span class="n">module</span><span class="p">.</span><span class="na">base</span><span class="o">+</span><span class="n">module</span><span class="p">.</span><span class="na">size</span><span class="p">).</span><span class="na">setRedirect</span><span class="p">(</span><span class="n">traceStream</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">HookByConsoleDebugger</span><span class="p">(){</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Debugger</span><span class="w"> </span><span class="n">debugger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">emulator</span><span class="p">.</span><span class="na">attach</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">//        debugger.addBreakPoint(module.base + 0x15610);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">//        emulator.traceWrite(0x40420bc0, 0x40420bc0+32);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">debugger</span><span class="p">.</span><span class="na">addBreakPoint</span><span class="p">(</span><span class="n">module</span><span class="p">.</span><span class="na">findSymbolByName</span><span class="p">(</span><span class="s">&#34;memcpy&#34;</span><span class="p">).</span><span class="na">getAddress</span><span class="p">(),</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BreakPointCallback</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nd">@Override</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">onHit</span><span class="p">(</span><span class="n">Emulator</span><span class="o">&lt;?&gt;</span><span class="w"> </span><span class="n">emulator</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">address</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">RegisterContext</span><span class="w"> </span><span class="n">context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">emulator</span><span class="p">.</span><span class="na">getContext</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">context</span><span class="p">.</span><span class="na">getIntArg</span><span class="p">(</span><span class="n">2</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">UnidbgPointer</span><span class="w"> </span><span class="n">pointer1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">context</span><span class="p">.</span><span class="na">getPointerArg</span><span class="p">(</span><span class="n">0</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">UnidbgPointer</span><span class="w"> </span><span class="n">pointer2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">context</span><span class="p">.</span><span class="na">getPointerArg</span><span class="p">(</span><span class="n">1</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Inspector</span><span class="p">.</span><span class="na">inspect</span><span class="p">(</span><span class="n">pointer2</span><span class="p">.</span><span class="na">getByteArray</span><span class="p">(</span><span class="n">0</span><span class="p">,</span><span class="n">len</span><span class="p">),</span><span class="s">&#34;dest &#34;</span><span class="o">+</span><span class="n">Long</span><span class="p">.</span><span class="na">toHexString</span><span class="p">(</span><span class="n">pointer1</span><span class="p">.</span><span class="na">peer</span><span class="p">)</span><span class="o">+</span><span class="s">&#34; src &#34;</span><span class="o">+</span><span class="n">Long</span><span class="p">.</span><span class="na">toHexString</span><span class="p">(</span><span class="n">pointer2</span><span class="p">.</span><span class="na">peer</span><span class="p">));</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">});</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">tmp</span><span class="w"> </span><span class="n">demo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">tmp</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//demo.callByAddress();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//demo.callByAPI();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><p>修改包名，填写apk地址，填写so名称后，开始运行</p>
         
-        <hr><p>Published on 2025-04-25 at <a href='https://example.org/'>My New Hugo Site</a>, last modified on 2025-04-25</p>]]>
+        <hr><p>本文2025-04-25首发于<a href='https://asu1tty.github.io/'>Asu1tty's Blog</a>，最后修改于2025-04-25</p>]]>
       </description>
       
         <category>逆向实战</category>

@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Test on My New Hugo Site</title>
-    <link>https://example.org/categories/test/</link>
-    <description>Recent content from My New Hugo Site</description>
+    <title>Test on Asu1tty&#39;s Blog</title>
+    <link>https://asu1tty.github.io/categories/test/</link>
+    <description>Recent content from Asu1tty&#39;s Blog</description>
     <generator>Hugo</generator>
-    <language>en</language>
+    <language>zh-cn</language>
     
     <managingEditor>unknow (Asu1tty)</managingEditor>
     <webMaster>unknow (Asu1tty)</webMaster>
     
-    <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
+    <copyright>本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！</copyright>
     
     <lastBuildDate>Thu, 09 Jun 2022 20:12:52 +0800</lastBuildDate>
     
     
-    <atom:link href="https://example.org/categories/test/index.xml" rel="self" type="application/rss&#43;xml" />
+    <atom:link href="https://asu1tty.github.io/categories/test/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
     
@@ -23,12 +23,12 @@
 
     <item>
       <title>Markdown Basic Elements</title>
-      <link>https://example.org/post/main/</link>
+      <link>https://asu1tty.github.io/post/main/</link>
       <pubDate>Thu, 09 Jun 2022 20:12:52 &#43;0800</pubDate>
       <author>unknow (Asu1tty)</author>
-      <guid>https://example.org/post/main/</guid>
+      <guid>https://asu1tty.github.io/post/main/</guid>
       <description>
-        <![CDATA[<h1>Markdown Basic Elements</h1><p>Author: Asu1tty(unknow)</p>
+        <![CDATA[<h1>Markdown Basic Elements</h1><p>作者：Asu1tty（unknow）</p>
         
           <h2 id="markdown-基本元素">
 <a class="header-anchor" href="#markdown-%e5%9f%ba%e6%9c%ac%e5%85%83%e7%b4%a0"></a>
@@ -89,7 +89,7 @@ Unordered List (ul)
 段落
 </h3><p>Lorem ipsum dolor sit amet, <a href="">test link</a> consectetur adipiscing elit. <strong>Strong text</strong> pellentesque ligula commodo viverra vehicula. <em>Italic text</em> at ullamcorper enim. Morbi a euismod nibh. <!-- raw HTML omitted -->Underline text<!-- raw HTML omitted --> non elit nisl. <del>Deleted text</del> tristique, sem id condimentum tempus, metus lectus venenatis mauris, sit amet semper lorem felis a eros. Fusce egestas nibh at sagittis auctor. Sed ultricies ac arcu quis molestie. Donec dapibus nunc in nibh egestas, vitae volutpat sem iaculis. Curabitur sem tellus, elementum nec quam id, fermentum laoreet mi. Ut mollis ullamcorper turpis, vitae facilisis velit ultricies sit amet. Etiam laoreet dui odio, id tempus justo tincidunt id. Phasellus scelerisque nunc sed nunc ultricies accumsan.</p>
         
-        <hr><p>Published on 2022-06-09 at <a href='https://example.org/'>My New Hugo Site</a>, last modified on 2022-06-09</p>]]>
+        <hr><p>本文2022-06-09首发于<a href='https://asu1tty.github.io/'>Asu1tty's Blog</a>，最后修改于2022-06-09</p>]]>
       </description>
       
         <category>test</category>

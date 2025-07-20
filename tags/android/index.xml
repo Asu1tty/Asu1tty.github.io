@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Android on My New Hugo Site</title>
-    <link>https://example.org/tags/android/</link>
-    <description>Recent content from My New Hugo Site</description>
+    <title>Android on Asu1tty&#39;s Blog</title>
+    <link>https://asu1tty.github.io/tags/android/</link>
+    <description>Recent content from Asu1tty&#39;s Blog</description>
     <generator>Hugo</generator>
-    <language>en</language>
+    <language>zh-cn</language>
     
     <managingEditor>unknow (Asu1tty)</managingEditor>
     <webMaster>unknow (Asu1tty)</webMaster>
     
-    <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
+    <copyright>本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！</copyright>
     
     <lastBuildDate>Thu, 01 May 2025 11:20:50 +0800</lastBuildDate>
     
     
-    <atom:link href="https://example.org/tags/android/index.xml" rel="self" type="application/rss&#43;xml" />
+    <atom:link href="https://asu1tty.github.io/tags/android/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
     
@@ -23,12 +23,12 @@
 
     <item>
       <title>Android so加载源码分析与加壳技术</title>
-      <link>https://example.org/post/loading-so/</link>
+      <link>https://asu1tty.github.io/post/loading-so/</link>
       <pubDate>Thu, 01 May 2025 11:20:50 &#43;0800</pubDate>
       <author>unknow (Asu1tty)</author>
-      <guid>https://example.org/post/loading-so/</guid>
+      <guid>https://asu1tty.github.io/post/loading-so/</guid>
       <description>
-        <![CDATA[<h1>Android so加载源码分析与加壳技术</h1><p>Author: Asu1tty(unknow)</p>
+        <![CDATA[<h1>Android so加载源码分析与加壳技术</h1><p>作者：Asu1tty（unknow）</p>
         
           <p>本次分析AOSP 的源码的安卓版本为 <code>android-12.0.0_r34</code></p>
 <h2 id="1-java层调用">
@@ -42,50 +42,8 @@
 <a class="header-anchor" href="#11-systemload"></a>
 1.1. System.load()
 </h3><p>这里我们以<code>System.load</code>作为分析入口</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// libcore/ojluni/src/main/java/java/lang/System.java</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="cm">/**
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * Loads the native library specified by the filename argument.  The filename
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * argument must be an absolute path name.
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * If the filename argument, when stripped of any platform-specific library
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * prefix, path, and file extension, indicates a library whose name is,
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * for example, L, and a native library called L is statically linked
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * with the VM, then the JNI_OnLoad_L function exported by the library
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * is invoked rather than attempting to load a dynamic library.
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * A filename matching the argument does not have to exist in the
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * file system.
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * See the JNI Specification for more details.
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * Otherwise, the filename argument is mapped to a native library image in
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * an implementation-dependent manner.
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * &lt;p&gt;
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * The call &lt;code&gt;System.load(name)&lt;/code&gt; is effectively equivalent
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * to the call:
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * &lt;blockquote&gt;&lt;pre&gt;
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * Runtime.getRuntime().load(name)
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * &lt;/pre&gt;&lt;/blockquote&gt;
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * @param      filename   the file to load.
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * @exception  SecurityException  if a security manager exists and its
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *             &lt;code&gt;checkLink&lt;/code&gt; method doesn&#39;t allow
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *             loading of the specified dynamic library
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * @exception  UnsatisfiedLinkError  if either the filename is not an
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *             absolute path name, the native library is not statically
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *             linked with the VM, or the library cannot be mapped to
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *             a native library image by the host system.
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * @exception  NullPointerException if &lt;code&gt;filename&lt;/code&gt; is
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *             &lt;code&gt;null&lt;/code&gt;
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * @see        java.lang.Runtime#load(java.lang.String)
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * @see        java.lang.SecurityManager#checkLink(java.lang.String)
-</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@CallerSensitive</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">filename</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Runtime</span><span class="p">.</span><span class="na">getRuntime</span><span class="p">().</span><span class="na">load0</span><span class="p">(</span><span class="n">Reflection</span><span class="p">.</span><span class="na">getCallerClass</span><span class="p">(),</span><span class="w"> </span><span class="n">filename</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><p>其中，<code>Reflection.getCallerClass()</code> 是一个内部方法，定义在 <code>sun.reflect.Reflection</code> 类中（属于 JDK/ART 的私有 API）。它的作用是<strong>返回调用当前方法的类的 <code>Class</code> 对象</strong>，即调用栈中调用者的类。</p>
         
-        <hr><p>Published on 2025-05-01 at <a href='https://example.org/'>My New Hugo Site</a>, last modified on 2025-05-01</p>]]>
+        <hr><p>本文2025-05-01首发于<a href='https://asu1tty.github.io/'>Asu1tty's Blog</a>，最后修改于2025-05-01</p>]]>
       </description>
       
         <category>AOSP</category>

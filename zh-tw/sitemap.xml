@@ -2,70 +2,70 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://example.org/zh-tw/categories/</loc>
+    <loc>https://asu1tty.github.io/zh-tw/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://asu1tty.github.io/"
+                />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://example.org/categories/"
+                href="https://asu1tty.github.io/en/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="https://example.org/ja/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://example.org/zh-cn/categories/"
+                href="https://asu1tty.github.io/ja/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://example.org/zh-tw/categories/"
+                href="https://asu1tty.github.io/zh-tw/"
                 />
   </url><url>
-    <loc>https://example.org/zh-tw/</loc>
+    <loc>https://asu1tty.github.io/zh-tw/categories/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://asu1tty.github.io/categories/"
+                />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://example.org/"
+                href="https://asu1tty.github.io/en/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="https://example.org/ja/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://example.org/zh-cn/"
+                href="https://asu1tty.github.io/ja/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://example.org/zh-tw/"
+                href="https://asu1tty.github.io/zh-tw/categories/"
                 />
   </url><url>
-    <loc>https://example.org/zh-tw/tags/</loc>
+    <loc>https://asu1tty.github.io/zh-tw/tags/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://asu1tty.github.io/tags/"
+                />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://example.org/tags/"
+                href="https://asu1tty.github.io/en/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ja"
-                href="https://example.org/ja/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://example.org/zh-cn/tags/"
+                href="https://asu1tty.github.io/ja/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-tw"
-                href="https://example.org/zh-tw/tags/"
+                href="https://asu1tty.github.io/zh-tw/tags/"
                 />
   </url>
 </urlset>

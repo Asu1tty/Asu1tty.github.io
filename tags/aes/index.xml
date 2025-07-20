@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>AES on My New Hugo Site</title>
-    <link>https://example.org/tags/aes/</link>
-    <description>Recent content from My New Hugo Site</description>
+    <title>AES on Asu1tty&#39;s Blog</title>
+    <link>https://asu1tty.github.io/tags/aes/</link>
+    <description>Recent content from Asu1tty&#39;s Blog</description>
     <generator>Hugo</generator>
-    <language>en</language>
+    <language>zh-cn</language>
     
     <managingEditor>unknow (Asu1tty)</managingEditor>
     <webMaster>unknow (Asu1tty)</webMaster>
     
-    <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
+    <copyright>本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！</copyright>
     
     <lastBuildDate>Thu, 24 Apr 2025 21:10:36 +0800</lastBuildDate>
     
     
-    <atom:link href="https://example.org/tags/aes/index.xml" rel="self" type="application/rss&#43;xml" />
+    <atom:link href="https://asu1tty.github.io/tags/aes/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
     
@@ -23,59 +23,16 @@
 
     <item>
       <title>AES原理及白盒AES的DFA攻击</title>
-      <link>https://example.org/post/wb_aes/</link>
+      <link>https://asu1tty.github.io/post/wb_aes/</link>
       <pubDate>Thu, 24 Apr 2025 21:10:36 &#43;0800</pubDate>
       <author>unknow (Asu1tty)</author>
-      <guid>https://example.org/post/wb_aes/</guid>
+      <guid>https://asu1tty.github.io/post/wb_aes/</guid>
       <description>
-        <![CDATA[<h1>AES原理及白盒AES的DFA攻击</h1><p>Author: Asu1tty(unknow)</p>
+        <![CDATA[<h1>AES原理及白盒AES的DFA攻击</h1><p>作者：Asu1tty（unknow）</p>
         
           <p>AES（<strong>Advanced Encryption Standard</strong>） <strong>高级加密标准</strong>是 Rijndael <a href="https://en.wikipedia.org/wiki/Block_cipher" title="Block cipher">分组密码</a>  的一种变体，由两位密码学家 <a href="https://en.wikipedia.org/wiki/Joan_Daemen" title="Joan Daemen">Joan Daemen</a> 和 <a href="https://en.wikipedia.org/wiki/Vincent_Rijmen" title="Vincent Rijmen">Vincent Rijmen</a> 开发，他们在 <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard_process" title="Advanced Encryption Standard process">AES 选择过程中</a>向 NIST 提交了一份提案Rijndael 是一系列具有不同密钥和块大小的密码。对于 AES，NIST 选择了 Rijndael 家族的三个成员，每个成员的块大小为 128 位，但有三种不同的密钥长度：128、192 和 256 位。</p>
-<h2 id="1-aes分类">
-<a class="header-anchor" href="#1-aes%e5%88%86%e7%b1%bb"></a>
-1. AES分类
-</h2><table>
-  <thead>
-      <tr>
-          <th>分类</th>
-          <th>密钥长度</th>
-          <th>轮密钥长度</th>
-          <th>扩展密钥长度</th>
-          <th>分组长度</th>
-          <th>加密轮数</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>AES-128</td>
-          <td>16字节</td>
-          <td>16字节</td>
-          <td>16*11=172</td>
-          <td>16字节</td>
-          <td>10</td>
-      </tr>
-      <tr>
-          <td>AES-192</td>
-          <td>24字节</td>
-          <td>16字节</td>
-          <td>16*13=208</td>
-          <td>16字节</td>
-          <td>12</td>
-      </tr>
-      <tr>
-          <td>AES-256</td>
-          <td>32字节</td>
-          <td>16字节</td>
-          <td>16*15=240</td>
-          <td>16字节</td>
-          <td>14</td>
-      </tr>
-  </tbody>
-</table>
-<p>AES 128 192 256 除了密钥编排算法不一样和加密轮数不一样 其余的计算逻辑相同</p>
-<p>AES 128 192 256 CBC 模式IV的长度都是16个字节 CBC计算逻辑相同</p>
         
-        <hr><p>Published on 2025-04-24 at <a href='https://example.org/'>My New Hugo Site</a>, last modified on 2025-04-24</p>]]>
+        <hr><p>本文2025-04-24首发于<a href='https://asu1tty.github.io/'>Asu1tty's Blog</a>，最后修改于2025-04-24</p>]]>
       </description>
       
         <category>Crypto</category>

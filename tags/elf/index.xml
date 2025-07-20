@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>ELF on My New Hugo Site</title>
-    <link>https://example.org/tags/elf/</link>
-    <description>Recent content from My New Hugo Site</description>
+    <title>ELF on Asu1tty&#39;s Blog</title>
+    <link>https://asu1tty.github.io/tags/elf/</link>
+    <description>Recent content from Asu1tty&#39;s Blog</description>
     <generator>Hugo</generator>
-    <language>en</language>
+    <language>zh-cn</language>
     
     <managingEditor>unknow (Asu1tty)</managingEditor>
     <webMaster>unknow (Asu1tty)</webMaster>
     
-    <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
+    <copyright>本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！</copyright>
     
     <lastBuildDate>Sat, 17 May 2025 11:18:36 +0800</lastBuildDate>
     
     
-    <atom:link href="https://example.org/tags/elf/index.xml" rel="self" type="application/rss&#43;xml" />
+    <atom:link href="https://asu1tty.github.io/tags/elf/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
     
@@ -23,63 +23,17 @@
 
     <item>
       <title>浅析So加固的三种方式</title>
-      <link>https://example.org/post/so-harden/</link>
+      <link>https://asu1tty.github.io/post/so-harden/</link>
       <pubDate>Sat, 17 May 2025 11:18:36 &#43;0800</pubDate>
       <author>unknow (Asu1tty)</author>
-      <guid>https://example.org/post/so-harden/</guid>
+      <guid>https://asu1tty.github.io/post/so-harden/</guid>
       <description>
-        <![CDATA[<h1>浅析So加固的三种方式</h1><p>Author: Asu1tty(unknow)</p>
+        <![CDATA[<h1>浅析So加固的三种方式</h1><p>作者：Asu1tty（unknow）</p>
         
           <p>简单分享一下so加固的方案。本文章的代码基于<a href="https://bbs.kanxue.com/thread-285650.htm">关于SO加密对抗的两种实现方式</a>
 在看本篇文章之前，最好需要了解一下ELF文件格式，以及So的加载流程，这里推荐oacia大佬的两篇文章。<a href="https://oacia.dev/ElfReader/">ELF结构分析及ElfReader</a>和<a href="https://oacia.dev/android-load-so/">安卓so加载流程源码分析</a>。</p>
-<h2 id="1-第一种加密方式加密函数">
-<a class="header-anchor" href="#1-%e7%ac%ac%e4%b8%80%e7%a7%8d%e5%8a%a0%e5%af%86%e6%96%b9%e5%bc%8f%e5%8a%a0%e5%af%86%e5%87%bd%e6%95%b0"></a>
-1. 第一种加密方式：加密函数
-</h2><p>下面是编译为libmathlib.so前的源代码，我们将要加密<code>int mymyadd(int a, int b)</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-CPP" data-lang="CPP"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;android/log.h&gt;</span><span class="cp">  
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>  
-</span></span><span class="line"><span class="cl"><span class="c1">// 定义日志标签  
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#define LOG_TAG &#34;MathLib&#34;  
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)  
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>  
-</span></span><span class="line"><span class="cl"><span class="k">extern</span> <span class="s">&#34;C&#34;</span>  
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">mymyadd</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>  
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>  
-</span></span><span class="line"><span class="cl">    <span class="n">LOGD</span><span class="p">(</span><span class="s">&#34;Add: %d + %d = %d&#34;</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span>  
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>  
-</span></span><span class="line"><span class="cl"><span class="p">}</span>  
-</span></span><span class="line"><span class="cl"><span class="k">extern</span> <span class="s">&#34;C&#34;</span>  
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">subtract</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>  
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">;</span>  
-</span></span><span class="line"><span class="cl">    <span class="n">LOGD</span><span class="p">(</span><span class="s">&#34;Subtract: %d - %d = %d&#34;</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span>  
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>  
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h3 id="11-加密效果">
-<a class="header-anchor" href="#11-%e5%8a%a0%e5%af%86%e6%95%88%e6%9e%9c"></a>
-1.1. 加密效果
-</h3><p>未加密前
-<img src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/1-unencrypted.png" alt="">
-加密后，IDA自然无法正确识别出函数
-<img src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/1-encrypted.png" alt=""></p>
-<h3 id="12-实现原理">
-<a class="header-anchor" href="#12-%e5%ae%9e%e7%8e%b0%e5%8e%9f%e7%90%86"></a>
-1.2. 实现原理
-</h3><p>加密函数，首先自然要从ELF文件中找到函数的位置以及函数的大小。
-这里看一下源码中dlsym函数怎么处理的。
-调用了<code>__loader_dlsym(handle, symbol, caller_addr)</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// bionic/libdl/libdl.cpp
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span><span class="o">*</span> <span class="nf">dlsym</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">handle</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">symbol</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">caller_addr</span> <span class="o">=</span> <span class="n">__builtin_return_address</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">__loader_dlsym</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">caller_addr</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>调用了<code>dlsym_impl(handle, symbol, nullptr, caller_addr);</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// bionic/linker/dlfcn.cpp
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span><span class="o">*</span> <span class="nf">__loader_dlsym</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">handle</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">symbol</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">caller_addr</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">dlsym_impl</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="n">caller_addr</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>调用了<code>do_dlsym(handle, symbol, version, caller_addr, &amp;result)</code></p>
         
-        <hr><p>Published on 2025-05-17 at <a href='https://example.org/'>My New Hugo Site</a>, last modified on 2025-05-17</p>]]>
+        <hr><p>本文2025-05-17首发于<a href='https://asu1tty.github.io/'>Asu1tty's Blog</a>，最后修改于2025-05-17</p>]]>
       </description>
       
     </item>
@@ -88,12 +42,12 @@
 
     <item>
       <title>ELF结构及加载流程分析</title>
-      <link>https://example.org/post/elfreader/</link>
+      <link>https://asu1tty.github.io/post/elfreader/</link>
       <pubDate>Wed, 30 Apr 2025 11:18:36 &#43;0800</pubDate>
       <author>unknow (Asu1tty)</author>
-      <guid>https://example.org/post/elfreader/</guid>
+      <guid>https://asu1tty.github.io/post/elfreader/</guid>
       <description>
-        <![CDATA[<h1>ELF结构及加载流程分析</h1><p>Author: Asu1tty(unknow)</p>
+        <![CDATA[<h1>ELF结构及加载流程分析</h1><p>作者：Asu1tty（unknow）</p>
         
           <ul>
 <li>
@@ -105,112 +59,8 @@
 <li>Linux下的 <strong>ELF（Executable Linkable Format）</strong></li>
 </ul>
 <p>ELF（Executable and Linkable Format，可执行和可链接格式）是Linux系统中广泛使用的文件格式，用于存储可执行文件、目标代码、共享库和核心转储（core dump）。它是一种灵活、通用的格式，支持多种处理器架构和操作系统，具有跨平台特性。</p>
-<p><strong>主要特点：</strong></p>
-<ul>
-<li><strong>跨平台支持</strong>：ELF支持多种处理器架构（如x86、x86_64、ARM、MIPS）和字节序（大端/小端）。</li>
-<li><strong>模块化设计</strong>：分为多个段（Section）和节（Segment），便于解析和操作。</li>
-<li><strong>支持动态链接</strong>：允许在运行时加载共享库，减少内存占用。</li>
-<li><strong>可扩展性</strong>：支持添加自定义段，适应不同需求。</li>
-</ul>
-<p>ELF文件可以是以下几种类型：</p>
-<ol>
-<li><strong>可执行文件</strong>（Executable File）：如编译后的程序，直接运行。</li>
-<li><strong>目标文件</strong>（Object File）：编译器生成的中间文件，通常用于链接生成可执行文件。</li>
-<li><strong>共享库</strong>（Shared Library）：动态链接库，运行时加载（如.so文件）。</li>
-<li><strong>核心转储</strong>（Core Dump）：程序崩溃时保存的内存快照，用于调试。</li>
-</ol>
-<h2 id="1-elf主要结构">
-<a class="header-anchor" href="#1-elf%e4%b8%bb%e8%a6%81%e7%bb%93%e6%9e%84"></a>
-1. ELF主要结构
-</h2><p>ELF 文件主要分为 3 个部分:</p>
-<ul>
-<li><strong>ELF Header  ELF文件头</strong>，位于ELF文件的开头，描述文件的整体信息。它的大小通常为32位系统中的52字节或64位系统中的64字节。</li>
-<li><strong>Program Header Table  程序头表</strong>  ，描述了文件中的<strong>段</strong>（Segment），主要用于运行时加载和执行。</li>
-<li><strong>Section Header Table  节头表</strong>  ，描述了文件中的<strong>节</strong>（Section），主要用于链接和调试。每个节包含特定类型的数据（如代码、数据、符号表等）。节头表对于可执行文件是可选的，但在目标文件中通常存在。</li>
-</ul>
-<h3 id="11-elf-header--elf文件头">
-<a class="header-anchor" href="#11-elf-header--elf%e6%96%87%e4%bb%b6%e5%a4%b4"></a>
-1.1. ELF Header  ELF文件头
-</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//https://github.com/bminor/glibc/blob/glibc-2.27/elf/elf.h
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">typedef</span> <span class="k">struct</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="kt">unsigned</span> <span class="kt">char</span>	<span class="n">e_ident</span><span class="p">[</span><span class="n">EI_NIDENT</span><span class="p">];</span>	<span class="cm">/* Magic number and other info */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Half</span>	<span class="n">e_type</span><span class="p">;</span>			<span class="cm">/* Object file type */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Half</span>	<span class="n">e_machine</span><span class="p">;</span>		<span class="cm">/* Architecture */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Word</span>	<span class="n">e_version</span><span class="p">;</span>		<span class="cm">/* Object file version */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Addr</span>	<span class="n">e_entry</span><span class="p">;</span>		<span class="cm">/* Entry point virtual address */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Off</span>	<span class="n">e_phoff</span><span class="p">;</span>		<span class="cm">/* Program header table file offset */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Off</span>	<span class="n">e_shoff</span><span class="p">;</span>		<span class="cm">/* Section header table file offset */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Word</span>	<span class="n">e_flags</span><span class="p">;</span>		<span class="cm">/* Processor-specific flags */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Half</span>	<span class="n">e_ehsize</span><span class="p">;</span>		<span class="cm">/* ELF header size in bytes */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Half</span>	<span class="n">e_phentsize</span><span class="p">;</span>		<span class="cm">/* Program header table entry size */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Half</span>	<span class="n">e_phnum</span><span class="p">;</span>		<span class="cm">/* Program header table entry count */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Half</span>	<span class="n">e_shentsize</span><span class="p">;</span>		<span class="cm">/* Section header table entry size */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Half</span>	<span class="n">e_shnum</span><span class="p">;</span>		<span class="cm">/* Section header table entry count */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Half</span>	<span class="n">e_shstrndx</span><span class="p">;</span>		<span class="cm">/* Section header string table index */</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">Elf32_Ehdr</span><span class="p">;</span>
-</span></span></code></pre></div><h4 id="111-e_identei_nident">
-<a class="header-anchor" href="#111-e_identei_nident"></a>
-1.1.1. e_ident[EI_NIDENT]
-</h4><table>
-  <thead>
-      <tr>
-          <th>宏名称</th>
-          <th>下标</th>
-          <th>目的</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>EI_MAG0</td>
-          <td>0</td>
-          <td>文件标识</td>
-      </tr>
-      <tr>
-          <td>EI_MAG1</td>
-          <td>1</td>
-          <td>文件标识</td>
-      </tr>
-      <tr>
-          <td>EI_MAG2</td>
-          <td>2</td>
-          <td>文件标识</td>
-      </tr>
-      <tr>
-          <td>EI_MAG3</td>
-          <td>3</td>
-          <td>文件标识</td>
-      </tr>
-      <tr>
-          <td>EI_CLASS</td>
-          <td>4</td>
-          <td>文件类</td>
-      </tr>
-      <tr>
-          <td>EI_DATA</td>
-          <td>5</td>
-          <td>数据编码</td>
-      </tr>
-      <tr>
-          <td>EI_VERSION</td>
-          <td>6</td>
-          <td>文件版本</td>
-      </tr>
-      <tr>
-          <td>EI_PAD</td>
-          <td>7</td>
-          <td>补齐字节开始处</td>
-      </tr>
-  </tbody>
-</table>
-<h4 id="112-e_identei_mag0ei_mag3">
-<a class="header-anchor" href="#112-e_identei_mag0ei_mag3"></a>
-1.1.2. e_ident[EI_MAG0…EI_MAG3]
-</h4><p>这是 ELF 文件的头 4 个字节，被称作 “魔数”，标识该文件是一个 ELF 目标文件。
-ELF文件的魔数为0x7f, &lsquo;E&rsquo;, &lsquo;L&rsquo;, &lsquo;F&rsquo;，即字节序列7F 45 4C 46。
-0x7f被选为第一个字节，部分原因是它在ASCII编码中对应<strong>DEL控制字符</strong>，这是一个非打印字符，不太可能出现在文本文件或其他文件格式的开头，从而降低了误识别的风险。</p>
         
-        <hr><p>Published on 2025-04-30 at <a href='https://example.org/'>My New Hugo Site</a>, last modified on 2025-04-30</p>]]>
+        <hr><p>本文2025-04-30首发于<a href='https://asu1tty.github.io/'>Asu1tty's Blog</a>，最后修改于2025-04-30</p>]]>
       </description>
       
     </item>

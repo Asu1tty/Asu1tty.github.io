@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>My New Hugo Site</title>
-    <link>https://example.org/algolia.json</link>
-    <description>Recent content from My New Hugo Site</description>
+    <title>Asu1tty&#39;s Blog</title>
+    <link>https://asu1tty.github.io/algolia.json</link>
+    <description>Recent content from Asu1tty&#39;s Blog</description>
     <generator>Hugo</generator>
-    <language>en</language>
+    <language>zh-cn</language>
     
     <managingEditor>unknow (Asu1tty)</managingEditor>
     <webMaster>unknow (Asu1tty)</webMaster>
     
-    <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
+    <copyright>本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！</copyright>
     
     <lastBuildDate>Sat, 17 May 2025 11:18:36 +0800</lastBuildDate>
     
     
-    <atom:link href="https://example.org/index.xml" rel="self" type="application/rss&#43;xml" />
+    <atom:link href="https://asu1tty.github.io/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
     
@@ -23,63 +23,17 @@
 
     <item>
       <title>浅析So加固的三种方式</title>
-      <link>https://example.org/post/so-harden/</link>
+      <link>https://asu1tty.github.io/post/so-harden/</link>
       <pubDate>Sat, 17 May 2025 11:18:36 &#43;0800</pubDate>
       <author>unknow (Asu1tty)</author>
-      <guid>https://example.org/post/so-harden/</guid>
+      <guid>https://asu1tty.github.io/post/so-harden/</guid>
       <description>
-        <![CDATA[<h1>浅析So加固的三种方式</h1><p>Author: Asu1tty(unknow)</p>
+        <![CDATA[<h1>浅析So加固的三种方式</h1><p>作者：Asu1tty（unknow）</p>
         
           <p>简单分享一下so加固的方案。本文章的代码基于<a href="https://bbs.kanxue.com/thread-285650.htm">关于SO加密对抗的两种实现方式</a>
 在看本篇文章之前，最好需要了解一下ELF文件格式，以及So的加载流程，这里推荐oacia大佬的两篇文章。<a href="https://oacia.dev/ElfReader/">ELF结构分析及ElfReader</a>和<a href="https://oacia.dev/android-load-so/">安卓so加载流程源码分析</a>。</p>
-<h2 id="1-第一种加密方式加密函数">
-<a class="header-anchor" href="#1-%e7%ac%ac%e4%b8%80%e7%a7%8d%e5%8a%a0%e5%af%86%e6%96%b9%e5%bc%8f%e5%8a%a0%e5%af%86%e5%87%bd%e6%95%b0"></a>
-1. 第一种加密方式：加密函数
-</h2><p>下面是编译为libmathlib.so前的源代码，我们将要加密<code>int mymyadd(int a, int b)</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-CPP" data-lang="CPP"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;android/log.h&gt;</span><span class="cp">  
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>  
-</span></span><span class="line"><span class="cl"><span class="c1">// 定义日志标签  
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#define LOG_TAG &#34;MathLib&#34;  
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)  
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>  
-</span></span><span class="line"><span class="cl"><span class="k">extern</span> <span class="s">&#34;C&#34;</span>  
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">mymyadd</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>  
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>  
-</span></span><span class="line"><span class="cl">    <span class="n">LOGD</span><span class="p">(</span><span class="s">&#34;Add: %d + %d = %d&#34;</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span>  
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>  
-</span></span><span class="line"><span class="cl"><span class="p">}</span>  
-</span></span><span class="line"><span class="cl"><span class="k">extern</span> <span class="s">&#34;C&#34;</span>  
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">subtract</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>  
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">;</span>  
-</span></span><span class="line"><span class="cl">    <span class="n">LOGD</span><span class="p">(</span><span class="s">&#34;Subtract: %d - %d = %d&#34;</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span>  
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>  
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h3 id="11-加密效果">
-<a class="header-anchor" href="#11-%e5%8a%a0%e5%af%86%e6%95%88%e6%9e%9c"></a>
-1.1. 加密效果
-</h3><p>未加密前
-<img src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/1-unencrypted.png" alt="">
-加密后，IDA自然无法正确识别出函数
-<img src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/1-encrypted.png" alt=""></p>
-<h3 id="12-实现原理">
-<a class="header-anchor" href="#12-%e5%ae%9e%e7%8e%b0%e5%8e%9f%e7%90%86"></a>
-1.2. 实现原理
-</h3><p>加密函数，首先自然要从ELF文件中找到函数的位置以及函数的大小。
-这里看一下源码中dlsym函数怎么处理的。
-调用了<code>__loader_dlsym(handle, symbol, caller_addr)</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// bionic/libdl/libdl.cpp
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span><span class="o">*</span> <span class="nf">dlsym</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">handle</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">symbol</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">caller_addr</span> <span class="o">=</span> <span class="n">__builtin_return_address</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">__loader_dlsym</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">caller_addr</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>调用了<code>dlsym_impl(handle, symbol, nullptr, caller_addr);</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// bionic/linker/dlfcn.cpp
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span><span class="o">*</span> <span class="nf">__loader_dlsym</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">handle</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">symbol</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">caller_addr</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">dlsym_impl</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="n">caller_addr</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>调用了<code>do_dlsym(handle, symbol, version, caller_addr, &amp;result)</code></p>
         
-        <hr><p>Published on 2025-05-17 at <a href='https://example.org/'>My New Hugo Site</a>, last modified on 2025-05-17</p>]]>
+        <hr><p>本文2025-05-17首发于<a href='https://asu1tty.github.io/'>Asu1tty's Blog</a>，最后修改于2025-05-17</p>]]>
       </description>
       
     </item>
@@ -88,12 +42,12 @@
 
     <item>
       <title>Android so加载源码分析与加壳技术</title>
-      <link>https://example.org/post/loading-so/</link>
+      <link>https://asu1tty.github.io/post/loading-so/</link>
       <pubDate>Thu, 01 May 2025 11:20:50 &#43;0800</pubDate>
       <author>unknow (Asu1tty)</author>
-      <guid>https://example.org/post/loading-so/</guid>
+      <guid>https://asu1tty.github.io/post/loading-so/</guid>
       <description>
-        <![CDATA[<h1>Android so加载源码分析与加壳技术</h1><p>Author: Asu1tty(unknow)</p>
+        <![CDATA[<h1>Android so加载源码分析与加壳技术</h1><p>作者：Asu1tty（unknow）</p>
         
           <p>本次分析AOSP 的源码的安卓版本为 <code>android-12.0.0_r34</code></p>
 <h2 id="1-java层调用">
@@ -107,50 +61,8 @@
 <a class="header-anchor" href="#11-systemload"></a>
 1.1. System.load()
 </h3><p>这里我们以<code>System.load</code>作为分析入口</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// libcore/ojluni/src/main/java/java/lang/System.java</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="cm">/**
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * Loads the native library specified by the filename argument.  The filename
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * argument must be an absolute path name.
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * If the filename argument, when stripped of any platform-specific library
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * prefix, path, and file extension, indicates a library whose name is,
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * for example, L, and a native library called L is statically linked
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * with the VM, then the JNI_OnLoad_L function exported by the library
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * is invoked rather than attempting to load a dynamic library.
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * A filename matching the argument does not have to exist in the
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * file system.
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * See the JNI Specification for more details.
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * Otherwise, the filename argument is mapped to a native library image in
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * an implementation-dependent manner.
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * &lt;p&gt;
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * The call &lt;code&gt;System.load(name)&lt;/code&gt; is effectively equivalent
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * to the call:
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * &lt;blockquote&gt;&lt;pre&gt;
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * Runtime.getRuntime().load(name)
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * &lt;/pre&gt;&lt;/blockquote&gt;
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * @param      filename   the file to load.
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * @exception  SecurityException  if a security manager exists and its
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *             &lt;code&gt;checkLink&lt;/code&gt; method doesn&#39;t allow
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *             loading of the specified dynamic library
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * @exception  UnsatisfiedLinkError  if either the filename is not an
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *             absolute path name, the native library is not statically
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *             linked with the VM, or the library cannot be mapped to
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *             a native library image by the host system.
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * @exception  NullPointerException if &lt;code&gt;filename&lt;/code&gt; is
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *             &lt;code&gt;null&lt;/code&gt;
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * @see        java.lang.Runtime#load(java.lang.String)
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * @see        java.lang.SecurityManager#checkLink(java.lang.String)
-</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@CallerSensitive</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">filename</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Runtime</span><span class="p">.</span><span class="na">getRuntime</span><span class="p">().</span><span class="na">load0</span><span class="p">(</span><span class="n">Reflection</span><span class="p">.</span><span class="na">getCallerClass</span><span class="p">(),</span><span class="w"> </span><span class="n">filename</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><p>其中，<code>Reflection.getCallerClass()</code> 是一个内部方法，定义在 <code>sun.reflect.Reflection</code> 类中（属于 JDK/ART 的私有 API）。它的作用是<strong>返回调用当前方法的类的 <code>Class</code> 对象</strong>，即调用栈中调用者的类。</p>
         
-        <hr><p>Published on 2025-05-01 at <a href='https://example.org/'>My New Hugo Site</a>, last modified on 2025-05-01</p>]]>
+        <hr><p>本文2025-05-01首发于<a href='https://asu1tty.github.io/'>Asu1tty's Blog</a>，最后修改于2025-05-01</p>]]>
       </description>
       
         <category>AOSP</category>
@@ -161,12 +73,12 @@
 
     <item>
       <title>ELF结构及加载流程分析</title>
-      <link>https://example.org/post/elfreader/</link>
+      <link>https://asu1tty.github.io/post/elfreader/</link>
       <pubDate>Wed, 30 Apr 2025 11:18:36 &#43;0800</pubDate>
       <author>unknow (Asu1tty)</author>
-      <guid>https://example.org/post/elfreader/</guid>
+      <guid>https://asu1tty.github.io/post/elfreader/</guid>
       <description>
-        <![CDATA[<h1>ELF结构及加载流程分析</h1><p>Author: Asu1tty(unknow)</p>
+        <![CDATA[<h1>ELF结构及加载流程分析</h1><p>作者：Asu1tty（unknow）</p>
         
           <ul>
 <li>
@@ -178,112 +90,8 @@
 <li>Linux下的 <strong>ELF（Executable Linkable Format）</strong></li>
 </ul>
 <p>ELF（Executable and Linkable Format，可执行和可链接格式）是Linux系统中广泛使用的文件格式，用于存储可执行文件、目标代码、共享库和核心转储（core dump）。它是一种灵活、通用的格式，支持多种处理器架构和操作系统，具有跨平台特性。</p>
-<p><strong>主要特点：</strong></p>
-<ul>
-<li><strong>跨平台支持</strong>：ELF支持多种处理器架构（如x86、x86_64、ARM、MIPS）和字节序（大端/小端）。</li>
-<li><strong>模块化设计</strong>：分为多个段（Section）和节（Segment），便于解析和操作。</li>
-<li><strong>支持动态链接</strong>：允许在运行时加载共享库，减少内存占用。</li>
-<li><strong>可扩展性</strong>：支持添加自定义段，适应不同需求。</li>
-</ul>
-<p>ELF文件可以是以下几种类型：</p>
-<ol>
-<li><strong>可执行文件</strong>（Executable File）：如编译后的程序，直接运行。</li>
-<li><strong>目标文件</strong>（Object File）：编译器生成的中间文件，通常用于链接生成可执行文件。</li>
-<li><strong>共享库</strong>（Shared Library）：动态链接库，运行时加载（如.so文件）。</li>
-<li><strong>核心转储</strong>（Core Dump）：程序崩溃时保存的内存快照，用于调试。</li>
-</ol>
-<h2 id="1-elf主要结构">
-<a class="header-anchor" href="#1-elf%e4%b8%bb%e8%a6%81%e7%bb%93%e6%9e%84"></a>
-1. ELF主要结构
-</h2><p>ELF 文件主要分为 3 个部分:</p>
-<ul>
-<li><strong>ELF Header  ELF文件头</strong>，位于ELF文件的开头，描述文件的整体信息。它的大小通常为32位系统中的52字节或64位系统中的64字节。</li>
-<li><strong>Program Header Table  程序头表</strong>  ，描述了文件中的<strong>段</strong>（Segment），主要用于运行时加载和执行。</li>
-<li><strong>Section Header Table  节头表</strong>  ，描述了文件中的<strong>节</strong>（Section），主要用于链接和调试。每个节包含特定类型的数据（如代码、数据、符号表等）。节头表对于可执行文件是可选的，但在目标文件中通常存在。</li>
-</ul>
-<h3 id="11-elf-header--elf文件头">
-<a class="header-anchor" href="#11-elf-header--elf%e6%96%87%e4%bb%b6%e5%a4%b4"></a>
-1.1. ELF Header  ELF文件头
-</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//https://github.com/bminor/glibc/blob/glibc-2.27/elf/elf.h
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">typedef</span> <span class="k">struct</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="kt">unsigned</span> <span class="kt">char</span>	<span class="n">e_ident</span><span class="p">[</span><span class="n">EI_NIDENT</span><span class="p">];</span>	<span class="cm">/* Magic number and other info */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Half</span>	<span class="n">e_type</span><span class="p">;</span>			<span class="cm">/* Object file type */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Half</span>	<span class="n">e_machine</span><span class="p">;</span>		<span class="cm">/* Architecture */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Word</span>	<span class="n">e_version</span><span class="p">;</span>		<span class="cm">/* Object file version */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Addr</span>	<span class="n">e_entry</span><span class="p">;</span>		<span class="cm">/* Entry point virtual address */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Off</span>	<span class="n">e_phoff</span><span class="p">;</span>		<span class="cm">/* Program header table file offset */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Off</span>	<span class="n">e_shoff</span><span class="p">;</span>		<span class="cm">/* Section header table file offset */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Word</span>	<span class="n">e_flags</span><span class="p">;</span>		<span class="cm">/* Processor-specific flags */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Half</span>	<span class="n">e_ehsize</span><span class="p">;</span>		<span class="cm">/* ELF header size in bytes */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Half</span>	<span class="n">e_phentsize</span><span class="p">;</span>		<span class="cm">/* Program header table entry size */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Half</span>	<span class="n">e_phnum</span><span class="p">;</span>		<span class="cm">/* Program header table entry count */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Half</span>	<span class="n">e_shentsize</span><span class="p">;</span>		<span class="cm">/* Section header table entry size */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Half</span>	<span class="n">e_shnum</span><span class="p">;</span>		<span class="cm">/* Section header table entry count */</span>
-</span></span><span class="line"><span class="cl">  <span class="n">Elf32_Half</span>	<span class="n">e_shstrndx</span><span class="p">;</span>		<span class="cm">/* Section header string table index */</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">Elf32_Ehdr</span><span class="p">;</span>
-</span></span></code></pre></div><h4 id="111-e_identei_nident">
-<a class="header-anchor" href="#111-e_identei_nident"></a>
-1.1.1. e_ident[EI_NIDENT]
-</h4><table>
-  <thead>
-      <tr>
-          <th>宏名称</th>
-          <th>下标</th>
-          <th>目的</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>EI_MAG0</td>
-          <td>0</td>
-          <td>文件标识</td>
-      </tr>
-      <tr>
-          <td>EI_MAG1</td>
-          <td>1</td>
-          <td>文件标识</td>
-      </tr>
-      <tr>
-          <td>EI_MAG2</td>
-          <td>2</td>
-          <td>文件标识</td>
-      </tr>
-      <tr>
-          <td>EI_MAG3</td>
-          <td>3</td>
-          <td>文件标识</td>
-      </tr>
-      <tr>
-          <td>EI_CLASS</td>
-          <td>4</td>
-          <td>文件类</td>
-      </tr>
-      <tr>
-          <td>EI_DATA</td>
-          <td>5</td>
-          <td>数据编码</td>
-      </tr>
-      <tr>
-          <td>EI_VERSION</td>
-          <td>6</td>
-          <td>文件版本</td>
-      </tr>
-      <tr>
-          <td>EI_PAD</td>
-          <td>7</td>
-          <td>补齐字节开始处</td>
-      </tr>
-  </tbody>
-</table>
-<h4 id="112-e_identei_mag0ei_mag3">
-<a class="header-anchor" href="#112-e_identei_mag0ei_mag3"></a>
-1.1.2. e_ident[EI_MAG0…EI_MAG3]
-</h4><p>这是 ELF 文件的头 4 个字节，被称作 “魔数”，标识该文件是一个 ELF 目标文件。
-ELF文件的魔数为0x7f, &lsquo;E&rsquo;, &lsquo;L&rsquo;, &lsquo;F&rsquo;，即字节序列7F 45 4C 46。
-0x7f被选为第一个字节，部分原因是它在ASCII编码中对应<strong>DEL控制字符</strong>，这是一个非打印字符，不太可能出现在文本文件或其他文件格式的开头，从而降低了误识别的风险。</p>
         
-        <hr><p>Published on 2025-04-30 at <a href='https://example.org/'>My New Hugo Site</a>, last modified on 2025-04-30</p>]]>
+        <hr><p>本文2025-04-30首发于<a href='https://asu1tty.github.io/'>Asu1tty's Blog</a>，最后修改于2025-04-30</p>]]>
       </description>
       
     </item>
@@ -292,188 +100,18 @@ ELF文件的魔数为0x7f, &lsquo;E&rsquo;, &lsquo;L&rsquo;, &lsquo;F&rsquo;，�
 
     <item>
       <title>某红薯shield参数分析</title>
-      <link>https://example.org/post/xhs_analysis/</link>
+      <link>https://asu1tty.github.io/post/xhs_analysis/</link>
       <pubDate>Fri, 25 Apr 2025 17:48:36 &#43;0800</pubDate>
       <author>unknow (Asu1tty)</author>
-      <guid>https://example.org/post/xhs_analysis/</guid>
+      <guid>https://asu1tty.github.io/post/xhs_analysis/</guid>
       <description>
-        <![CDATA[<h1>某红薯shield参数分析</h1><p>Author: Asu1tty(unknow)</p>
+        <![CDATA[<h1>某红薯shield参数分析</h1><p>作者：Asu1tty（unknow）</p>
         
           <p><strong>该文章主要提供交流学习使用， 请勿利用进行不当行为</strong></p>
 <p><strong>如本篇文章侵犯了贵公司的隐私，请联系我立刻删除！</strong></p>
 <p><strong>如因滥用解密技术而产生的风险与本人无关</strong></p>
-<p>本人微信：<strong>huigeqifei</strong></p>
-<p>版本：8.70.0</p>
-<h2 id="1-加密入口">
-<a class="header-anchor" href="#1-%e5%8a%a0%e5%af%86%e5%85%a5%e5%8f%a3"></a>
-1. 加密入口
-</h2><p>加密入口在<code>com.xingin.shield.http.XhsHttpInterceptor</code></p>
-<p>jadx打开发现有如下Native层函数，intercept为拦截器，hook拦截器，并且打印<code>chain.request()</code>中的参数会发现传入前没有<code>shield</code>参数，执行完后有<code>shield</code>参数，正是在此Native层拦截器完成加密，并且通过函数名称也能猜测到so层有初始化操作</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/image-20250425175501568.png" alt="image-20250425175501568"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/image-20250425175516047.png" alt="image-20250425175516047"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/image-20250425175533360.png" alt="image-20250425175533360"></p>
-<p>在jadx反编译中并没有看到加载so的字样，所以通过hook<code>registerNatives</code>查找动态注册地址</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/image-20250425180205084.png" alt="image-20250425180205084"></p>
-<h2 id="确认初始化操作">
-<a class="header-anchor" href="#%e7%a1%ae%e8%ae%a4%e5%88%9d%e5%a7%8b%e5%8c%96%e6%93%8d%e4%bd%9c"></a>
-确认初始化操作
-</h2><p>对上面三个Native层函数进行hook</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/image-20250425180700015.png" alt="image-20250425180700015"></p>
-<p>可以发现：</p>
-<ul>
-<li>首先调用<code>initializeNative</code></li>
-<li>然后调用<code>initialize</code>,传入字符串<code>main</code>，得到long类型返回值</li>
-<li>后面的拦截器都传入了初始化后得到的long类型返回值</li>
-</ul>
-<h2 id="上unidbg">
-<a class="header-anchor" href="#%e4%b8%8aunidbg"></a>
-上Unidbg
-</h2><p>unidbg补环境模板</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.AndroidEmulator</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.Emulator</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.Module</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.arm.backend.Unicorn2Factory</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.file.FileResult</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.file.IOResolver</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.linux.android.AndroidEmulatorBuilder</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.linux.android.AndroidResolver</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.linux.android.dvm.*</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.linux.android.dvm.array.ArrayObject</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.memory.Memory</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.virtualmodule.android.AndroidModule</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.virtualmodule.android.JniGraphics</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.virtualmodule.android.MediaNdkModule</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">com.github.unidbg.virtualmodule.android.SystemProperties</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.File</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.ArrayList</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.List</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">tmp</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">AbstractJni</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">IOResolver</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">AndroidEmulator</span><span class="w"> </span><span class="n">emulator</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">VM</span><span class="w"> </span><span class="n">vm</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Module</span><span class="w"> </span><span class="n">module</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">FileResult</span><span class="w"> </span><span class="nf">resolve</span><span class="p">(</span><span class="n">Emulator</span><span class="w"> </span><span class="n">emulator</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">pathname</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">oflags</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">	    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;==================open file=========================&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;open file:&#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">pathname</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">tmp</span><span class="p">(){</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 创建模拟器实例</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emulator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AndroidEmulatorBuilder</span><span class="p">.</span><span class="na">for64Bit</span><span class="p">().</span><span class="na">setProcessName</span><span class="p">(</span><span class="s">&#34;com.xxx&#34;</span><span class="p">).</span><span class="na">addBackendFactory</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Unicorn2Factory</span><span class="p">(</span><span class="kc">false</span><span class="p">)).</span><span class="na">build</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 添加IO接口要加这句</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emulator</span><span class="p">.</span><span class="na">getSyscallHandler</span><span class="p">().</span><span class="na">addIOResolver</span><span class="p">(</span><span class="k">this</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 获取模拟器的内存操作接口</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">final</span><span class="w"> </span><span class="n">Memory</span><span class="w"> </span><span class="n">memory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">emulator</span><span class="p">.</span><span class="na">getMemory</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 设置系统类库解析</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">memory</span><span class="p">.</span><span class="na">setLibraryResolver</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">AndroidResolver</span><span class="p">(</span><span class="n">23</span><span class="p">));</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 创建Android虚拟机,传入APK，Unidbg可以替我们做部分签名校验的工作</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">vm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">emulator</span><span class="p">.</span><span class="na">createDalvikVM</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">File</span><span class="p">(</span><span class="s">&#34;unidbg-android/src/test/java/com//files/.apk&#34;</span><span class="p">));</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 4个虚拟模块</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">AndroidModule</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span><span class="n">vm</span><span class="p">).</span><span class="na">register</span><span class="p">(</span><span class="n">memory</span><span class="p">);</span><span class="w"> </span><span class="c1">//libandroid.so</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">MediaNdkModule</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span><span class="n">vm</span><span class="p">).</span><span class="na">register</span><span class="p">(</span><span class="n">memory</span><span class="p">);</span><span class="w"> </span><span class="c1">// libmediandk.so</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">JniGraphics</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span><span class="n">vm</span><span class="p">).</span><span class="na">register</span><span class="p">(</span><span class="n">memory</span><span class="p">);</span><span class="w"> </span><span class="c1">// libjnigraphics.so</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">SystemProperties</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span><span class="kc">null</span><span class="p">).</span><span class="na">register</span><span class="p">(</span><span class="n">memory</span><span class="p">);</span><span class="w"> </span><span class="c1">// libsystemproperties.so</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 设置JNI</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">vm</span><span class="p">.</span><span class="na">setJni</span><span class="p">(</span><span class="k">this</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 打印日志</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">vm</span><span class="p">.</span><span class="na">setVerbose</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 加载目标SO</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">DalvikModule</span><span class="w"> </span><span class="n">dm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vm</span><span class="p">.</span><span class="na">loadLibrary</span><span class="p">(</span><span class="s">&#34;soname&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// DalvikModule dm = vm.loadLibrary(new File(&#34;unidbg-android/apks/xx/lib.so&#34;), true);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//获取本SO模块的句柄,后续需要用它</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dm</span><span class="p">.</span><span class="na">getModule</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 调用JNI OnLoad</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">dm</span><span class="p">.</span><span class="na">callJNI_OnLoad</span><span class="p">(</span><span class="n">emulator</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">};</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">callByAddress</span><span class="p">(){</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// args list</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">10</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// jnienv</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">vm</span><span class="p">.</span><span class="na">getJNIEnv</span><span class="p">());</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// jclazz</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">0</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// str1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">vm</span><span class="p">.</span><span class="na">addLocalObject</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">StringObject</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;str1&#34;</span><span class="p">)));</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// strArr 假设字符串包含两个字符串</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// str6_1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">StringObject</span><span class="w"> </span><span class="n">str6_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringObject</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;str6_1&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">vm</span><span class="p">.</span><span class="na">addLocalObject</span><span class="p">(</span><span class="n">str6_1</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// str6_2</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">StringObject</span><span class="w"> </span><span class="n">str6_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringObject</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;str6_2&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">vm</span><span class="p">.</span><span class="na">addLocalObject</span><span class="p">(</span><span class="n">str6_2</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ArrayObject</span><span class="w"> </span><span class="n">arrayObject</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayObject</span><span class="p">(</span><span class="n">str6_1</span><span class="p">,</span><span class="n">str6_2</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">vm</span><span class="p">.</span><span class="na">addLocalObject</span><span class="p">(</span><span class="n">arrayObject</span><span class="p">));</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 最后的int</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">1</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Number</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">module</span><span class="p">.</span><span class="na">callFunction</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span><span class="w"> </span><span class="n">0x2301</span><span class="p">,</span><span class="w"> </span><span class="n">list</span><span class="p">.</span><span class="na">toArray</span><span class="p">());</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ArrayObject</span><span class="w"> </span><span class="n">resultArr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vm</span><span class="p">.</span><span class="na">getObject</span><span class="p">(</span><span class="n">number</span><span class="p">.</span><span class="na">intValue</span><span class="p">());</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;result:&#34;</span><span class="o">+</span><span class="n">resultArr</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">};</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">callByAPI</span><span class="p">(){</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">DvmClass</span><span class="w"> </span><span class="n">RequestCryptUtils</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vm</span><span class="p">.</span><span class="na">resolveClass</span><span class="p">(</span><span class="s">&#34;com/meituan/android/payguard/RequestCryptUtils&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">StringObject</span><span class="w"> </span><span class="n">str6_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringObject</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;str6_1&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">vm</span><span class="p">.</span><span class="na">addLocalObject</span><span class="p">(</span><span class="n">str6_1</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">StringObject</span><span class="w"> </span><span class="n">str6_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringObject</span><span class="p">(</span><span class="n">vm</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;str6_2&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">vm</span><span class="p">.</span><span class="na">addLocalObject</span><span class="p">(</span><span class="n">str6_2</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ArrayObject</span><span class="w"> </span><span class="n">arrayObject</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayObject</span><span class="p">(</span><span class="n">str6_1</span><span class="p">,</span><span class="n">str6_2</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">ArrayObject</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RequestCryptUtils</span><span class="p">.</span><span class="na">callStaticJniMethodObject</span><span class="p">(</span><span class="n">emulator</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;encryptRequestWithRandom()&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;str1&#34;</span><span class="p">,</span><span class="s">&#34;str2&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;str3&#34;</span><span class="p">,</span><span class="s">&#34;str4&#34;</span><span class="p">,</span><span class="s">&#34;str5&#34;</span><span class="p">,</span><span class="n">arrayObject</span><span class="p">,</span><span class="n">1</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">result</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">};</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">trace</span><span class="p">(){</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">traceFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;unidbg-android/src/test/java/com/xx/trace.txt&#34;</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">PrintStream</span><span class="w"> </span><span class="n">traceStream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">try</span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">traceStream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">PrintStream</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">FileOutputStream</span><span class="p">(</span><span class="n">traceFile</span><span class="p">),</span><span class="w"> </span><span class="kc">true</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">FileNotFoundException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">//核心 trace 开启代码，也可以自己指定函数地址和偏移量</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">	    </span><span class="n">emulator</span><span class="p">.</span><span class="na">traceCode</span><span class="p">(</span><span class="n">module</span><span class="p">.</span><span class="na">base</span><span class="p">,</span><span class="n">module</span><span class="p">.</span><span class="na">base</span><span class="o">+</span><span class="n">module</span><span class="p">.</span><span class="na">size</span><span class="p">).</span><span class="na">setRedirect</span><span class="p">(</span><span class="n">traceStream</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">HookByConsoleDebugger</span><span class="p">(){</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Debugger</span><span class="w"> </span><span class="n">debugger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">emulator</span><span class="p">.</span><span class="na">attach</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">//        debugger.addBreakPoint(module.base + 0x15610);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">//        emulator.traceWrite(0x40420bc0, 0x40420bc0+32);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">debugger</span><span class="p">.</span><span class="na">addBreakPoint</span><span class="p">(</span><span class="n">module</span><span class="p">.</span><span class="na">findSymbolByName</span><span class="p">(</span><span class="s">&#34;memcpy&#34;</span><span class="p">).</span><span class="na">getAddress</span><span class="p">(),</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BreakPointCallback</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nd">@Override</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">onHit</span><span class="p">(</span><span class="n">Emulator</span><span class="o">&lt;?&gt;</span><span class="w"> </span><span class="n">emulator</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">address</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">RegisterContext</span><span class="w"> </span><span class="n">context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">emulator</span><span class="p">.</span><span class="na">getContext</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">context</span><span class="p">.</span><span class="na">getIntArg</span><span class="p">(</span><span class="n">2</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">UnidbgPointer</span><span class="w"> </span><span class="n">pointer1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">context</span><span class="p">.</span><span class="na">getPointerArg</span><span class="p">(</span><span class="n">0</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">UnidbgPointer</span><span class="w"> </span><span class="n">pointer2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">context</span><span class="p">.</span><span class="na">getPointerArg</span><span class="p">(</span><span class="n">1</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Inspector</span><span class="p">.</span><span class="na">inspect</span><span class="p">(</span><span class="n">pointer2</span><span class="p">.</span><span class="na">getByteArray</span><span class="p">(</span><span class="n">0</span><span class="p">,</span><span class="n">len</span><span class="p">),</span><span class="s">&#34;dest &#34;</span><span class="o">+</span><span class="n">Long</span><span class="p">.</span><span class="na">toHexString</span><span class="p">(</span><span class="n">pointer1</span><span class="p">.</span><span class="na">peer</span><span class="p">)</span><span class="o">+</span><span class="s">&#34; src &#34;</span><span class="o">+</span><span class="n">Long</span><span class="p">.</span><span class="na">toHexString</span><span class="p">(</span><span class="n">pointer2</span><span class="p">.</span><span class="na">peer</span><span class="p">));</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">});</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">tmp</span><span class="w"> </span><span class="n">demo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">tmp</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//demo.callByAddress();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">//demo.callByAPI();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><p>修改包名，填写apk地址，填写so名称后，开始运行</p>
         
-        <hr><p>Published on 2025-04-25 at <a href='https://example.org/'>My New Hugo Site</a>, last modified on 2025-04-25</p>]]>
+        <hr><p>本文2025-04-25首发于<a href='https://asu1tty.github.io/'>Asu1tty's Blog</a>，最后修改于2025-04-25</p>]]>
       </description>
       
         <category>逆向实战</category>
@@ -484,58 +122,17 @@ ELF文件的魔数为0x7f, &lsquo;E&rsquo;, &lsquo;L&rsquo;, &lsquo;F&rsquo;，�
 
     <item>
       <title>RC4原理及代码实现</title>
-      <link>https://example.org/post/rc4/</link>
+      <link>https://asu1tty.github.io/post/rc4/</link>
       <pubDate>Fri, 25 Apr 2025 17:21:36 &#43;0800</pubDate>
       <author>unknow (Asu1tty)</author>
-      <guid>https://example.org/post/rc4/</guid>
+      <guid>https://asu1tty.github.io/post/rc4/</guid>
       <description>
-        <![CDATA[<h1>RC4原理及代码实现</h1><p>Author: Asu1tty(unknow)</p>
+        <![CDATA[<h1>RC4原理及代码实现</h1><p>作者：Asu1tty（unknow）</p>
         
           <p>在<a href="https://en.wikipedia.org/wiki/Cryptography" title="Cryptography">密码学</a>中，<strong>RC4</strong>（Rivest Cipher 4，也称为 <strong>ARC4</strong> 或 <strong>ARCFOUR，</strong> 意思是Alleged（所谓的） RC4）是一种<a href="https://en.wikipedia.org/wiki/Stream_cipher" title="Stream cipher">流密码</a> 。虽然它在软件中以其简单性和速度而著称，但在 RC4 中发现了多个漏洞，使其不安全。
 流密码（streamcipher）是对数据流进行连续处理的一类密码算法。流密码中一般以1比特、8比特或32比特等为单位进行加密和解密。其中RC4的加解密单位为8比特，也就是一个字节。</p>
-<h2 id="1-密码学中为什么经常使用异或">
-<a class="header-anchor" href="#1-%e5%af%86%e7%a0%81%e5%ad%a6%e4%b8%ad%e4%b8%ba%e4%bb%80%e4%b9%88%e7%bb%8f%e5%b8%b8%e4%bd%bf%e7%94%a8%e5%bc%82%e6%88%96"></a>
-1. 密码学中为什么经常使用异或？
-</h2><p>在密码学中经常使用异或运算，<code>RC4</code>的原理也依赖异或运算。
-下面解释摘自《图解密码技术 第三版》</p>
-<p><code>由于两个相同的数进行XOR运算的结果一定为0，因此如果将A⊕B的结果再与B进行XOR运算，则结果会变回A。也就是说，两个公式中的B会相互抵消。</code></p>
-<ul>
-<li>将明文A用密钥B进行加密，得到密文A⊕B</li>
-<li>将密文A⊕B用密钥B进行解密，得到明文A
-<img src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@master/picSource/image-20250425172319106.png" alt="image-20250425172319106">
-图片摘自《图解密码技术 第三版》</li>
-</ul>
-<p><code>从图中可以看出，执行一次蒙版操作后，原来的图像被隐藏（掩盖）了，而执行两次蒙版操作后，就又可以得到原来的图像了。</code>
-<code>如果所使用的蒙版是完全随机的比特序列，则使用XOR就可以将原来的图像掩盖起来。但如果蒙版中的比特序列的排列是可以被推测出来的，那么实质上图像就没有被真正掩盖。对于密码技术来说，“是否可以预测”是非常重要的一点。能够产生不可预测的比特序列，对于密码技术的贡献是巨大的。这种不可预测的比特序列就称为随机数。</code></p>
-<h2 id="2-算法实现过程">
-<a class="header-anchor" href="#2-%e7%ae%97%e6%b3%95%e5%ae%9e%e7%8e%b0%e8%bf%87%e7%a8%8b"></a>
-2. 算法实现过程
-</h2><h3 id="21-ksakey-scheduling-algorithm">
-<a class="header-anchor" href="#21-ksakey-scheduling-algorithm"></a>
-2.1. KSA(key-scheduling algorithm)
-</h3><p>使用密钥调度算法(key-scheduling algorithm)</p>
-<ul>
-<li><strong>输入</strong>：一个可变长度的密钥（通常8-2048位）。</li>
-<li><strong>输出</strong>：一个256字节的置换数组S（S[0]到S[255]）。</li>
-</ul>
-<h4 id="211-第一步">
-<a class="header-anchor" href="#211-%e7%ac%ac%e4%b8%80%e6%ad%a5"></a>
-2.1.1. 第一步
-</h4><p>先初始化256字节的数组S，填充0到255的整数，即S[0]=0, S[1]=1, &hellip;, S[255]=255。</p>
-<h4 id="212-第二步">
-<a class="header-anchor" href="#212-%e7%ac%ac%e4%ba%8c%e6%ad%a5"></a>
-2.1.2. 第二步
-</h4><p>创建一个临时数组T，长度与密钥相同，将密钥循环填充到T中（如果密钥长度不足256字节，则重复密钥）。</p>
-<h4 id="213-第三步">
-<a class="header-anchor" href="#213-%e7%ac%ac%e4%b8%89%e6%ad%a5"></a>
-2.1.3. 第三步
-</h4><p>使用以下伪代码进行置换</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">for i = 0 to 255
-</span></span><span class="line"><span class="cl">    j = (j + S[i] + T[i]) mod 256
-</span></span><span class="line"><span class="cl">    swap S[i] and S[j]
-</span></span></code></pre></div><p>S数组被打乱，形成一个基于密钥的伪随机置换表。这样处理之后，就得到了介绍中提到的<code>不可预测的比特序列</code></p>
         
-        <hr><p>Published on 2025-04-25 at <a href='https://example.org/'>My New Hugo Site</a>, last modified on 2025-04-25</p>]]>
+        <hr><p>本文2025-04-25首发于<a href='https://asu1tty.github.io/'>Asu1tty's Blog</a>，最后修改于2025-04-25</p>]]>
       </description>
       
         <category>Crypto</category>
@@ -546,59 +143,16 @@ ELF文件的魔数为0x7f, &lsquo;E&rsquo;, &lsquo;L&rsquo;, &lsquo;F&rsquo;，�
 
     <item>
       <title>AES原理及白盒AES的DFA攻击</title>
-      <link>https://example.org/post/wb_aes/</link>
+      <link>https://asu1tty.github.io/post/wb_aes/</link>
       <pubDate>Thu, 24 Apr 2025 21:10:36 &#43;0800</pubDate>
       <author>unknow (Asu1tty)</author>
-      <guid>https://example.org/post/wb_aes/</guid>
+      <guid>https://asu1tty.github.io/post/wb_aes/</guid>
       <description>
-        <![CDATA[<h1>AES原理及白盒AES的DFA攻击</h1><p>Author: Asu1tty(unknow)</p>
+        <![CDATA[<h1>AES原理及白盒AES的DFA攻击</h1><p>作者：Asu1tty（unknow）</p>
         
           <p>AES（<strong>Advanced Encryption Standard</strong>） <strong>高级加密标准</strong>是 Rijndael <a href="https://en.wikipedia.org/wiki/Block_cipher" title="Block cipher">分组密码</a>  的一种变体，由两位密码学家 <a href="https://en.wikipedia.org/wiki/Joan_Daemen" title="Joan Daemen">Joan Daemen</a> 和 <a href="https://en.wikipedia.org/wiki/Vincent_Rijmen" title="Vincent Rijmen">Vincent Rijmen</a> 开发，他们在 <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard_process" title="Advanced Encryption Standard process">AES 选择过程中</a>向 NIST 提交了一份提案Rijndael 是一系列具有不同密钥和块大小的密码。对于 AES，NIST 选择了 Rijndael 家族的三个成员，每个成员的块大小为 128 位，但有三种不同的密钥长度：128、192 和 256 位。</p>
-<h2 id="1-aes分类">
-<a class="header-anchor" href="#1-aes%e5%88%86%e7%b1%bb"></a>
-1. AES分类
-</h2><table>
-  <thead>
-      <tr>
-          <th>分类</th>
-          <th>密钥长度</th>
-          <th>轮密钥长度</th>
-          <th>扩展密钥长度</th>
-          <th>分组长度</th>
-          <th>加密轮数</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>AES-128</td>
-          <td>16字节</td>
-          <td>16字节</td>
-          <td>16*11=172</td>
-          <td>16字节</td>
-          <td>10</td>
-      </tr>
-      <tr>
-          <td>AES-192</td>
-          <td>24字节</td>
-          <td>16字节</td>
-          <td>16*13=208</td>
-          <td>16字节</td>
-          <td>12</td>
-      </tr>
-      <tr>
-          <td>AES-256</td>
-          <td>32字节</td>
-          <td>16字节</td>
-          <td>16*15=240</td>
-          <td>16字节</td>
-          <td>14</td>
-      </tr>
-  </tbody>
-</table>
-<p>AES 128 192 256 除了密钥编排算法不一样和加密轮数不一样 其余的计算逻辑相同</p>
-<p>AES 128 192 256 CBC 模式IV的长度都是16个字节 CBC计算逻辑相同</p>
         
-        <hr><p>Published on 2025-04-24 at <a href='https://example.org/'>My New Hugo Site</a>, last modified on 2025-04-24</p>]]>
+        <hr><p>本文2025-04-24首发于<a href='https://asu1tty.github.io/'>Asu1tty's Blog</a>，最后修改于2025-04-24</p>]]>
       </description>
       
         <category>Crypto</category>
@@ -609,50 +163,18 @@ ELF文件的魔数为0x7f, &lsquo;E&rsquo;, &lsquo;L&rsquo;, &lsquo;F&rsquo;，�
 
     <item>
       <title>HMAC原理及代码实现</title>
-      <link>https://example.org/post/mhac/</link>
+      <link>https://asu1tty.github.io/post/mhac/</link>
       <pubDate>Thu, 24 Apr 2025 11:45:36 &#43;0800</pubDate>
       <author>unknow (Asu1tty)</author>
-      <guid>https://example.org/post/mhac/</guid>
+      <guid>https://asu1tty.github.io/post/mhac/</guid>
       <description>
-        <![CDATA[<h1>HMAC原理及代码实现</h1><p>Author: Asu1tty(unknow)</p>
+        <![CDATA[<h1>HMAC原理及代码实现</h1><p>作者：Asu1tty（unknow）</p>
         
           <p>HMAC（Hash-based Message Authentication Code，<a href="https://so.csdn.net/so/search?q=%E6%95%A3%E5%88%97&amp;spm=1001.2101.3001.7020">散列</a>消息认证码）是一种使用密码散列函数，同时结合一个加密密钥，通过特别计算方式之后产生的消息认证码（MAC）。
 HMAC算法利用哈希运算，以一个密钥和一个消息为输入，生成一个消息摘要作为输出。
 hmac算法通常需要以一个hash函数为载体,比如常见的有hmacMd5,hmacSha1,hmacSha256,目前在so里只见到过hmacMd5,hmacSha256,但是hmac的规则是适用所有hash函数的</p>
-<p>HMAC算法的数学公式为：
-<img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/fb67423fa152e335f482c2a885c9f2bbed812e81" alt="{\displaystyle {\textit {HMAC}}(K,m)=H{\Bigl (}(K’\oplus opad)\;||\;H{\bigl (}(K’\oplus ipad)\;||\;m{\bigr )}{\Bigr )}}">
-其中：</p>
-<p><strong>H</strong> 为密码Hash函数（如MD5或SHA-2)，能够对明文进行分组循环压缩；</p>
-<p><strong>K</strong> 为密钥（secret key）；</p>
-<p><strong>m</strong> 为要认证的消息；</p>
-<p><strong>K’</strong> 是从原始密钥 k 导出的另一个密钥（如果 k 短于散列函数的输入块大小，则向右填充零；如果比该块大小更长，则对 k 进行散列）；</p>
-<p><strong>ipad</strong> 内部填充（0x5C5C5C…5C5C，一段十六进制常量）；</p>
-<p><strong>opad</strong> 外部填充（0x363636…3636，一段十六进制常量)；</p>
-<p><strong>⊕</strong>：按位异或运算。</p>
-<p><strong>||</strong>：字符串拼接。</p>
-<p>总结8个字就是:<strong>两次加盐,两次hash</strong>。</p>
-<h2 id="1-算法实现过程">
-<a class="header-anchor" href="#1-%e7%ae%97%e6%b3%95%e5%ae%9e%e7%8e%b0%e8%bf%87%e7%a8%8b"></a>
-1. 算法实现过程
-</h2><p>HMAC需要选择一个哈希函数作为实现的载体，这里以MD5为例</p>
-<h3 id="11-第一步扩展密钥">
-<a class="header-anchor" href="#11-%e7%ac%ac%e4%b8%80%e6%ad%a5%e6%89%a9%e5%b1%95%e5%af%86%e9%92%a5"></a>
-1.1. 第一步：扩展密钥
-</h3><p>以字符串<code>admin</code>为例，十六进制如下</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E
-</span></span></code></pre></div><p>填充密钥到64字节</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E 00(填充59次)
-</span></span></code></pre></div><h3 id="12-异或0x36">
-<a class="header-anchor" href="#12-%e5%bc%82%e6%88%960x36"></a>
-1.2. 异或0x36
-</h3><p>将密钥逐字节异或0x36，得到<strong>扩展密钥1</strong>，0x36十进制是54</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">57 52 5b 5f 58 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36
-</span></span></code></pre></div><h3 id="13-异或0x5c">
-<a class="header-anchor" href="#13-%e5%bc%82%e6%88%960x5c"></a>
-1.3. 异或0x5C
-</h3><p>将密钥逐字节异或0x5c，得到<strong>扩展密钥2</strong>，0x5C十进制是92</p>
         
-        <hr><p>Published on 2025-04-24 at <a href='https://example.org/'>My New Hugo Site</a>, last modified on 2025-04-24</p>]]>
+        <hr><p>本文2025-04-24首发于<a href='https://asu1tty.github.io/'>Asu1tty's Blog</a>，最后修改于2025-04-24</p>]]>
       </description>
       
         <category>Crypto</category>
@@ -663,12 +185,12 @@ hmac算法通常需要以一个hash函数为载体,比如常见的有hmacMd5,hma
 
     <item>
       <title>SHA-512简介及代码实现</title>
-      <link>https://example.org/post/sha-512/</link>
+      <link>https://asu1tty.github.io/post/sha-512/</link>
       <pubDate>Wed, 23 Apr 2025 21:10:36 &#43;0800</pubDate>
       <author>unknow (Asu1tty)</author>
-      <guid>https://example.org/post/sha-512/</guid>
+      <guid>https://asu1tty.github.io/post/sha-512/</guid>
       <description>
-        <![CDATA[<h1>SHA-512简介及代码实现</h1><p>Author: Asu1tty(unknow)</p>
+        <![CDATA[<h1>SHA-512简介及代码实现</h1><p>作者：Asu1tty（unknow）</p>
         
           <h2 id="1-算法">
 <a class="header-anchor" href="#1-%e7%ae%97%e6%b3%95"></a>
@@ -682,28 +204,8 @@ SHA-1可以生成一个被称为消息摘要的512<a href="https://zh.wikipedia.
 <a class="header-anchor" href="#21-%e5%a1%ab%e5%85%85"></a>
 2.1. 填充
 </h3><p>以字符串<code>admin</code>为例，十六进制如下</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E
-</span></span></code></pre></div><p>首先需要填充到128字节，即先添加一个“1”，再后跟多个“0”，然后再追加一个128位的消息长度信息
-第一位填充 0x80 剩下的填充 0 直到达到 112 个字节
-填充K个“0”，所不同的是消息分组的长度是1024位，所以K的取值必须是满足下述表达式的最小非负整数值。
-<code>( L + 1 + K ) mod 1024 = 896</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E 80 0(填充106次) 共 112 个字节
-</span></span></code></pre></div><p>对比md5,sha1,sha256填充都是64字节分组,sha512是128字节分组,原因就在于无论是iv还是k都是8字节的,所以数据块也是8字节的</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">sha512
-</span></span><span class="line"><span class="cl">H = [
-</span></span><span class="line"><span class="cl">    0x6a09e667f3bcc908, 0xbb67ae8584caa73b,
-</span></span><span class="line"><span class="cl">    0x3c6ef372fe94f82b, 0xa54ff53a5f1d36f1,
-</span></span><span class="line"><span class="cl">    0x510e527fade682d1, 0x9b05688c2b3e6c1f,
-</span></span><span class="line"><span class="cl">    0x1f83d9abfb41bd6b, 0x5be0cd19137e2179
-</span></span><span class="line"><span class="cl">]
-</span></span><span class="line"><span class="cl">sha256
-</span></span><span class="line"><span class="cl">H = [
-</span></span><span class="line"><span class="cl">    0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
-</span></span><span class="line"><span class="cl">    0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
-</span></span><span class="line"><span class="cl">]
-</span></span></code></pre></div><p>sha512的高4字节是sha256的4字节,同理k表也是这样</p>
         
-        <hr><p>Published on 2025-04-23 at <a href='https://example.org/'>My New Hugo Site</a>, last modified on 2025-04-23</p>]]>
+        <hr><p>本文2025-04-23首发于<a href='https://asu1tty.github.io/'>Asu1tty's Blog</a>，最后修改于2025-04-23</p>]]>
       </description>
       
         <category>Crypto</category>
@@ -714,52 +216,20 @@ SHA-1可以生成一个被称为消息摘要的512<a href="https://zh.wikipedia.
 
     <item>
       <title>SHA-256原理及代码实现</title>
-      <link>https://example.org/post/sha-256/</link>
+      <link>https://asu1tty.github.io/post/sha-256/</link>
       <pubDate>Wed, 23 Apr 2025 17:14:50 &#43;0800</pubDate>
       <author>unknow (Asu1tty)</author>
-      <guid>https://example.org/post/sha-256/</guid>
+      <guid>https://asu1tty.github.io/post/sha-256/</guid>
       <description>
-        <![CDATA[<h1>SHA-256原理及代码实现</h1><p>Author: Asu1tty(unknow)</p>
+        <![CDATA[<h1>SHA-256原理及代码实现</h1><p>作者：Asu1tty（unknow）</p>
         
           <p><strong>SHA256</strong>是SHA-2下细分出的一种算法
 SHA-2，名称来自于安全散列算法2（英语：Secure Hash Algorithm 2）的缩写，一种密码散列函数算法标准，由美国国家安全局研发，属于SHA算法之一，是SHA-1的后继者。
 SHA-2下又可再分为六个不同的算法标准
 包括了：SHA-224、SHA-256、SHA-384、SHA-512、SHA-512/224、SHA-512/256。
 SHA-1可以生成一个被称为消息摘要的256<a href="https://zh.wikipedia.org/wiki/%E4%BD%8D" title="位">位</a>（32<a href="https://zh.wikipedia.org/wiki/%E5%AD%97%E8%8A%82" title="字节">字节</a>）散列值，散列值通常的呈现形式为64个<a href="https://zh.wikipedia.org/wiki/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6" title="十六进制">十六进制</a>数。</p>
-<h2 id="1-算法实现过程">
-<a class="header-anchor" href="#1-%e7%ae%97%e6%b3%95%e5%ae%9e%e7%8e%b0%e8%bf%87%e7%a8%8b"></a>
-1. 算法实现过程
-</h2><h3 id="11-第一步填充">
-<a class="header-anchor" href="#11-%e7%ac%ac%e4%b8%80%e6%ad%a5%e5%a1%ab%e5%85%85"></a>
-1.1. 第一步：填充
-</h3><p>以字符串<code>admin</code>为例，十六进制如下</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E
-</span></span></code></pre></div><p>首先需要填充到64字节
-第一位填充 0x80 剩下的填充 0 直到达到 56 个字节</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E 80 0(填充50次) 共 56 个字节
-</span></span></code></pre></div><p>接下来 8 个字节
-第一位填充消息长度 * 8，也就是5 * 8 = 40 = 0x28</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E 80 0(填充50次) 0(填充7次) 0x28 共 64 个字节
-</span></span></code></pre></div><p>sha-256和sha-1的填充一样,对比md5,sha-1,sha-256,填充几乎都一样,唯一不同之处就是md5的附加消息长度是小端序,其余两个是大端序。</p>
-<h3 id="12-第二步扩充">
-<a class="header-anchor" href="#12-%e7%ac%ac%e4%ba%8c%e6%ad%a5%e6%89%a9%e5%85%85"></a>
-1.2. 第二步：扩充
-</h3><ul>
-<li>需要将16个四字节扩充至64个四字节</li>
-<li>前16个四字节复制填充后的16个四字节</li>
-<li>后48个四字节使用扩充算法进行扩充</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sha256</span>
-</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">64</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">    <span class="n">s0</span> <span class="o">=</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">15</span><span class="p">],</span> <span class="mi">7</span><span class="p">)</span> <span class="o">^</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">15</span><span class="p">],</span> <span class="mi">18</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">15</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">3</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="n">s1</span> <span class="o">=</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="mi">17</span><span class="p">)</span> <span class="o">^</span> <span class="n">right_rotate</span><span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="mi">19</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">10</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">16</span><span class="p">]</span> <span class="o">+</span> <span class="n">s0</span> <span class="o">+</span> <span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">7</span><span class="p">]</span> <span class="o">+</span> <span class="n">s1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span>
-</span></span><span class="line"><span class="cl"><span class="n">sha1</span>
-</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">80</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">    <span class="n">w</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">left_rotate</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">3</span><span class="p">]</span> <span class="o">^</span> <span class="n">w</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">8</span><span class="p">]</span> <span class="o">^</span> <span class="n">w</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">14</span><span class="p">]</span> <span class="o">^</span> <span class="n">w</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">16</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
-</span></span></code></pre></div><p>和sha-1的区别在于sha-1扩展64轮,sha-256扩展48轮,还有就是扩展的方式不一样。</p>
         
-        <hr><p>Published on 2025-04-23 at <a href='https://example.org/'>My New Hugo Site</a>, last modified on 2025-04-23</p>]]>
+        <hr><p>本文2025-04-23首发于<a href='https://asu1tty.github.io/'>Asu1tty's Blog</a>，最后修改于2025-04-23</p>]]>
       </description>
       
         <category>Crypto</category>
@@ -770,12 +240,12 @@ SHA-1可以生成一个被称为消息摘要的256<a href="https://zh.wikipedia.
 
     <item>
       <title>SHA-1原理及代码实现</title>
-      <link>https://example.org/post/sha-1/</link>
+      <link>https://asu1tty.github.io/post/sha-1/</link>
       <pubDate>Wed, 23 Apr 2025 13:28:36 &#43;0800</pubDate>
       <author>unknow (Asu1tty)</author>
-      <guid>https://example.org/post/sha-1/</guid>
+      <guid>https://asu1tty.github.io/post/sha-1/</guid>
       <description>
-        <![CDATA[<h1>SHA-1原理及代码实现</h1><p>Author: Asu1tty(unknow)</p>
+        <![CDATA[<h1>SHA-1原理及代码实现</h1><p>作者：Asu1tty（unknow）</p>
         
           <p><strong>SHA-1</strong>（英語：Secure Hash Algorithm 1，中文名：安全散列算法1）是一种<a href="https://zh.wikipedia.org/wiki/%E5%AF%86%E7%A0%81%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0" title="密码散列函数">密码散列函数</a>，<a href="https://zh.wikipedia.org/wiki/%E7%BE%8E%E5%9B%BD%E5%9B%BD%E5%AE%B6%E5%AE%89%E5%85%A8%E5%B1%80" title="美国国家安全局">美国国家安全局</a>设计。SHA-1可以生成一个被称为消息摘要的160<a href="https://zh.wikipedia.org/wiki/%E4%BD%8D" title="位">位</a>（20<a href="https://zh.wikipedia.org/wiki/%E5%AD%97%E8%8A%82" title="字节">字节</a>）散列值，散列值通常的呈现形式为40个<a href="https://zh.wikipedia.org/wiki/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6" title="十六进制">十六进制</a>数。</p>
 <h2 id="1-算法实现过程">
@@ -787,22 +257,8 @@ SHA-1可以生成一个被称为消息摘要的256<a href="https://zh.wikipedia.
 </h3><p>以字符串<code>admin</code>为例，十六进制如下</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E
 </span></span></code></pre></div><p>需要让它填充到64个字节长度</p>
-<p>第一位填充 0x80 剩下的填充 0 直到达到 56 个字节</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E 80 0(填充50次) 共 56 个字节
-</span></span></code></pre></div><p>接下来 8 个字节
-消息长度 * 8，也就是5 * 8 = 40 = 0x28</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">61 64 6D 69 6E 80 0(填充50次) 0(填充7次) 0x28 共 64 个字节
-</span></span></code></pre></div><p>填充这块唯一和md5有区别的就是,最后的附加消息长度是大端续,也就是正常的顺序
-64字节的分组长度,md5,sha1,sha256都是, sha512是128字节分组。</p>
-<h3 id="12-第二步扩充">
-<a class="header-anchor" href="#12-%e7%ac%ac%e4%ba%8c%e6%ad%a5%e6%89%a9%e5%85%85"></a>
-1.2. 第二步：扩充
-</h3><p>sha1有80轮循环,每一轮要用不同的数据,而填充后的最多只有16个4字节数据,所以需要进行扩展</p>
-<p>前16个四字节复制填充后的16个四字节
-后64个四字节使用扩充算法进行扩充
-当前位置值 =（ 前面第3个四字节 ^ 前面第8个四字节 ^ 前面第14个四字节 ^ 前面第16个四字节 ）&laquo; 1</p>
         
-        <hr><p>Published on 2025-04-23 at <a href='https://example.org/'>My New Hugo Site</a>, last modified on 2025-04-23</p>]]>
+        <hr><p>本文2025-04-23首发于<a href='https://asu1tty.github.io/'>Asu1tty's Blog</a>，最后修改于2025-04-23</p>]]>
       </description>
       
         <category>Crypto</category>

@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Softwares on My New Hugo Site</title>
-    <link>https://example.org/categories/softwares/</link>
-    <description>Recent content from My New Hugo Site</description>
+    <title>Softwares on Asu1tty&#39;s Blog</title>
+    <link>https://asu1tty.github.io/categories/softwares/</link>
+    <description>Recent content from Asu1tty&#39;s Blog</description>
     <generator>Hugo</generator>
-    <language>en</language>
+    <language>zh-cn</language>
     
     <managingEditor>unknow (Asu1tty)</managingEditor>
     <webMaster>unknow (Asu1tty)</webMaster>
     
-    <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
+    <copyright>本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！</copyright>
     
     <lastBuildDate>Tue, 01 Apr 2025 11:20:50 +0800</lastBuildDate>
     
     
-    <atom:link href="https://example.org/categories/softwares/index.xml" rel="self" type="application/rss&#43;xml" />
+    <atom:link href="https://asu1tty.github.io/categories/softwares/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
     
@@ -23,12 +23,12 @@
 
     <item>
       <title>scoop命令合集</title>
-      <link>https://example.org/post/install-scoop/</link>
+      <link>https://asu1tty.github.io/post/install-scoop/</link>
       <pubDate>Tue, 01 Apr 2025 11:20:50 &#43;0800</pubDate>
       <author>unknow (Asu1tty)</author>
-      <guid>https://example.org/post/install-scoop/</guid>
+      <guid>https://asu1tty.github.io/post/install-scoop/</guid>
       <description>
-        <![CDATA[<h1>scoop命令合集</h1><p>Author: Asu1tty(unknow)</p>
+        <![CDATA[<h1>scoop命令合集</h1><p>作者：Asu1tty（unknow）</p>
         
           <h2 id="1-激活windows">
 <a class="header-anchor" href="#1-%e6%bf%80%e6%b4%bbwindows"></a>
@@ -47,45 +47,8 @@
 <a class="header-anchor" href="#3-%e5%ae%89%e8%a3%85%e6%9c%80%e6%96%b0%e7%89%88powershell"></a>
 3. 安装最新版powershell
 </h2><p>[Powershell releases](<a href="https://github.com/PowerShell/PowerShell/releases">https://github.com/PowerShell/PowerShell/releases</a></p>
-<h3 id="31-关闭更新提示">
-<a class="header-anchor" href="#31-%e5%85%b3%e9%97%ad%e6%9b%b4%e6%96%b0%e6%8f%90%e7%a4%ba"></a>
-3.1. 关闭更新提示
-</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">POWERSHELL_UPDATECHECK
-</span></span></code></pre></div><p>![[Pasted image 20240223095124.png]]</p>
-<h2 id="4-安装windows-terminal">
-<a class="header-anchor" href="#4-%e5%ae%89%e8%a3%85windows-terminal"></a>
-4. 安装Windows Terminal
-</h2><ul>
-<li>直接打开 Microsaft Store 搜索 <code>Windows Terminal</code> 下载即可</li>
-</ul>
-<h2 id="5-安装scoop及插件scoop命令">
-<a class="header-anchor" href="#5-%e5%ae%89%e8%a3%85scoop%e5%8f%8a%e6%8f%92%e4%bb%b6scoop%e5%91%bd%e4%bb%a4"></a>
-5. 安装scoop及插件[[SCOOP命令]]
-</h2><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="p">[</span><span class="no">Environment</span><span class="p">]::</span><span class="n">SetEnvironmentVariable</span><span class="p">(</span><span class="s1">&#39;SCOOP&#39;</span><span class="p">,</span> <span class="s1">&#39;D:\Scoop&#39;</span><span class="p">,</span> <span class="s1">&#39;User&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="no">Environment</span><span class="p">]::</span><span class="n">SetEnvironmentVariable</span><span class="p">(</span><span class="s1">&#39;SCOOP_GLOBAL&#39;</span><span class="p">,</span> <span class="s1">&#39;D:\Scoop-Global&#39;</span><span class="p">,</span> <span class="s1">&#39;Machine&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="nb">Set-ExecutionPolicy</span> <span class="n">-ExecutionPolicy</span> <span class="n">RemoteSigned</span> <span class="n">-Scope</span> <span class="n">CurrentUser</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="nb">irm </span><span class="n">get</span><span class="p">.</span><span class="py">scoop</span><span class="p">.</span><span class="py">sh</span> <span class="p">|</span> <span class="nb">iex
-</span></span></span></code></pre></div><p>如果最后一句不行则替换为</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">iex </span><span class="s2">&#34;&amp; {</span><span class="p">$(</span><span class="nb">irm </span><span class="n">get</span><span class="p">.</span><span class="py">scoop</span><span class="p">.</span><span class="n">sh</span><span class="p">)</span><span class="s2">} -RunAsAdmin&#34;</span>
-</span></span></code></pre></div><h3 id="51-安装git">
-<a class="header-anchor" href="#51-%e5%ae%89%e8%a3%85git"></a>
-5.1. 安装git
-</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">scoop</span> <span class="n">install</span> <span class="n">git</span>
-</span></span></code></pre></div><h3 id="52-安装gsudo">
-<a class="header-anchor" href="#52-%e5%ae%89%e8%a3%85gsudo"></a>
-5.2. 安装gsudo
-</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">scoop</span> <span class="n">install</span> <span class="n">gsudo</span>
-</span></span></code></pre></div><h3 id="53-使用scoop安装oh-my-posh">
-<a class="header-anchor" href="#53-%e4%bd%bf%e7%94%a8scoop%e5%ae%89%e8%a3%85oh-my-posh"></a>
-5.3. 使用scoop安装oh-my-posh
-</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="n">scoop</span> <span class="n">install</span> <span class="n">https</span><span class="err">:</span><span class="p">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">JanDeDobbeleer</span><span class="p">/</span><span class="nb">oh-my</span><span class="n">-posh</span><span class="p">/</span><span class="n">releases</span><span class="p">/</span><span class="n">latest</span><span class="p">/</span><span class="n">download</span><span class="p">/</span><span class="nb">oh-my</span><span class="n">-posh</span><span class="p">.</span><span class="py">json</span>
-</span></span></code></pre></div><h4 id="531-安装oh-my-posh字体">
-<a class="header-anchor" href="#531-%e5%ae%89%e8%a3%85oh-my-posh%e5%ad%97%e4%bd%93"></a>
-5.3.1. 安装oh-my-posh字体
-</h4><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">oh-my</span><span class="n">-posh</span> <span class="n">font</span> <span class="n">install</span>
-</span></span></code></pre></div><p><strong>选择Meslo</strong></p>
         
-        <hr><p>Published on 2025-04-01 at <a href='https://example.org/'>My New Hugo Site</a>, last modified on 2025-04-01</p>]]>
+        <hr><p>本文2025-04-01首发于<a href='https://asu1tty.github.io/'>Asu1tty's Blog</a>，最后修改于2025-04-01</p>]]>
       </description>
       
         <category>softwares</category>
