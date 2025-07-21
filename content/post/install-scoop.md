@@ -514,4 +514,5 @@ https://pan.baidu.com/disk/version
 # 参考
 
 [Windows Terminal 完美配置 PowerShell 7.1](https://zhuanlan.zhihu.com/p/137595941)
+
 [oh-my-posh](https://ohmyposh.dev/docs/installation/windows)

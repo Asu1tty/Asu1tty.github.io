@@ -1,6 +1,7 @@
 ---
 title: 中文測試
 # description: 中文測試
+cover: https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/1.jpg
 
 date: 2022-06-09T20:12:52+08:00
 lastmod: 2022-06-09T20:12:52+08:00

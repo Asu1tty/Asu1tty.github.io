@@ -29,7 +29,7 @@ timeFormat: "2006-01-02 15:04:05"
 author: Asu1tty
 email: unknow
 description: "逆向小白学习中..."
-subtitle: "少女祈祷中..."
+subtitle: "江月何年初照人？"
 
 banner: "images/banner.webp"
 # You can also write it in the form of the following url
@@ -175,7 +175,7 @@ sort_order:
 anchor_icon: # default use '#' icon, you can use a hexadecimal representation of fontawesome or icon_font, like 'f0c1', you can also use false to hide anchor icon
 
 reimu_cursor:
-  enable: true
+  enable: false
   cursor:
     default: ../images/cursor/reimu-cursor-default.png # this path is relative to the css/main.css, so it needs to go up one level to reach the images folder
     pointer: ../images/cursor/reimu-cursor-pointer.png
@@ -486,7 +486,7 @@ top:
 
 # whether to display the notification when the article is outdated
 outdate:
-  enable: false
+  enable: true
   daysAgo: 180 # The number of days after which the article is considered outdated
   message:
     en: This article was last updated on {time}. Please note that the content may no longer be applicable.
