@@ -50,8 +50,8 @@
     content="/"
   />
   <meta property="article:author" content="Asu1tty" />
-  <meta property="article:published_time" content="2025-05-17T11:18:36&#43;08:00" />
-  <meta property="article:modified_time" content="2025-05-17T11:18:36&#43;08:00" /><meta name="twitter:card" content="summary" />
+  <meta property="article:published_time" content="2025-11-17T11:48:50&#43;08:00" />
+  <meta property="article:modified_time" content="2025-11-17T11:48:50&#43;08:00" /><meta name="twitter:card" content="summary" />
   <meta name="twitter:image" content="/" /><link rel="alternate" type="application/rss+xml" href="https://asu1tty.github.io/index.xml" title="Asu1tty's Blog">
 <link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.a814edbe97c924d805a06eb7eb3d1e794bb33da313673483f77f77b66edcbb33.css" />
 <link
@@ -203,17 +203,17 @@
 </div>
 <div class="sidebar-state">
   <div class="sidebar-state-article">
-    <div>文章</div><div class="sidebar-state-number">14</div>
+    <div>文章</div><div class="sidebar-state-number">15</div>
   </div>
   <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
     <div>分类</div>
     <div class="sidebar-state-number">
-      5
+      6
     </div>
   </a>
   <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
     <div>标签</div>
-    <div class="sidebar-state-number">14</div>
+    <div class="sidebar-state-number">15</div>
   </a>
 </div>
 <div class="sidebar-social"></div>
@@ -268,6 +268,11 @@
                 <a class="category-list-link" href="/categories/crypto/" 
                   title="Crypto"
                   >Crypto</a
+                >
+              </li><li class="category-list-item">
+                <a class="category-list-link" href="/categories/scripts/" 
+                  title="Scripts"
+                  >Scripts</a
                 >
               </li><li class="category-list-item">
                 <a class="category-list-link" href="/categories/softwares/" 
@@ -445,6 +450,11 @@
             >Scoop</a
           ><a
             style="font-size:10px"
+            href="/tags/scripts/"
+            aria-label="标签: Scripts"
+            >Scripts</a
+          ><a
+            style="font-size:10px"
             href="/tags/sha-1/"
             aria-label="标签: SHA-1"
             >SHA-1</a
@@ -473,6 +483,8 @@
       <h3 class="widget-title">最新文章</h3>
       <div class="widget">
         <ul><li>
+              <a href="/post/scripts_colec/" title="脚本记录">脚本记录</a>
+            </li><li>
               <a href="/post/so-harden/" title="浅析So加固的三种方式">浅析So加固的三种方式</a>
             </li><li>
               <a href="/post/loading-so/" title="Android so加载源码分析与加壳技术">Android so加载源码分析与加壳技术</a>
@@ -480,8 +492,6 @@
               <a href="/post/elfreader/" title="ELF结构及加载流程分析">ELF结构及加载流程分析</a>
             </li><li>
               <a href="/post/xhs_analysis/" title="某红薯shield参数分析">某红薯shield参数分析</a>
-            </li><li>
-              <a href="/post/rc4/" title="RC4原理及代码实现">RC4原理及代码实现</a>
             </li></ul>
       </div>
     </div>
@@ -494,16 +504,57 @@
     data-aos="fade-up"
   ><a
         class="post-link"
-        href="/post/so-harden/"
-        aria-label="浅析So加固的三种方式"
-        title="浅析So加固的三种方式"
+        href="/post/scripts_colec/"
+        aria-label="脚本记录"
+        title="脚本记录"
       >
       </a><div
       class="
         post-cover left
       "
     ><img
-            data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/19.jpg"
+            data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/10.jpg"
+            data-sizes="auto"
+            alt="脚本记录"
+            class="lazyload"
+          /></div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span
+          ><span class="icon-calendar"></span
+          >2025-11-17</span
+        ><span
+          ><span class="icon-pencil"></span
+          >1619 字</span
+        >
+        <span
+          ><span class="icon-clock"></span
+          >4 分钟</span
+        >
+      </div>
+      <h2 class="post-title">脚本记录</h2>
+      <article class="post-article"> 1. Java 层 1.1. hashmap 相关的hook //由于有些请求头会使用这个添加，可能通过okhttp直接增加 var hashMap = Java.use(&#34;java.util.HashMap&#34;); hashMap.put.implementation = function (a, b) { console.log(&#34;hashMap.put: &#34;, a, b); return this.put(a, b); } // java.util.concurrent.ConcurrentHashMap var ConcurrentHashMap = …</article>
+    </div>
+  </div>
+</div>
+<div class="post-wrapper">
+  <div
+    class="
+      post-wrap right
+    "
+    data-aos="fade-up"
+  ><a
+        class="post-link"
+        href="/post/so-harden/"
+        aria-label="浅析So加固的三种方式"
+        title="浅析So加固的三种方式"
+      >
+      </a><div
+      class="
+        post-cover right
+      "
+    ><img
+            data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/4.jpg"
             data-sizes="auto"
             alt="浅析So加固的三种方式"
             class="lazyload"
@@ -531,7 +582,7 @@
 <div class="post-wrapper">
   <div
     class="
-      post-wrap right
+      post-wrap left
     "
     data-aos="fade-up"
   ><a
@@ -542,10 +593,10 @@
       >
       </a><div
       class="
-        post-cover right
+        post-cover left
       "
     ><img
-            data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/5.jpg"
+            data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/17.jpg"
             data-sizes="auto"
             alt="Android so加载源码分析与加壳技术"
             class="lazyload"
@@ -576,7 +627,7 @@ System.load(String path) 1.1. System.load() 这里我们以System.load作为分�
 <div class="post-wrapper">
   <div
     class="
-      post-wrap left
+      post-wrap right
     "
     data-aos="fade-up"
   ><a
@@ -587,10 +638,10 @@ System.load(String path) 1.1. System.load() 这里我们以System.load作为分�
       >
       </a><div
       class="
-        post-cover left
+        post-cover right
       "
     ><img
-            data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/17.jpg"
+            data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/7.jpg"
             data-sizes="auto"
             alt="ELF结构及加载流程分析"
             class="lazyload"
@@ -619,7 +670,7 @@ Windows下的 PE（Portable Executable） Linux下的 ELF（Executable Linkable 
 <div class="post-wrapper">
   <div
     class="
-      post-wrap right
+      post-wrap left
     "
     data-aos="fade-up"
   ><a
@@ -630,10 +681,10 @@ Windows下的 PE（Portable Executable） Linux下的 ELF（Executable Linkable 
       >
       </a><div
       class="
-        post-cover right
+        post-cover left
       "
     ><img
-            data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/1.jpg"
+            data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/2.jpg"
             data-sizes="auto"
             alt="某红薯shield参数分析"
             class="lazyload"
@@ -663,7 +714,7 @@ Windows下的 PE（Portable Executable） Linux下的 ELF（Executable Linkable 
 <div class="post-wrapper">
   <div
     class="
-      post-wrap left
+      post-wrap right
     "
     data-aos="fade-up"
   ><a
@@ -674,10 +725,10 @@ Windows下的 PE（Portable Executable） Linux下的 ELF（Executable Linkable 
       >
       </a><div
       class="
-        post-cover left
+        post-cover right
       "
     ><img
-            data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/15.jpg"
+            data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/11.png"
             data-sizes="auto"
             alt="RC4原理及代码实现"
             class="lazyload"
@@ -705,7 +756,7 @@ Windows下的 PE（Portable Executable） Linux下的 ELF（Executable Linkable 
 <div class="post-wrapper">
   <div
     class="
-      post-wrap right
+      post-wrap left
     "
     data-aos="fade-up"
   ><a
@@ -716,10 +767,10 @@ Windows下的 PE（Portable Executable） Linux下的 ELF（Executable Linkable 
       >
       </a><div
       class="
-        post-cover right
+        post-cover left
       "
     ><img
-            data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/4.jpg"
+            data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/8.jpg"
             data-sizes="auto"
             alt="AES原理及白盒AES的DFA攻击"
             class="lazyload"
@@ -747,7 +798,7 @@ Windows下的 PE（Portable Executable） Linux下的 ELF（Executable Linkable 
 <div class="post-wrapper">
   <div
     class="
-      post-wrap left
+      post-wrap right
     "
     data-aos="fade-up"
   ><a
@@ -758,10 +809,10 @@ Windows下的 PE（Portable Executable） Linux下的 ELF（Executable Linkable 
       >
       </a><div
       class="
-        post-cover left
+        post-cover right
       "
     ><img
-            data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/6.jpg"
+            data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/12.png"
             data-sizes="auto"
             alt="HMAC原理及代码实现"
             class="lazyload"
@@ -789,7 +840,7 @@ Windows下的 PE（Portable Executable） Linux下的 ELF（Executable Linkable 
 <div class="post-wrapper">
   <div
     class="
-      post-wrap right
+      post-wrap left
     "
     data-aos="fade-up"
   ><a
@@ -800,10 +851,10 @@ Windows下的 PE（Portable Executable） Linux下的 ELF（Executable Linkable 
       >
       </a><div
       class="
-        post-cover right
+        post-cover left
       "
     ><img
-            data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/6.jpg"
+            data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/11.png"
             data-sizes="auto"
             alt="SHA-512简介及代码实现"
             class="lazyload"
@@ -832,7 +883,7 @@ Windows下的 PE（Portable Executable） Linux下的 ELF（Executable Linkable 
 <div class="post-wrapper">
   <div
     class="
-      post-wrap left
+      post-wrap right
     "
     data-aos="fade-up"
   ><a
@@ -843,10 +894,10 @@ Windows下的 PE（Portable Executable） Linux下的 ELF（Executable Linkable 
       >
       </a><div
       class="
-        post-cover left
+        post-cover right
       "
     ><img
-            data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/7.jpg"
+            data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/4.jpg"
             data-sizes="auto"
             alt="SHA-256原理及代码实现"
             class="lazyload"
@@ -867,50 +918,6 @@ Windows下的 PE（Portable Executable） Linux下的 ELF（Executable Linkable 
       </div>
       <h2 class="post-title">SHA-256原理及代码实现</h2>
       <article class="post-article">SHA256是SHA-2下细分出的一种算法 SHA-2，名称来自于安全散列算法2（英语：Secure Hash Algorithm 2）的缩写，一种密码散列函数算法标准，由美国国家安全局研发，属于SHA算法之一，是SHA-1的后继者。 SHA-2下又可再分为六个不同的算法标准 包括了：SHA-224、SHA-256、SHA-384、SHA-512、SHA-512/224、SHA-512/256。 SHA-1可以生成一个被称为消息摘要的256位（32字节）散列值，散列值通常的呈现形式为64个十六进制数。
-</article>
-    </div>
-  </div>
-</div>
-<div class="post-wrapper">
-  <div
-    class="
-      post-wrap right
-    "
-    data-aos="fade-up"
-  ><a
-        class="post-link"
-        href="/post/sha-1/"
-        aria-label="SHA-1原理及代码实现"
-        title="SHA-1原理及代码实现"
-      >
-      </a><div
-      class="
-        post-cover right
-      "
-    ><img
-            data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/4.jpg"
-            data-sizes="auto"
-            alt="SHA-1原理及代码实现"
-            class="lazyload"
-          /></div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span
-          ><span class="icon-calendar"></span
-          >2025-04-23</span
-        ><span
-          ><span class="icon-pencil"></span
-          >1752 字</span
-        >
-        <span
-          ><span class="icon-clock"></span
-          >4 分钟</span
-        >
-      </div>
-      <h2 class="post-title">SHA-1原理及代码实现</h2>
-      <article class="post-article">SHA-1（英語：Secure Hash Algorithm 1，中文名：安全散列算法1）是一种密码散列函数，美国国家安全局设计。SHA-1可以生成一个被称为消息摘要的160位（20字节）散列值，散列值通常的呈现形式为40个十六进制数。
-1. 算法实现过程 1.1. 第一步：填充 以字符串admin为例，十六进制如下
-61 64 6D 69 6E 需要让它填充到64个字节长度
 </article>
     </div>
   </div>
@@ -940,10 +947,10 @@ Windows下的 PE（Portable Executable） Linux下的 ELF（Executable Linkable 
         >
       </div><div>
         <span class="icon-brush"
-          >&nbsp;61.0k</span
+          >&nbsp;62.6k</span
         >
         &nbsp;|&nbsp;
-        <span class="icon-coffee">&nbsp;02:08</span>
+        <span class="icon-coffee">&nbsp;02:12</span>
       </div><div>
         <span class="icon-eye"></span>
         <span id="busuanzi_container_site_pv"
@@ -977,17 +984,17 @@ Windows下的 PE（Portable Executable） Linux下的 ELF（Executable Linkable 
 </div>
 <div class="sidebar-state">
   <div class="sidebar-state-article">
-    <div>文章</div><div class="sidebar-state-number">14</div>
+    <div>文章</div><div class="sidebar-state-number">15</div>
   </div>
   <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
     <div>分类</div>
     <div class="sidebar-state-number">
-      5
+      6
     </div>
   </a>
   <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
     <div>标签</div>
-    <div class="sidebar-state-number">14</div>
+    <div class="sidebar-state-number">15</div>
   </a>
 </div>
 <div class="sidebar-social"></div>
