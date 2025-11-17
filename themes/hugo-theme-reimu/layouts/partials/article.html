@@ -1,6 +1,5 @@
 <article
   class="h-entry article"
-  itemprop="blogPost"
   itemscope
   itemtype="https://schema.org/BlogPosting"
 >
@@ -12,18 +11,36 @@
       {{- partial "post/date.html" . -}}
       {{- partial "post/category.html" . -}}
     </div>
+    {{- partial "post/summary.html" . -}}
     <div class="hr-line"></div>
     {{- partial "post/gallery.html" . -}}
     <div class="e-content article-entry" itemprop="articleBody">
-      {{- if .Site.Params.outdate.enable -}}
-        <blockquote id="outdate-blockquote" style="display: none;">
+      {{- if .Params.outdated -}}
+        <blockquote class="alert-blockquote warning">
+          <p class="alert-heading">WARNING</p>
+          <p>
+            {{ $msg := index .Site.Params.outdate.message $.Language.Lang | default "This article was last updated on {time}. Please note that the content may no longer be applicable." }}
+            {{ replace $msg "{time}" ($.Lastmod.Format $.Site.Params.dateFormat) }}
+          </p>
+        </blockquote>
+      {{- else if .Site.Params.outdate.enable -}}
+        <blockquote
+          class="alert-blockquote warning"
+          id="outdate-blockquote"
+          style="display: none;"
+        >
+          <p class="alert-heading">WARNING</p>
           <p></p>
         </blockquote>
       {{- end -}}
       {{- if and .Params.excerpt .Params.link -}}
         <p>{{ .Params.excerpt | safeHTML }}</p>
         <p class="article-more-link">
-          <a href="{{ .Params.link }}"
+          <a
+            href="{{ .Params.link }}"
+            target="_blank"
+            itemprop="url"
+            rel="noopener nofollow noreferrer"
             >{{ .Site.Params.excerpt_link | default "Read More" }}</a
           >
         </p>
@@ -52,7 +69,7 @@
         >
           <span
             class="post-comments-count valine-comment-count"
-            data-xid="{{ .Permalink | urlize }}"
+            data-xid="{{ .Permalink | relURL | urlize }}"
             itemprop="commentCount"
           ></span>
           {{ i18n "comment" }}
@@ -67,7 +84,7 @@
         >
           <span
             class="post-comments-count waline-comment-count"
-            data-path="{{ .Permalink | urlize }}"
+            data-path="{{ .Permalink | relURL | urlize }}"
             itemprop="commentCount"
           ></span>
           {{ i18n "comment" }}

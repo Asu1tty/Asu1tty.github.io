@@ -1,8 +1,8 @@
 {{- $params := .Site.Params -}}
 <div id="header-nav">
-  <nav id="main-nav">
+  <nav id="main-nav" aria-label="Primary navigation">
     {{- range .Site.Params.menu -}}
-      <span class="main-nav-link-wrap">
+      <a class="main-nav-link-wrap" href="{{ .url | relLangURL }}">
         <div class='main-nav-icon icon {{ if or (and (eq .icon "e62b") ($params.icon_font)) (and (eq .icon "f6ad") (not $params.icon_font)) (not .icon) }}rotate{{ end }}'>
           {{- if .icon -}}
             {{- if and (strings.Contains .icon ".") (strings.Contains .icon "/") -}}
@@ -18,17 +18,17 @@
             {{- end -}}
           {{- end -}}
         </div>
-        <a class="main-nav-link" href="{{ .url | relLangURL }}">{{ i18n .name }}</a>
-      </span>
+        <span class="main-nav-link">{{ i18n .name }}</span>
+      </a>
     {{- end -}}
-    <a id="main-nav-toggle" class="nav-icon"></a>
+    <a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
   </nav>
-  <nav id="sub-nav">
+  <nav id="sub-nav" aria-label="Secondary navigation">
     {{- with .OutputFormats.Get "rss" -}}
-      <a id="nav-rss-link" class="nav-icon" href="{{ .Permalink | relURL }}" title="{{ i18n "rss_feed" }}" target="_blank"></a>
+      <a id="nav-rss-link" class="nav-icon" href="{{ .Permalink | relURL }}" title="{{ i18n "rss_feed" }}" aria-label="{{ i18n "rss_feed" }}" target="_blank"></a>
     {{- end -}}
     {{- if .Site.Params.algolia_search.enable -}}
-      <a id="nav-search-btn" class="nav-icon popup-trigger" title="{{ i18n "search" }}"></a>
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="{{ i18n "search" }}" aria-label="{{ i18n "search" }}"></a>
     {{- end -}}
   </nav>
   {{- if and hugo.IsMultilingual (ne "404" .Type) -}}
@@ -36,15 +36,15 @@
     {{- range .Site.Languages -}}
       {{- $i18nMap = merge $i18nMap (dict .Lang .LanguageName) -}}
     {{- end -}}
-    <nav id="i18n-nav">
+    <nav id="i18n-nav" aria-label="Language selection">
       <div class="custom-dropdown">
-        <div class="select-selected" id="select-selected">
+        <div class="select-selected" id="select-selected" role="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Language menu">
           <span id="nav-language-btn" class="nav-icon" style="padding: 0 20px 0 0"></span>
           <span id="selected-lang">{{ index $i18nMap $.Language.Lang }}</span>
         </div>
-        <ul class="select-items" id="select-items">
+        <ul class="select-items" id="select-items" role="listbox" aria-label="Languages">
           {{- range .Site.Languages -}}
-            <li data-value="{{ .Lang }}" {{ if eq $.Language.Lang .Lang }}class="selected"{{ end }} >{{ .LanguageName }}</li>
+            <li data-value="{{ .Lang }}" role="option" {{ if eq $.Language.Lang .Lang }}class="selected" arial-selected="true"{{ else }}arial-selected="false"{{ end }} >{{ .LanguageName }}</li>
           {{- end -}}
         </ul>
       </div>
@@ -56,6 +56,8 @@
 
         selectSelected.addEventListener("click", () => {
           selectItems.classList.toggle("show");
+          var expanded = selectSelected.getAttribute("aria-expanded") === "true";
+          selectSelected.setAttribute("aria-expanded", (!expanded).toString());
         });
 
         selectOptions.forEach((item) => {
@@ -89,13 +91,19 @@
         document.addEventListener("click", (event) => {
           if (!event.target.closest(".custom-dropdown")) {
             selectItems.classList.remove("show");
+            selectSelected.setAttribute("aria-expanded", "false");
           }
         });
       </script>
     </nav>
   {{- end -}}
+  {{- if .Site.Params.triangle_badge.enable -}}
+    <a href="{{ .Site.Params.triangle_badge.link }}" class="triangle-badge" title="{{ .Site.Params.triangle_badge.icon }}" target="_blank" rel="noopener nofollow noreferrer">
+      <div class="icon icon-{{ .Site.Params.triangle_badge.icon }} triangle-badge-icon"></div>
+    </a>
+  {{- end -}}
 </div>
-<header id="header">
+<header id="header" aria-label="Site header">
   {{- if and .Params.cover (strings.HasPrefix .Params.cover "rgb") -}}
     <picture></picture>
     <img style="position: absolute;top: 0;left: 0;width: 100%;height: 150%;z-index: -2;display: block;background: {{ .Params.cover | safeCSS }};mask: linear-gradient(to top, transparent, #fff 50%);"></img>
@@ -171,9 +179,9 @@
         {{- end -}}
   
         {{- if $title -}}
-          <a href="{{ "" | relLangURL }}" id="logo">
+          <span id="logo">
             <h1 data-aos="{{ .Site.Params.animation.options.header.title }}">{{ $title }}</h1>
-          </a>
+          </span>
         {{- end -}}
       {{- end -}}
   
@@ -189,10 +197,14 @@
           {{- $subtitle = .Title -}}
         {{- else if and (eq .Type "tags") (not (eq .Title "Tags")) -}}
           {{- $subtitle = .Title -}}
+        {{- else if and .Site.Params.summary.enable (eq .Site.Params.summary.style "subtitle") (in .Site.Params.mainSections .Type) -}}
+          {{- if .Summary -}}
+            {{- $subtitle = .Summary | plainify | truncate 200 -}}
+          {{- end -}}
         {{- end -}}
         <h2 id="subtitle-wrap" data-aos="{{ .Site.Params.animation.options.header.subTitle }}">
           {{- if $subtitle -}}
-            <a href="{{ "" | relLangURL }}" id="subtitle">{{ $subtitle }}</a>
+            <span id="subtitle">{{ $subtitle }}</span>
           {{- end -}}
         </h2>
       {{- end -}}

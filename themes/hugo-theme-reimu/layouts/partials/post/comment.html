@@ -28,11 +28,13 @@
   };
   var commentConfigKeys = ['valine', 'waline', 'twikoo', 'gitalk', 'giscus'];
   var commentConfig = {
+    {{- if $commentSystems.valine -}}
     valine: {
       enable: {{ if and $params.valine.enable $params.valine.appId $params.valine.appKey }}true{{ else }}false{{ end }},
       load: () => {
         const container = document.querySelector('.valine-comment');
         if (!container) return;
+        if (container.style.display === 'block') return; // already loaded
         container.style.display = 'block';
 
         const script = loadScript(
@@ -68,6 +70,8 @@
         document.head.appendChild(script);
       }
     },
+    {{- end -}}
+    {{- if $commentSystems.waline -}}
     waline: {
       enable: {{ if and $params.waline.enable $params.waline.serverURL }}true{{ else }}false{{ end }},
       load: async () => {
@@ -107,6 +111,8 @@
         });
       }
     },
+    {{- end -}}
+    {{- if $commentSystems.twikoo -}}
     twikoo: {
       enable: {{ if and $params.twikoo.enable $params.twikoo.envId }}true{{ else }}false{{ end }},
       load: () => {
@@ -142,6 +148,8 @@
         document.head.appendChild(script);
       }
     },
+    {{- end -}}
+    {{- if $commentSystems.gitalk -}}
     gitalk: {
       enable: {{ if and $params.gitalk.enable $params.gitalk.clientID $params.gitalk.clientSecret }}true{{ else }}false{{ end }},
       load: () => {
@@ -184,6 +192,8 @@
         }
       }
     },
+    {{- end -}}
+    {{- if $commentSystems.giscus -}}
     giscus: {
       enable: {{ if and $params.giscus.enable }}true{{ else }}false{{ end }},
       load: () => {
@@ -235,8 +245,9 @@
         });
       }
     }
+    {{- end -}}
   };
-  commentConfig.enable = commentConfigKeys.some(key => commentConfig[key].enable);
+  commentConfig.enable = commentConfigKeys.some(key => commentConfig?.[key]?.enable);
 
   var defaultComment = '';
   if (commentConfig.enable) {
@@ -260,7 +271,7 @@
     
     // 4. 如果前两项都无效，按指定顺序找到第一个可用的评论系统
     if (!defaultComment) {
-      defaultComment = commentConfigKeys.find(sys => commentConfig[sys].enable) || '';
+      defaultComment = commentConfigKeys.find(sys => commentConfig?.[sys]?.enable) || '';
     }
   }
 

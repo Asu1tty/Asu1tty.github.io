@@ -7,7 +7,7 @@
       {{- range $k, $v := $ctx.Site.Params.home_categories.content -}}
         {{- if $v.categories -}}
           <div class="post-categories-wrap">
-            <a class="post-link" href="{{ (printf "%s%s" "categories/" (urlize $v.categories)) | relLangURL }}" aria-label=""></a>
+            <a class="post-link" href="{{ (printf "%s%s" "categories/" (urlize $v.categories)) | relLangURL }}" aria-label="{{ $v.categories }}" title="{{ $v.categories }}"></a>
             <div class="post-categories-cover">
               {{- if $v.cover -}}
                 <img

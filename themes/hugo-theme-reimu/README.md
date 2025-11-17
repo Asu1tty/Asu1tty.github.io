@@ -1,5 +1,6 @@
-<img src="https://cdn.jsdelivr.net/gh/D-Sketon/hugo-theme-reimu@main/images/screenshot.png"/>
+
 <div align = center>
+  <img src="https://fastly.jsdelivr.net/gh/D-Sketon/blog-img/icon.png"/>
   <h1>hugo-theme-reimu</h1>
   <img alt="version" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2FD-Sketon%2Fhugo-theme-reimu%2Fraw%2Fmain%2Fpackage.json&query=%24.version&label=version">
   <img alt="GitHub License" src="https://img.shields.io/github/license/D-Sketon/hugo-theme-reimu">
@@ -12,6 +13,7 @@
 
 简体中文 | [English](https://github.com/D-Sketon/hugo-theme-reimu/blob/main/README.en.md)
 
+<img src="https://cdn.jsdelivr.net/gh/D-Sketon/hugo-theme-reimu@main/images/screenshot.png"/>
 </div>
 
 A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://github.com/D-Sketon/hexo-theme-reimu).
@@ -21,10 +23,11 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
 | framework                    | repository                                                         | version                                                                                                                                                                                     | stars                                                                                              |
 | ---------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | [Hexo](https://hexo.io/)     | [hexo-theme-reimu](https://github.com/D-Sketon/hexo-theme-reimu)   | <img alt="version" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2FD-Sketon%2Fhexo-theme-reimu%2Fraw%2Fmain%2Fpackage.json&query=%24.version&label=version">  | <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/D-Sketon/hexo-theme-reimu">  |
-| [Astro](https://astro.build) | [astro-theme-reimu](https://github.com/D-Sketon/astro-theme-reimu) | <img alt="version" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2FD-Sketon%2Fastro-theme-reimu%2Fraw%2Fmain%2Fpackage.json&query=%24.version&label=version"> | <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/D-Sketon/astro-theme-reimu"> |
 | [Hugo](https://gohugo.io)    | [hugo-theme-reimu](https://github.com/D-Sketon/hugo-theme-reimu)   | <img alt="version" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2FD-Sketon%2Fhugo-theme-reimu%2Fraw%2Fmain%2Fpackage.json&query=%24.version&label=version">  | <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/D-Sketon/hugo-theme-reimu">  |
+| [Astro](https://astro.build) | [astro-theme-reimu](https://github.com/D-Sketon/astro-theme-reimu) | <img alt="version" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2FD-Sketon%2Fastro-theme-reimu%2Fraw%2Fmain%2Fpackage.json&query=%24.version&label=version"> | <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/D-Sketon/astro-theme-reimu"> |
 
-**项目刚刚开始，欢迎提出 Issue 和 PR！**
+
+**欢迎提出 Issue 和 PR！**
 
 ## 特性
 
@@ -71,7 +74,7 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
 
 ### 导航与结构
 
-- 📑 目录导航（TOC）
+- 📑 目录导航
 - 🔄 PJAX 支持
 - 🔧 ServiceWorker 实现
 - 📰 RSS 订阅
@@ -80,13 +83,14 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
 
 - 🎨 图标支持：
   - Iconfont
-  - FontAwesome
+  - FontAwesome7
 - 🔗 自定义短代码：
   - 内部链接
   - 外部链接
   - 友情链接
   - 热力图
   - 标签轮盘
+  - Alert块引用
 - 🎨 动态适配主题色
 - ©️ 文章版权声明
 - 🌐 自定义 CDN 源 / 本地配置
@@ -256,6 +260,125 @@ banner: "images/banner.webp"
 #### Favicon
 
 favicon 保存于 `themes/hugo-theme-reimu/static/favicon.ico`，可自行覆盖替换
+
+#### 文章总结
+
+默认关闭，可选择在副标题或者文章开头显示文章摘要
+
+```yaml
+summary:
+  enable: false
+  style: 'subtitle' # 'subtitle' | 'blockquote'
+```
+
+</details>
+
+<details>
+<summary>侧边栏</summary>
+
+### 侧边栏
+
+#### 侧边栏位置
+
+默认在右边，可在内层 `_config.yml` 中修改
+
+```yaml
+sidebar: right # left | right
+```
+
+此外，也可以通过文章的 front-matter 控制，其优先级高于全局配置
+
+```yaml
+---
+sidebar: left # left | right
+---
+```
+
+#### TOC
+
+默认开启，可在内层 `_config.yml` 中修改
+
+```yaml
+toc: true # true | false
+```
+
+此外，也可以通过文章的 front-matter 控制，其优先级高于全局配置
+
+```yaml
+---
+toc: true # true | false
+---
+```
+
+#### 社交链接
+
+可在内层 `_config.yml` 中配置侧边栏中的社交链接
+
+```yaml
+social:
+  # github: https://github.com/yourname
+  # bilibili: https://space.bilibili.com/yourname
+  # ...
+```
+
+#### 侧边栏小部件
+
+可在内层 `_config.yml` 中配置侧边栏小部件
+
+```yaml
+widgets:
+  - category # 分类
+  - tag # 标签
+  - tagcloud # 标签云
+  - recent_posts # 最近文章
+```
+
+此外，可使用如下配置对小部件进行行为配置
+
+```yaml
+category_limits: 10 # 分类数量限制
+tag_limits: 10 # 标签数量限制
+recent_posts_limits: 5 # 最近文章数量限制
+tagcloud_limits: 20 # 标签云数量限制
+```
+
+</details>
+<details>
+<summary>页脚</summary>
+
+### 页脚
+
+#### 基础信息
+
+页脚部分允许您配置基本显示信息和统计数据
+
+```yaml
+footer:
+  since: 2020 # 在版权信息中显示的起始年份（例如：2020-当前年份）
+  powered: true # 是否显示版权信息
+  count: true # 是否显示字数统计和阅读时间信息
+  busuanzi: true # 是否启用不蒜子访客统计功能
+```
+
+#### ICP 备案
+
+对于托管在中国大陆的网站，可以根据法规要求显示ICP备案信息
+
+```yml
+icp:
+  icpnumber: # ICP备案号
+  beian: # 网安备案号
+  recordcode: # 网安备案链接中的recordcode参数
+```
+
+#### 萌国 ICP 备案 (v0.12.1+)
+
+[萌国 ICP 备案](https://icp.gov.moe/)
+
+```yml
+moe_icp:
+  icpnumber: # 萌国ICP备案号
+```
 
 </details>
 <details>
@@ -725,6 +848,15 @@ sponsor: true # 是否展示赞助二维码？
 
 使用Aplayer + Meting（可选）默认关闭
 
+##### 音乐播放器位置（v0.12.1+）
+
+默认在 sidebar 之后
+
+```yml
+player:
+  position: before_sidebar # before_sidebar / after_sidebar / after_widget
+```
+
 ##### 纯Aplayer
 
 将 `player.aplayer.enable` 设置为 `true`，并在 `player.aplayer.options` 中参考 [Aplayer Docs](https://aplayer.js.org/#/home?id=options) 进行配置
@@ -775,15 +907,6 @@ player:
       auto:
 ```
 
-#### Pangu 自动分割
-
-默认关闭，自动替你在文章中所有的中文字和半形的英文、数字、符号之间插入空白。
-
-```yml
-pangu:
-  enable: false
-```
-
 #### 分享链接/卡片（v0.5.0+）
 
 默认关闭，目前支持 `facebook`、`twitter`、`linkedin`、`reddit`、`weibo`、`qq`、`weixin`。
@@ -813,6 +936,40 @@ home_categories:
       cover: # 卡片封面，不填则使用随机封面
     - categories:
       cover:
+```
+
+#### 注入器（v0.6.3+）
+
+用于注入自定义代码，其效果和 [Hexo#Injector](https://hexo.io/api/injector) 类似，支持 `head`、 `body` 和 `sidebar` 注入
+
+```yaml
+injector:
+  head_begin: # 在 <head> 标签后注入代码
+  head_end: # 在 </head> 标签前注入代码
+  body_begin: # 在 <body> 标签后注入代码
+  body_end: # 在 </body> 标签前注入代码
+  sidebar_begin: # 在 <aside> 标签后注入代码
+  sidebar_end: # 在 </aside> 标签前注入代码
+```
+
+#### Pangu 自动分割 （v0.7.0+）
+
+默认关闭，自动替你在文章中所有的中文字和半形的英文、数字、符号之间插入空白。
+
+```yml
+pangu:
+  enable: false
+```
+
+#### 三角徽标（v0.13.2+）
+
+默认关闭，打开后会在右上角展示三角徽标，支持自定义链接和图标
+
+```yml
+triangle_badge:
+  enable: false
+  icon: github # 与 social 配置里的 icon 相同
+  link: https://github.com/D-Sketon/hexo-theme-reimu
 ```
 
 </details>
@@ -846,7 +1003,7 @@ home_categories:
 
 其中第一个参数为文章的标题；第二个参数为文章的外部链接，第三个参数（可选）为卡片展示的封面，如果设置为 `auto` 则自动使用缺省封面
 
-#### heatMapCard 文章热力图 (v0.8.0+ 实验性功能)
+#### heatMapCard 文章热力图 (v0.8.0+)
 
 ```yaml
 {{< heatMapCard levelStandard="?" >}}
@@ -854,7 +1011,7 @@ home_categories:
 
 其中第一个参数为热力图的等级标准（按照文章字数分级），默认为 `"1000,5000,10000"`
 
-#### tagRoulette 标签轮盘 (v0.12.0+ 实验性功能)
+#### tagRoulette 标签轮盘 (v0.12.0+)
 
 ```yaml
 {{< tagRoulette tags="?" icon="?" >}}
@@ -864,6 +1021,19 @@ tagRoulette 是一个互动元素，提供随机标签展示功能，点击按�
 
 - tags：可选参数，指定标签池，多个标签用英文逗号(,)分隔；未提供时默认使用几个示例标签，例如：tags="记忆衰退,表达欲丧失,更加怠惰,无感,好想睡觉"  
 - icon：可选参数，自定义触发按钮的图标，默认使用：🕹️（游戏手柄emoji），可替换为任何emoji或文字，如 🎲、🎯、🔄 等
+
+#### alertBlockquote 块引用 (v0.12.1+)
+
+```yaml
+{{< alertBlockquote type="?" >}}
+Your content here
+{{</alertBlockquote>}}
+```
+
+适用于 Hugo v0.132.0 以下版本不能使用 Hugo Blockquote render hooks 的场景。
+
+其中第一个参数为块引用的类型，可选参数为：`note`、`tip`、`important`、`warning`、`danger`
+
 </details>
 
 <details>
@@ -1112,6 +1282,34 @@ js:
 
 以上两种形式均支持，建议对外部 CDN 资源使用 SRI 校验，以确保资源的完整性。
 
+</details>
+<details>
+<summary>Front-matter 字段</summary>
+
+### Front-matter 字段
+
+| meta        | 描述                                            | 类型                         | 取值逻辑           | 版本      |
+| ----------- | ----------------------------------------------- | ---------------------------- | ------------------ | --------- |
+| title       | 标题                                            | `string`                     | -                  | Hugo 内置 |
+| date        | 文章创建时间                                    | `datetime`                   | -                  | Hugo 内置 |
+| lastmod     | 文章最后修改时间                                | `datetime`                   | -                  | Hugo 内置 |
+| summary     | 文章摘要                                        | `string`                     | -                  | Hugo 内置 |
+| weight      | 文章权重，用于排序/置顶                         | `int`                        | -                  | Hugo 内置 |
+| categories  | 文章分类                                        | `string[]`                   | -                  | 0.0.1     |
+| tags        | 文章标签                                        | `string[]`                   | -                  | 0.0.1     |
+| description | 文章描述                                        | `string`                     | -                  | 0.0.1     |
+| mermaid     | 是否开启 mermaid，需配合 `mermaid` 配置一起使用 | `boolean`                    | `false`            | 0.0.1     |
+| math        | 是否开启 LaTeX，需配合 `math` 配置一起使用      | `boolean`                    | `false`            | 0.0.1     |
+| link        | 用于文章直接指向外部链接                        | `string`                     | -                  | 0.0.1     |
+| copyright   | 是否开启文章版权声明                            | `boolean`                    | 不传默认走全局配置 | 0.0.1     |
+| sponsor     | 是否开启文章赞助                                | `boolean`                    | 不传默认走全局配置 | 0.0.1     |
+| comments    | 是否开启文章评论                                | `boolean`                    | 不传默认走全局配置 | 0.0.1     |
+| photos      | 文章照片墙                                      | `string[]`                   | -                  | 0.0.1     |
+| sidebar     | 文章侧边栏位置                                  | `false \| 'left' \| 'right'` | 不传默认走全局配置 | 0.5.0     |
+| toc         | 是否开启文章目录                                | `boolean`                    | 不传默认走全局配置 | 0.7.0     |
+| outdated    | 文章是否过期                                    | `boolean`                    | 不传默认走全局配置 | 0.13.1    |
+| author      | 文章作者，用于文章版权和分享卡片                | `string`                     | 不传默认走全局配置 | 0.13.2    |
+| keywords    | 文章关键词                                      | `string[] \| string`         | 不传默认走全局配置 | 0.13.4    |
 </details>
 
 ## 贡献者

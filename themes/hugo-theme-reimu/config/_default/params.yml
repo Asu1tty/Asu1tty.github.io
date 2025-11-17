@@ -148,6 +148,18 @@ tagcloud_limits: 20
 # Archive behavior
 only_show_capsule_in_index: false # If you have hugo amounts of tags and categories, you can set this to true to only show the capsule in the index page for better performance
 
+show_update_time: false # If you want to show the update time, please set this to true
+
+# Summary content
+summary:
+  enable: false
+  style: 'subtitle' # 'subtitle' or 'blockquote'
+
+triangle_badge:
+  enable: false
+  icon: github # same as the icon in the social config
+  link: https://github.com/D-Sketon/hugo-theme-reimu
+
 # RSS output
 rss:
   limit: 10             # The number of recent articles to be output, write -1 to output all
@@ -168,6 +180,9 @@ sort_order:
   archive: date-reverse # controlled by weight
   home: default # controlled by weight
 
+layout:
+  max_width: 1350px # the max width of the main content area
+
 ########################################
 # CSS
 ########################################
@@ -181,7 +196,7 @@ reimu_cursor:
     pointer: ../images/cursor/reimu-cursor-pointer.png
     text: ../images/cursor/reimu-cursor-text.png
 
-icon_font: 4552607_0khxww3tj3q9
+icon_font: 4552607_4k4bc36ef96
 
 # Font loading strategy
 # Custom Font -> Google Fonts -> Local FallBack Font
@@ -237,6 +252,10 @@ clarity: false
 # Markdown Display
 ########################################
 
+# mermaid url https://github.com/mermaid-js/mermaid
+mermaid:
+  zoom: false # whether to enable zoom for mermaid diagrams
+
 code_block:
   # whether to expand the code block by default
   # true means expand all code blocks by default
@@ -290,6 +309,7 @@ comment:
     zh-CN: 说些什么吧！
     zh-TW: 說些什麼吧！
     ja: コメントを残す
+    pt-BR: Deixe um comentário
   default: waline # default comment system, when you enable multiple comment systems
 
 # valine comment system. https://valine.js.org
@@ -387,6 +407,7 @@ preloader:
     zh-TW: 少女祈禱中...
     en: Loading...
     ja: 少女祈祷中...
+    pt-BR: Carregando...
   icon: # default use inline svg for fast speed, you can use a image url, like '/images/taichi.png'
   rotate: true # whether to rotate the icon
 
@@ -419,6 +440,7 @@ animation:
 # see https://github.com/D-Sketon/mouse-firework
 firework:
   enable: true
+  disable_on_mobile: false
   options:
     excludeElements: ["a", "button"]
     particles:
@@ -465,11 +487,13 @@ clipboard:
     zh-CN: 复制成功 (*^▽^*)
     zh-TW: 複製成功 (*^▽^*)
     ja: コピー成功 (*^▽^*)
+    pt-BR: Copiado com sucesso (*^▽^*)
   fail: 
     en: Copy failed (ﾟ⊿ﾟ)ﾂ
     zh-CN: 复制失败 (ﾟ⊿ﾟ)ﾂ
     zh-TW: 複製失敗 (ﾟ⊿ﾟ)ﾂ
     ja: コピー失敗 (ﾟ⊿ﾟ)ﾂ
+    pt-BR: Falha ao copiar (ﾟ⊿ﾟ)ﾂ
   copyright:
     enable: false
     count: 50 # The number of characters when the copyright is displayed
@@ -493,12 +517,17 @@ outdate:
     zh-CN: 本文最后更新于 {time}，请注意文中内容可能已不适用。
     zh-TW: 本文最後更新於 {time}，請注意文中內容可能已不適用。
     ja: この記事は最終更新日：{time}。記載内容が現在有効でない可能性がありますのでご注意ください。
+    pt-BR: Este artigo foi atualizado pela última vez em {time}. Observe que o conteúdo pode não ser mais aplicável.
 
 # ICP 备案
 icp:
   icpnumber: # ICP备案号
   beian: # 网安备案号
   recordcode: # 网安备案链接中的recordcode参数
+
+# 萌国 ICP 备案
+moe_icp:
+  icpnumber: # 萌国ICP备案号
 
 # Sponsor
 sponsor:
@@ -508,6 +537,7 @@ sponsor:
     zh-TW: 請作者喝杯咖啡吧
     en: Buy me a coffee
     ja: コーヒーを買ってください
+    pt-BR: Compre-me um café
   icon:
     url: "../images/taichi.png" # this path is relative to the css/main.css, so it needs to go up one level to reach the images folder
     rotate: true
@@ -579,6 +609,8 @@ pace:
 # Experimental
 # Please turn on pjax to use this feature
 player:
+  disable_on_mobile: false
+  position: before_sidebar # before_sidebar | after_sidebar | after_widget
   # if you enable meting, you must enable aplayer first
   aplayer:
     # https://github.com/DIYgod/APlayer

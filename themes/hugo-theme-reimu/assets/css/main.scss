@@ -35,6 +35,7 @@ $sponsor_icon_mask: {{  $params.sponsor.icon.mask }};
 $live2d_position: {{ $params.live2d.position }};
 $live2d_widgets_position: {{ $params.live2d_widgets.position }};
 $top_position: {{ $params.top.position }};
+$show_update_time: {{ $params.show_update_time }};
 
 $cursor-default: {{ if reflect.IsMap $params.reimu_cursor }}"{{ $params.reimu_cursor.cursor.default }}"{{ else }}"../images/cursor/reimu-cursor-default.png"{{ end }};
 $cursor-pointer: {{ if reflect.IsMap $params.reimu_cursor }}"{{ $params.reimu_cursor.cursor.pointer }}"{{ else }}"../images/cursor/reimu-cursor-pointer.png"{{ end }};
@@ -51,6 +52,8 @@ $social-keys: {{ delimit (apply $social_keys "printf" "'%s'" "." ) "," }};
 {{ $share_keys := default slice $params.share }}
 {{ $share_keys = $share_keys | append "__dummy__" }}
 $share-keys: {{ delimit (apply $share_keys "printf" "'%s'" "." ) "," }};
+
+$content_max_width: {{ default "1350px" $params.layout.max_width }};
 
 :root {
   --footer-icon: url({{ $params.footer.icon.url }});
@@ -120,6 +123,9 @@ $valine: {{ (cond (and $params.waline.enable $params.waline.serverURL) true fals
 $gitalk: {{ (cond (and $params.gitalk.enable $params.gitalk.clientID $params.gitalk.clientSecret) true false) }};
 $giscus: {{ (cond $params.giscus.enable true false) }};
 
+$triangle-badge-enable: {{ $params.triangle_badge.enable }};
+$triangle-badge-icon: {{ $params.triangle_badge.icon }};
+
 @import "_reset";
 @import "_variables";
 @import "_animation";
@@ -134,7 +140,6 @@ $giscus: {{ (cond $params.giscus.enable true false) }};
 @include global-reset;
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: $font-basic;
   font-weight: 700;
 }
 
@@ -163,6 +168,7 @@ body {
   font-family: $font-basic;
   transition: background 1s;
   color: var(--color-default);
+  text-autospace: normal;
 
   ::selection {
     background: var(--red-1);
@@ -221,21 +227,25 @@ a, .main-nav-icon, .popup-btn-close, button {
 
 #main {
   flex: 1;
-  padding: 0 10px;
+  padding: 0 20px;
   max-width: 100%;
   box-sizing: border-box;
 
   @media #{$mg-large} {
     min-width: 100%;
   }
+
+  @media #{$mg-normal} {
+    padding: 0 16px;
+  }
 }
 
 #content {
   position: relative;
   display: flex;
-  padding-top: 5px;
+  padding-top: 8px;
   align-items: stretch;
-  max-width: 1350px;
+  max-width: $content_max_width;
   margin: 0 auto;
   overflow: visible;
 }
@@ -246,7 +256,8 @@ a, .main-nav-icon, .popup-btn-close, button {
     @media #{$mq-large} {
       padding: 0;
       width: 73%;
-      margin: 0 1%;
+      max-width: calc(100% - 268px - 64px);
+      margin: 0 16px;
     }
   }
 }
@@ -287,6 +298,7 @@ a, .main-nav-icon, .popup-btn-close, button {
 @import "partials/friend";
 @import "partials/card";
 @import "partials/sidebar";
+@import "partials/container";
 
 {{ if $params.top.enable }}
 @import "partials/top";
@@ -327,6 +339,7 @@ a, .main-nav-icon, .popup-btn-close, button {
 [data-theme="dark"] {
   ::-webkit-scrollbar, ::-webkit-scrollbar-track {
     background-color: #616161;
+    border-radius: 10px;
   }
 }
 
