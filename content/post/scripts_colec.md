@@ -360,12 +360,9 @@ function usb_anti() {
 }
 ```
 
-
-
-### hook 动态加载的类dex
+### 1.8. hook 动态加载的类dex
 
 可以 hook 动态加载的 inMemoryClassloder 加载的方法
-
 ```javascript
 function hookClassMethod(className, methodName) {
     let hooked = false;
@@ -459,3 +456,215 @@ function hookClassMethod(className, methodName) {
 hookClassMethod("com.ucweb.upgrade.UpgradeResponse", "constructors");
 ```
 
+### 1.9. 获取 native 函数动态注册地址
+```JavaScript
+/**
+ * 查找指定类和方法名对应的 native 函数地址（排除 CheckJNI 包装版本）
+ *
+ * @param {string} soName             - 包含目标 native 方法的 so 库名（如 "libandroid_runtime.so"）
+ * @param {string} javaClassName      - Java 类名（如 "android.os.Process"）
+ * @param {string} targetMethodName   - 方法名（如 "getUidForName"）
+ * @returns {NativePointer|null}      - 找到的 native 函数地址或 null
+ */
+function findNativeAddress(soName, javaClassName, targetMethodName) {
+    // 获取指定 so 中的导出符号列表
+    const exports = Module.enumerateExportsSync(soName);
+
+    // 将 Java 类名转为 native C++ 符号格式（如 android_os_Process）
+    const lowerClassName = javaClassName.replace(/\./g, "_");
+
+    // 遍历导出符号，寻找符合条件的 native 方法
+    for (let exp of exports) {
+        if (
+            exp.type === "function" &&
+            exp.name.indexOf(lowerClassName) !== -1 && // 包含类名
+            exp.name.indexOf(targetMethodName) !== -1 && // 包含方法名
+            exp.name.indexOf("CheckJNI") === -1 // 排除 CheckJNI 包装版本
+        ) {
+            console.log(`[+] Found native method: ${exp.name} @ ${exp.address}`);
+            return ptr(exp.address); // 找到匹配的符号地址
+        }
+    }
+
+    // 未找到匹配的符号
+    return null;
+}
+
+/**
+ * 找到 entry_point_from_jni_ 在 ArtMethod 结构体中的偏移量（根据 Android 版本不同可能会变化）
+ *
+ * @returns {number} 返回 entry_point_from_jni_ 的偏移量，若未找到返回 -1
+ */
+function entryPointFromJniOffset() {
+    // 1. 选择一个已知的 Java native 方法作为“参考样本”。 该方法需要在系统中真实存在并且能找到其 native 地址。
+    const soName = "libandroid_runtime.so";
+    const className = "android.os.Process";
+    const methodName = "getUidForName";
+
+    // 2. 查找对应的 native 函数地址
+    const native_addr = findNativeAddress(soName, className, methodName);
+    if (native_addr === null) {
+        console.log("[-] Native function not found.");
+        return -1;
+    }
+
+    let clazz = Java.use(className).class;
+    let methods = clazz.getDeclaredMethods();
+
+    // 3. 获取类中所有方法并筛选 native 方法
+    for (let i = 0; i < methods.length; i++) {
+        // 获取方法签名
+        let methodName = methods[i].toString();
+
+        // 获取方法的修饰符，如 public、private、static、native 等
+        let flags = methods[i].getModifiers();
+
+        // 256 代表 native 修饰符
+        if (flags & 256) {
+            // 如果方法名中包含 methodName 说明找到了目标方法
+            if (methodName.indexOf("getUidForName") != -1) {
+                // 4. 获取 ArtMethod 指针并逐字节扫描字段
+                let art_method = methods[i].getArtMethod();
+
+                for (let j = 0; j < 30; j = j + 1) {
+                    let jni_entrypoint_offset = Memory.readPointer(ptr(art_method + j));
+
+                    // 比较每个字段的值是否等于我们前面获取到的 native 函数地址。
+                    if (native_addr.equals(jni_entrypoint_offset)) {
+                        // 找到即返回偏移
+                        return j;
+                    }
+                }
+            }
+        }
+    }
+
+    // 未找到 JNI 方法对应的偏移量，返回 -1
+    return -1;
+}
+
+/**
+ * Phase 1: 主 ClassLoader（最热门）
+ * Phase 2: 枚举所有 ClassLoader, enumerateClassLoaders（InMemory、加密 so...）
+ *
+ * 返回 [JavaClass, ClassLoader]
+ */
+function getClassAndLoaderFast(className) {
+    // ⬇︎ 把 Java.perform 提到这里并同步返回值
+    let ret = null;
+    Java.perform(function() {
+        // ----- Phase 1 -----
+        try {
+            const ldr = Java.classFactory.loader;
+            ldr.loadClass(className); // 直接抛异常就走 catch
+            ret = [Java.use(className), ldr];
+            return; // 跳出 Java.perform
+        } catch (_) {
+            /* ignore */
+        }
+
+        // ----- Phase 2 -----
+        let last = null;
+        Java.enumerateClassLoaders({
+            onMatch(ldr) {
+                try {
+                    ldr.loadClass(className);
+                    last = ldr;
+                    return "stop";
+                } catch (_) {}
+            },
+            onComplete() {},
+        });
+        if (last) {
+            ret = [Java.ClassFactory.get(last).use(className), last];
+        } else {
+            throw new Error(`Class ${className} not found`);
+        }
+    });
+    return ret; // 一定要在 Java.perform 块外返回
+}
+
+/**
+ * 遍历类中的 native 方法，打印 JNI 函数地址、所属模块信息，结构化输出。
+ *
+ * @param {string} className - Java 类名（如 "android.os.Process"）
+ */
+function getJniMethodAddr(className) {
+    Java.perform(function() {
+        const [clsObj] = getClassAndLoaderFast(className); // 这里就不会为 undefined
+        const clazz = clsObj.class;
+        const jni_entrypoint_offset = entryPointFromJniOffset();
+
+        console.log("========== [ JNI Method Info Dump ] ==========");
+        console.log("[*] Target class: " + className);
+        console.log(
+            "[*] entry_point_from_jni_ offset = " + jni_entrypoint_offset + " bytes\n"
+        );
+
+        const methods = clazz.getDeclaredMethods();
+        let count = 0;
+
+        for (let i = 0; i < methods.length; i++) {
+            const m = methods[i];
+            const flags = m.getModifiers();
+            const methodName = m.toString();
+
+            // 256 表示 native 方法
+            if ((flags & 256) !== 0) {
+                count++;
+                const art_method = m.getArtMethod();
+                const native_addr = Memory.readPointer(
+                    ptr(art_method).add(jni_entrypoint_offset)
+                );
+                let module = null;
+                try {
+                    module = Process.getModuleByAddress(native_addr);
+                } catch (error) {
+                    console.error("error: ", error);
+                }
+
+                // 结构化打印信息
+                console.log(
+                    "------------ [ #" + count + " Native Method ] ------------"
+                );
+                console.log("JavaMethod Name       : " + methodName);
+                console.log("ArtMethod Ptr         : " + ptr(art_method));
+                console.log("Native Addr           : " + native_addr);
+                if (module) {
+                    const offset = native_addr.sub(module.base);
+                    const debugSymbol_name = DebugSymbol.fromAddress(
+                        ptr(native_addr)
+                    ).name;
+                    console.log("NativeMethod Name     : " + debugSymbol_name);
+                    console.log("Module Name           : " + module.name);
+                    console.log("Native Offset         : 0x" + offset.toString(16));
+                    console.log("Module Base           : " + module.base);
+                    console.log("Module Size           : " + module.size + " bytes");
+                    console.log("Module Path           : " + module.path);
+                } else {
+                    console.log(
+                        "Module Info           : [ Not Found, Maybe Anonymous Map ]"
+                    );
+                    let pid = Process.id;
+                    console.log(`Please check -------->  cat /proc/${pid}/maps`);
+                }
+                console.log("------------------------------------------------\n");
+            }
+        }
+
+        if (count === 0) {
+            console.log("[-] No native methods found in class: " + className);
+        } else {
+            console.log("[*] Total native methods found: " + count);
+        }
+
+        console.log("===============================================");
+    });
+}
+
+/* Usage: frida -UF -l so_register.js
+          frida -U -f com.xxx.xx -l so_register.js
+          getJniMethodAddr(className)  //className is where function binded
+
+*/
+```

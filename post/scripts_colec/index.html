@@ -203,7 +203,8 @@
         <li><a href="#15-弹窗">1.5. 弹窗</a></li>
         <li><a href="#16-sharedpreferences类相关">1.6. SharedPreferences类相关</a></li>
         <li><a href="#17-usb-检测">1.7. USB 检测</a></li>
-        <li><a href="#hook-动态加载的类dex">hook 动态加载的类dex</a></li>
+        <li><a href="#18-hook-动态加载的类dex">1.8. hook 动态加载的类dex</a></li>
+        <li><a href="#19-获取-native-函数动态注册地址">1.9. 获取 native 函数动态注册地址</a></li>
       </ul>
     </li>
   </ul>
@@ -653,9 +654,9 @@
 </span></span><span class="line"><span class="cl">    <span class="p">})</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;[ * ] USB调试检测Hook完成&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h3 id="hook-动态加载的类dex">
-<a class="header-anchor" href="#hook-%e5%8a%a8%e6%80%81%e5%8a%a0%e8%bd%bd%e7%9a%84%e7%b1%bbdex"></a>
-hook 动态加载的类dex
+</span></span></code></pre></div><h3 id="18-hook-动态加载的类dex">
+<a class="header-anchor" href="#18-hook-%e5%8a%a8%e6%80%81%e5%8a%a0%e8%bd%bd%e7%9a%84%e7%b1%bbdex"></a>
+1.8. hook 动态加载的类dex
 </h3><p>可以 hook 动态加载的 inMemoryClassloder 加载的方法</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">hookClassMethod</span><span class="p">(</span><span class="nx">className</span><span class="p">,</span> <span class="nx">methodName</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">hooked</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
@@ -747,6 +748,218 @@ hook 动态加载的类dex
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>
 </span></span><span class="line"><span class="cl"><span class="c1">// Hook构造方法
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">hookClassMethod</span><span class="p">(</span><span class="s2">&#34;com.ucweb.upgrade.UpgradeResponse&#34;</span><span class="p">,</span> <span class="s2">&#34;constructors&#34;</span><span class="p">);</span>
+</span></span></code></pre></div><h3 id="19-获取-native-函数动态注册地址">
+<a class="header-anchor" href="#19-%e8%8e%b7%e5%8f%96-native-%e5%87%bd%e6%95%b0%e5%8a%a8%e6%80%81%e6%b3%a8%e5%86%8c%e5%9c%b0%e5%9d%80"></a>
+1.9. 获取 native 函数动态注册地址
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JavaScript" data-lang="JavaScript"><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 查找指定类和方法名对应的 native 函数地址（排除 CheckJNI 包装版本）
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @param {string} soName             - 包含目标 native 方法的 so 库名（如 &#34;libandroid_runtime.so&#34;）
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @param {string} javaClassName      - Java 类名（如 &#34;android.os.Process&#34;）
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @param {string} targetMethodName   - 方法名（如 &#34;getUidForName&#34;）
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @returns {NativePointer|null}      - 找到的 native 函数地址或 null
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">findNativeAddress</span><span class="p">(</span><span class="nx">soName</span><span class="p">,</span> <span class="nx">javaClassName</span><span class="p">,</span> <span class="nx">targetMethodName</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 获取指定 so 中的导出符号列表
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">exports</span> <span class="o">=</span> <span class="nx">Module</span><span class="p">.</span><span class="nx">enumerateExportsSync</span><span class="p">(</span><span class="nx">soName</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 将 Java 类名转为 native C++ 符号格式（如 android_os_Process）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">lowerClassName</span> <span class="o">=</span> <span class="nx">javaClassName</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\./g</span><span class="p">,</span> <span class="s2">&#34;_&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 遍历导出符号，寻找符合条件的 native 方法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">exp</span> <span class="k">of</span> <span class="nx">exports</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">exp</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="s2">&#34;function&#34;</span> <span class="o">&amp;&amp;</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">exp</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">lowerClassName</span><span class="p">)</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="c1">// 包含类名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="nx">exp</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">targetMethodName</span><span class="p">)</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="c1">// 包含方法名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="nx">exp</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&#34;CheckJNI&#34;</span><span class="p">)</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span> <span class="c1">// 排除 CheckJNI 包装版本
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`[+] Found native method: </span><span class="si">${</span><span class="nx">exp</span><span class="p">.</span><span class="nx">name</span><span class="si">}</span><span class="sb"> @ </span><span class="si">${</span><span class="nx">exp</span><span class="p">.</span><span class="nx">address</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="nx">ptr</span><span class="p">(</span><span class="nx">exp</span><span class="p">.</span><span class="nx">address</span><span class="p">);</span> <span class="c1">// 找到匹配的符号地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 未找到匹配的符号
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 找到 entry_point_from_jni_ 在 ArtMethod 结构体中的偏移量（根据 Android 版本不同可能会变化）
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @returns {number} 返回 entry_point_from_jni_ 的偏移量，若未找到返回 -1
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">entryPointFromJniOffset</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 1. 选择一个已知的 Java native 方法作为“参考样本”。 该方法需要在系统中真实存在并且能找到其 native 地址。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">soName</span> <span class="o">=</span> <span class="s2">&#34;libandroid_runtime.so&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">className</span> <span class="o">=</span> <span class="s2">&#34;android.os.Process&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">methodName</span> <span class="o">=</span> <span class="s2">&#34;getUidForName&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 2. 查找对应的 native 函数地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">native_addr</span> <span class="o">=</span> <span class="nx">findNativeAddress</span><span class="p">(</span><span class="nx">soName</span><span class="p">,</span> <span class="nx">className</span><span class="p">,</span> <span class="nx">methodName</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">native_addr</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;[-] Native function not found.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">clazz</span> <span class="o">=</span> <span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">className</span><span class="p">).</span><span class="kr">class</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">methods</span> <span class="o">=</span> <span class="nx">clazz</span><span class="p">.</span><span class="nx">getDeclaredMethods</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 3. 获取类中所有方法并筛选 native 方法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">methods</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 获取方法签名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kd">let</span> <span class="nx">methodName</span> <span class="o">=</span> <span class="nx">methods</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">toString</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 获取方法的修饰符，如 public、private、static、native 等
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kd">let</span> <span class="nx">flags</span> <span class="o">=</span> <span class="nx">methods</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">getModifiers</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 256 代表 native 修饰符
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="nx">flags</span> <span class="o">&amp;</span> <span class="mi">256</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 如果方法名中包含 methodName 说明找到了目标方法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">if</span> <span class="p">(</span><span class="nx">methodName</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&#34;getUidForName&#34;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// 4. 获取 ArtMethod 指针并逐字节扫描字段
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="kd">let</span> <span class="nx">art_method</span> <span class="o">=</span> <span class="nx">methods</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">getArtMethod</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">;</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="kd">let</span> <span class="nx">jni_entrypoint_offset</span> <span class="o">=</span> <span class="nx">Memory</span><span class="p">.</span><span class="nx">readPointer</span><span class="p">(</span><span class="nx">ptr</span><span class="p">(</span><span class="nx">art_method</span> <span class="o">+</span> <span class="nx">j</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                    <span class="c1">// 比较每个字段的值是否等于我们前面获取到的 native 函数地址。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                    <span class="k">if</span> <span class="p">(</span><span class="nx">native_addr</span><span class="p">.</span><span class="nx">equals</span><span class="p">(</span><span class="nx">jni_entrypoint_offset</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="c1">// 找到即返回偏移
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                        <span class="k">return</span> <span class="nx">j</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 未找到 JNI 方法对应的偏移量，返回 -1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Phase 1: 主 ClassLoader（最热门）
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Phase 2: 枚举所有 ClassLoader, enumerateClassLoaders（InMemory、加密 so...）
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 返回 [JavaClass, ClassLoader]
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">getClassAndLoaderFast</span><span class="p">(</span><span class="nx">className</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// ⬇︎ 把 Java.perform 提到这里并同步返回值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">let</span> <span class="nx">ret</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">Java</span><span class="p">.</span><span class="nx">perform</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// ----- Phase 1 -----
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kr">const</span> <span class="nx">ldr</span> <span class="o">=</span> <span class="nx">Java</span><span class="p">.</span><span class="nx">classFactory</span><span class="p">.</span><span class="nx">loader</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">ldr</span><span class="p">.</span><span class="nx">loadClass</span><span class="p">(</span><span class="nx">className</span><span class="p">);</span> <span class="c1">// 直接抛异常就走 catch
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="nx">ret</span> <span class="o">=</span> <span class="p">[</span><span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">className</span><span class="p">),</span> <span class="nx">ldr</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span><span class="p">;</span> <span class="c1">// 跳出 Java.perform
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">_</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="cm">/* ignore */</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// ----- Phase 2 -----
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kd">let</span> <span class="nx">last</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">Java</span><span class="p">.</span><span class="nx">enumerateClassLoaders</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">onMatch</span><span class="p">(</span><span class="nx">ldr</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">ldr</span><span class="p">.</span><span class="nx">loadClass</span><span class="p">(</span><span class="nx">className</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">last</span> <span class="o">=</span> <span class="nx">ldr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">return</span> <span class="s2">&#34;stop&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">_</span><span class="p">)</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">onComplete</span><span class="p">()</span> <span class="p">{},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">});</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">last</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">ret</span> <span class="o">=</span> <span class="p">[</span><span class="nx">Java</span><span class="p">.</span><span class="nx">ClassFactory</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">last</span><span class="p">).</span><span class="nx">use</span><span class="p">(</span><span class="nx">className</span><span class="p">),</span> <span class="nx">last</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="sb">`Class </span><span class="si">${</span><span class="nx">className</span><span class="si">}</span><span class="sb"> not found`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">ret</span><span class="p">;</span> <span class="c1">// 一定要在 Java.perform 块外返回
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 遍历类中的 native 方法，打印 JNI 函数地址、所属模块信息，结构化输出。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @param {string} className - Java 类名（如 &#34;android.os.Process&#34;）
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">getJniMethodAddr</span><span class="p">(</span><span class="nx">className</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">Java</span><span class="p">.</span><span class="nx">perform</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="p">[</span><span class="nx">clsObj</span><span class="p">]</span> <span class="o">=</span> <span class="nx">getClassAndLoaderFast</span><span class="p">(</span><span class="nx">className</span><span class="p">);</span> <span class="c1">// 这里就不会为 undefined
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kr">const</span> <span class="nx">clazz</span> <span class="o">=</span> <span class="nx">clsObj</span><span class="p">.</span><span class="kr">class</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">jni_entrypoint_offset</span> <span class="o">=</span> <span class="nx">entryPointFromJniOffset</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;========== [ JNI Method Info Dump ] ==========&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;[*] Target class: &#34;</span> <span class="o">+</span> <span class="nx">className</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;[*] entry_point_from_jni_ offset = &#34;</span> <span class="o">+</span> <span class="nx">jni_entrypoint_offset</span> <span class="o">+</span> <span class="s2">&#34; bytes\n&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">methods</span> <span class="o">=</span> <span class="nx">clazz</span><span class="p">.</span><span class="nx">getDeclaredMethods</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">let</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">methods</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kr">const</span> <span class="nx">m</span> <span class="o">=</span> <span class="nx">methods</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="kr">const</span> <span class="nx">flags</span> <span class="o">=</span> <span class="nx">m</span><span class="p">.</span><span class="nx">getModifiers</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="kr">const</span> <span class="nx">methodName</span> <span class="o">=</span> <span class="nx">m</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="c1">// 256 表示 native 方法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">if</span> <span class="p">((</span><span class="nx">flags</span> <span class="o">&amp;</span> <span class="mi">256</span><span class="p">)</span> <span class="o">!==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">count</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="kr">const</span> <span class="nx">art_method</span> <span class="o">=</span> <span class="nx">m</span><span class="p">.</span><span class="nx">getArtMethod</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                <span class="kr">const</span> <span class="nx">native_addr</span> <span class="o">=</span> <span class="nx">Memory</span><span class="p">.</span><span class="nx">readPointer</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">ptr</span><span class="p">(</span><span class="nx">art_method</span><span class="p">).</span><span class="nx">add</span><span class="p">(</span><span class="nx">jni_entrypoint_offset</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="kd">let</span> <span class="nx">module</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">module</span> <span class="o">=</span> <span class="nx">Process</span><span class="p">.</span><span class="nx">getModuleByAddress</span><span class="p">(</span><span class="nx">native_addr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&#34;error: &#34;</span><span class="p">,</span> <span class="nx">error</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="c1">// 结构化打印信息
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                    <span class="s2">&#34;------------ [ #&#34;</span> <span class="o">+</span> <span class="nx">count</span> <span class="o">+</span> <span class="s2">&#34; Native Method ] ------------&#34;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;JavaMethod Name       : &#34;</span> <span class="o">+</span> <span class="nx">methodName</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;ArtMethod Ptr         : &#34;</span> <span class="o">+</span> <span class="nx">ptr</span><span class="p">(</span><span class="nx">art_method</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;Native Addr           : &#34;</span> <span class="o">+</span> <span class="nx">native_addr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="nx">module</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="kr">const</span> <span class="nx">offset</span> <span class="o">=</span> <span class="nx">native_addr</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="nx">module</span><span class="p">.</span><span class="nx">base</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="kr">const</span> <span class="nx">debugSymbol_name</span> <span class="o">=</span> <span class="nx">DebugSymbol</span><span class="p">.</span><span class="nx">fromAddress</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                        <span class="nx">ptr</span><span class="p">(</span><span class="nx">native_addr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">).</span><span class="nx">name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;NativeMethod Name     : &#34;</span> <span class="o">+</span> <span class="nx">debugSymbol_name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;Module Name           : &#34;</span> <span class="o">+</span> <span class="nx">module</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;Native Offset         : 0x&#34;</span> <span class="o">+</span> <span class="nx">offset</span><span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="mi">16</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;Module Base           : &#34;</span> <span class="o">+</span> <span class="nx">module</span><span class="p">.</span><span class="nx">base</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;Module Size           : &#34;</span> <span class="o">+</span> <span class="nx">module</span><span class="p">.</span><span class="nx">size</span> <span class="o">+</span> <span class="s2">&#34; bytes&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;Module Path           : &#34;</span> <span class="o">+</span> <span class="nx">module</span><span class="p">.</span><span class="nx">path</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                        <span class="s2">&#34;Module Info           : [ Not Found, Maybe Anonymous Map ]&#34;</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="kd">let</span> <span class="nx">pid</span> <span class="o">=</span> <span class="nx">Process</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Please check --------&gt;  cat /proc/</span><span class="si">${</span><span class="nx">pid</span><span class="si">}</span><span class="sb">/maps`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;------------------------------------------------\n&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">count</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;[-] No native methods found in class: &#34;</span> <span class="o">+</span> <span class="nx">className</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;[*] Total native methods found: &#34;</span> <span class="o">+</span> <span class="nx">count</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;===============================================&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* Usage: frida -UF -l so_register.js
+</span></span></span><span class="line"><span class="cl"><span class="cm">          frida -U -f com.xxx.xx -l so_register.js
+</span></span></span><span class="line"><span class="cl"><span class="cm">          getJniMethodAddr(className)  //className is where function binded
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
 </span></span></code></pre></div></div>
     <footer class="article-footer"><ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in">
       <a
@@ -762,7 +975,7 @@ hook 动态加载的类dex
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/2.jpg"
+              data-src="https://cdn.jsdelivr.net/gh/Asu1tty/blog_img@main/blogBackgroud/19.jpg"
               data-sizes="auto"
               alt="浅析So加固的三种方式"
               class="lazyload"
@@ -795,10 +1008,10 @@ hook 动态加载的类dex
         >
       </div><div>
         <span class="icon-brush"
-          >&nbsp;62.6k</span
+          >&nbsp;63.9k</span
         >
         &nbsp;|&nbsp;
-        <span class="icon-coffee">&nbsp;02:12</span>
+        <span class="icon-coffee">&nbsp;02:14</span>
       </div><div>
         <span class="icon-eye"></span>
         <span id="busuanzi_container_site_pv"
@@ -833,7 +1046,8 @@ hook 动态加载的类dex
         <li><a href="#15-弹窗">1.5. 弹窗</a></li>
         <li><a href="#16-sharedpreferences类相关">1.6. SharedPreferences类相关</a></li>
         <li><a href="#17-usb-检测">1.7. USB 检测</a></li>
-        <li><a href="#hook-动态加载的类dex">hook 动态加载的类dex</a></li>
+        <li><a href="#18-hook-动态加载的类dex">1.8. hook 动态加载的类dex</a></li>
+        <li><a href="#19-获取-native-函数动态注册地址">1.9. 获取 native 函数动态注册地址</a></li>
       </ul>
     </li>
   </ul>

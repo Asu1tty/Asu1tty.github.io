@@ -376,9 +376,9 @@
 </span></span><span class="line"><span class="cl">    <span class="p">})</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;[ * ] USB调试检测Hook完成&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h3 id="hook-动态加载的类dex">
-<a class="header-anchor" href="#hook-%e5%8a%a8%e6%80%81%e5%8a%a0%e8%bd%bd%e7%9a%84%e7%b1%bbdex"></a>
-hook 动态加载的类dex
+</span></span></code></pre></div><h3 id="18-hook-动态加载的类dex">
+<a class="header-anchor" href="#18-hook-%e5%8a%a8%e6%80%81%e5%8a%a0%e8%bd%bd%e7%9a%84%e7%b1%bbdex"></a>
+1.8. hook 动态加载的类dex
 </h3><p>可以 hook 动态加载的 inMemoryClassloder 加载的方法</p>
         
         <hr><p>本文2025-11-17首发于<a href='https://asu1tty.github.io/'>Asu1tty's Blog</a>，最后修改于2025-11-17</p>]]>
